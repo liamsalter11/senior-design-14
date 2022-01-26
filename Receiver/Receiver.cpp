@@ -22,3 +22,30 @@ uint8_t Receiver::ReadByte() {
   
     return readByte;
 }
+
+uint8_t Receiver::ReadByte2() {
+    uint8_t readByte = 0;
+  
+    for (uint8_t i = 0; i < 4; i++) {
+        // Hold so there is only one read per clock
+        while (analogRead(clk) <= 5);
+
+        // Read in bits at falling clock edge
+        while (analogRead(clk) > 5);
+        uint8_t inBit = ((analogRead(r) > 4) << 1) | (analogRead(b) > 4);
+
+        // Shift bits then add incoming bit
+        readByte = (readByte << 2) ^ inBit;
+    }
+  
+    return readByte;
+}
+
+void Receiver::setRGB(uint8_t red, uint8_t green, uint8_t blue) {
+    r = red;
+    g = green;
+    b = blue;
+    pinMode(r, INPUT);
+    pinMode(g, INPUT);
+    pinMode(b, INPUT);
+}

@@ -6,10 +6,13 @@
 Transmit transmitter(CLK, DOUT);
 
 void setup() {
-  transmitter.setPeriod(10);
-  transmitter.sendString("Hello World!");
+  transmitter.setPeriod(2000);
+  //transmitter.sendString("Hello World!");
+  transmitter.setRGB(8, 7, 6);
+  //transmitter.sendByte2('H');
+  
 }
 
 void loop() {
-  
+  transmitter.sendString2("Hello World!\n");
 }
