@@ -1,6 +1,10 @@
 //vars for getting string
 String userString;
-int wholeBIN[0];
+
+byte charByte[7]; //array for converting char into bin
+byte charByteSum=0; //array for store the final value of a char's bin
+
+byte wholeBIN[100]; //replace the number with the max number of characters
 
 //loop vars 
 int state=0;
@@ -29,15 +33,21 @@ void convertString2Binary(String inputMessage)
  {
 
    letter = inputMessage.charAt(i);
-  
-    for(int i=7; i>=0; i--){
-      byte bytes = bitRead(letter,i);
-      Serial.print(bytes, BIN);
+   wholeBIN[i] = inputMessage.charAt(i);
+    for(int j=7; j>=0; j--)
+    {
+      //get the bit value of the the first byte in a 
+      charByte[j] = bitRead(letter,j);
+      Serial.print(charByte[j], BIN);
+      
       
      
     }
-     Serial.print("  which is ");
-     Serial.print(letter);
+
+    //add it to the whole binary message
+        
+    Serial.print("  which is ");
+    Serial.print(letter);
     
     Serial.println("");
     
@@ -76,14 +86,16 @@ bool getInputMessage(void)
 }
 
 void printAllBinary(void)
-{
-  /*Serial.println("----------");
+{ 
+  Serial.println("----------");
   Serial.print("Whole message is:\n");
-  for(int i=0; i>sizeof(bytes);i++)
+  for(int i=0; i<sizeof(wholeBIN);i++)
   {
-    Serial.print(bytes[i]
+    //Serial.print("print loop");
+    Serial.print(wholeBIN[i],BIN);
+    Serial.print(" ");
   }
-  Serial.println("----------");*/
+  Serial.println("\n----------");
 }
 
 void resetSystem(void)
@@ -113,6 +125,7 @@ void loop()
       if(getInputMessage() == true)
       {
         convertString2Binary(userString);
+        printAllBinary();
         state=2;
       }
       else
