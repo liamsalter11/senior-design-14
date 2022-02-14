@@ -12,10 +12,18 @@ int state=0;
 char line[80];
 int count = 0;
 
+//blinking variables
+char ledMessage[7];
+int binaryLED = 7;
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   Serial.print("Starting\n");
+
+  
+  pinMode(binaryLED, OUTPUT);
+  
 }
 
 void convertString2Binary(String inputMessage)
@@ -39,13 +47,13 @@ void convertString2Binary(String inputMessage)
       //get the bit value of the the first byte in a 
       charByte[j] = bitRead(letter,j);
       Serial.print(charByte[j], BIN);
-      
+      printLED(bitRead(letter,j));
       
      
     }
 
     //add it to the whole binary message
-        
+      
     Serial.print("  which is ");
     Serial.print(letter);
     
@@ -92,7 +100,10 @@ void printAllBinary(void)
   for(int i=0; i<sizeof(wholeBIN);i++)
   {
     //Serial.print("print loop");
+    if(wholeBIN[i] == 0)
+      continue;
     Serial.print(wholeBIN[i],BIN);
+    
     Serial.print(" ");
   }
   Serial.println("\n----------");
@@ -103,8 +114,23 @@ void resetSystem(void)
   userString="";
   line[0]='\0';
   count=0;
+  digitalWrite(binaryLED, LOW);
   Serial.flush();
   Serial.print("\nRestarting..... \n \n");
+}
+
+void printLED(int input)
+{
+  if(input == 1)
+    {
+      digitalWrite(binaryLED, HIGH);
+      delay(100);
+    }
+   else
+   {
+      digitalWrite(binaryLED, LOW);
+      delay(100);
+   }
 }
 
 void loop() 
