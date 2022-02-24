@@ -15,7 +15,7 @@ int count = 0;
 //blinking variables
 char ledMessage[7];
 int binaryLED = 7;
-int clockLED = 8;
+int clockLED = 9;
 int transRate = 100;
 
 void setup() {
@@ -69,8 +69,9 @@ void startUpPrompt(void)
 {
   delay(3000);
   Serial.print("Hello! You can input a message below and have it turned into binary!\nThe data transmission rate is ");
-  Serial.print(1/(transRate*0.001));
-  Serial.print(" hz");
+  double hertz = 1/(transRate);
+  Serial.print(hertz);
+  Serial.print(" khz");
   Serial.println();
   Serial.print("Enter Message: ");
   
@@ -135,19 +136,29 @@ void printLED(int input)
   digitalWrite(clockLED,!digitalRead(clockLED));
   if(input == 1)
     {
-      
       digitalWrite(binaryLED, HIGH);
       delay(transRate);
     }
    else
    {
-      
       digitalWrite(binaryLED, LOW);
       delay(transRate);
    }
    
 
   
+}
+
+void sendTransmissionStartEnd(void)
+{
+    //digitalWrite(clockLED,!digitalRead(clockLED));
+    for(int i=0; i<7; i++)
+    {
+      digitalWrite(clockLED,!digitalRead(clockLED));
+      digitalWrite(binaryLED, HIGH);
+      delay(transRate);
+    }
+    
 }
 
 
@@ -169,7 +180,9 @@ void loop()
     case 1: //conver the message to binary
       if(getInputMessage() == true)
       {
+        sendTransmissionStartEnd();
         convertString2Binary(userString);
+        sendTransmissionStartEnd();
         printAllBinary();
         state=2;
       }
