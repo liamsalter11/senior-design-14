@@ -16,7 +16,7 @@ int count = 0;
 char ledMessage[7];
 int binaryLED = 7;
 int clockLED = 9;
-int transRate = 400;
+int transRate = 100;
 
 void setup() {
   // put your setup code here, to run once:
@@ -155,14 +155,16 @@ void printLED(int input)
 void sendTransmissionStartEnd(void)
 {
     //digitalWrite(clockLED,!digitalRead(clockLED));
-    for(int i=0; i<7; i++)
+    digitalWrite(binaryLED, HIGH);
+    
+    for(int i=0; i<8; i++)
     {
-      digitalWrite(binaryLED, HIGH);
       digitalWrite(clockLED,HIGH);
+      
       delay(transRate/2);
       digitalWrite(clockLED,LOW);
       delay(transRate/2);
-
+     // digitalWrite(binaryLED, !digitalRead(binaryLED));
     }
     
 }
