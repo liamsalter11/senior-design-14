@@ -16,7 +16,7 @@ int count = 0;
 char ledMessage[7];
 int binaryLED = 7;
 int clockLED = 9;
-int transRate = 100;
+int transRate = 400;
 
 void setup() {
   // put your setup code here, to run once:
@@ -49,7 +49,7 @@ void convertString2Binary(String inputMessage)
     {
       //get the bit value of the the first byte in a 
       charByte[j] = bitRead(letter,j);
-      Serial.print(charByte[j], BIN);
+      //Serial.print(charByte[j], BIN);
       printLED(bitRead(letter,j));
       
      
@@ -57,10 +57,10 @@ void convertString2Binary(String inputMessage)
 
     //add it to the whole binary message
       
-    Serial.print("  which is ");
-    Serial.print(letter);
+    //Serial.print("  which is ");
+    //Serial.print(letter);
     
-    Serial.println("");
+    //Serial.println("");
     
  }
 }
@@ -133,19 +133,22 @@ void resetSystem(void)
 
 void printLED(int input)
 {
-  digitalWrite(clockLED,!digitalRead(clockLED));
+  
   if(input == 1)
     {
       digitalWrite(binaryLED, HIGH);
-      delay(transRate);
+      //delay(transRate/2);
     }
    else
    {
       digitalWrite(binaryLED, LOW);
-      delay(transRate);
+      //delay(transRate/2);
    }
-   
-
+   digitalWrite(clockLED,HIGH);
+   delay(transRate/2);
+   digitalWrite(clockLED,LOW);
+   delay(transRate/2);
+  
   
 }
 
@@ -154,9 +157,12 @@ void sendTransmissionStartEnd(void)
     //digitalWrite(clockLED,!digitalRead(clockLED));
     for(int i=0; i<7; i++)
     {
-      digitalWrite(clockLED,!digitalRead(clockLED));
       digitalWrite(binaryLED, HIGH);
-      delay(transRate);
+      digitalWrite(clockLED,HIGH);
+      delay(transRate/2);
+      digitalWrite(clockLED,LOW);
+      delay(transRate/2);
+
     }
     
 }
