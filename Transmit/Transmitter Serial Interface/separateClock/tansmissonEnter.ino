@@ -1,10 +1,13 @@
+//constant for defining the max size
+# define maxSize 200
+
 //vars for getting string
 String userString;
 
 byte charByte[7]; //array for converting char into bin
 byte charByteSum=0; //array for store the final value of a char's bin
 
-byte wholeBIN[100]; //replace the number with the max number of characters
+byte wholeBIN[maxSize]; //replace the number with the max number of characters
 
 //loop vars 
 int state=0;
@@ -14,9 +17,9 @@ int count = 0;
 
 //blinking variables
 char ledMessage[7];
-int binaryLED = 7;
-int clockLED = 9;
-int transRate = 100;
+int binaryLED = 12;
+int clockLED = 4;
+int transRate = 10;
 
 void setup() {
   // put your setup code here, to run once:
@@ -68,10 +71,10 @@ void convertString2Binary(String inputMessage)
 void startUpPrompt(void)
 {
   delay(3000);
-  Serial.print("Hello! You can input a message below and have it turned into binary!\nThe data transmission rate is ");
-  double hertz = 1/(transRate);
-  Serial.print(hertz);
-  Serial.print(" khz");
+  Serial.print("Hello! You can input a message below and have it turned into binary!");
+  //double hertz = 1/(transRate);
+  //Serial.print(hertz);
+ // Serial.print(" khz");
   Serial.println();
   Serial.print("Enter Message: ");
   
@@ -104,7 +107,7 @@ void printAllBinary(void)
 { 
   Serial.println("----------");
   Serial.print("Whole message is:\n");
-  for(int i=0; i<sizeof(wholeBIN);i++)
+  for(int i=0; i<maxSize;i++)
   {
     //Serial.print("print loop");
     if(wholeBIN[i] == 0)
@@ -121,7 +124,7 @@ void resetSystem(void)
   userString="";
   line[0]='\0';
   count=0;
-  for(int i = 0; i<sizeof(wholeBIN);i++)
+  for(int i = 0; i<maxSize;i++)
   {
     wholeBIN[i] = 0;
     
@@ -211,6 +214,6 @@ void loop()
 
 
   
-  delay(200);
+  //delay(200);
   
 }
