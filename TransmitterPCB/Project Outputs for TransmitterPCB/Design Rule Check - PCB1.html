@@ -1,0 +1,657 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<style type="text/css">
+		h1, h2, h3, h4, h5, h6 {
+			font-family : segoe ui;
+			color : black;
+			background-color : #EDE7D9;
+			padding: 0.3em;
+		}
+
+		h1 {
+			font-size: 1.2em;
+		}		
+
+		h2 {
+			font-size: 1.2em;
+		}
+
+		body {
+			font-family : segoe ui;
+		}
+
+		td, th {
+			padding: 0.5em;
+			text-align : left;
+			width: 10em;
+		}
+		th {
+			background-color : #EEEEEE;
+
+		}
+		th.column1, td.column1 {
+			text-align: left;
+			width : auto;
+		}
+		table {
+			width : 100%;
+			font-size: 0.9em;
+		}
+
+		.DRC_summary_header {
+			padding-bottom : 0.1em;
+			border : 0px solid black;
+			width: 100%;
+			align: left;
+		}
+
+		.DRC_summary_header_col1,
+		.DRC_summary_header_col2, 
+		.DRC_summary_header_col3 {
+			color : black;
+			font-size:100%;
+			padding : 0em;
+			padding-top : 0.2em;
+			padding-bottom 0.2em;
+			border : 0px solid black;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.DRC_summary_header_col1 {
+			font-weight: bold;
+			width: 8em;
+		}
+
+		.DRC_summary_header_col2 {
+			width: 0.1em;
+		
+		}
+
+		.DRC_summary_header_col3 {
+			width : auto;
+		}
+
+		.header_holder {
+		    Width = 100%;
+		    border = 0px solid green;
+		    padding = 0;
+		}
+
+
+		.front_matter, .front_matter_column1, .front_matter_column2, .front_matter_column3
+		{
+			left : 0;
+			top : 0;
+			padding: 0em;
+			padding-top : 0.1em;
+			border : 0px solid black;
+			width : 100%;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.front_matter_column1 {
+			width : 8em;
+			font-weight: bold;
+		}
+
+		.front_matter_column2 {
+			width: 0.1em;
+		}
+
+		.front_matter_column3 {
+			width : auto;
+		}
+
+		.total_column1, .total_column {
+			font-weight : bold;
+		}
+		.total_column1 {
+			text-align : left;
+		}
+		.warning, .error {
+			color : red;
+			font-weight : bold;
+		}
+		tr.onmouseout_odd {
+			background-color : #white;
+		}
+		tr.onmouseout_even { 
+			background-color : #FAFAFA;
+		}
+		tr.onmouseover_odd, tr.onmouseover_even { 
+			background-color : #EEEEEE;
+		} 
+		a:link, a:visited, .q a:link,.q a:active,.q {
+			color: #21489e; 
+		}
+		a:link.callback, a:visited.callback { 
+			color: #21489e;
+		}
+		a:link.customize, a:visited.customize {
+			color: #C0C0C0;
+			position: absolute; 
+			right: 10px;
+		}	
+		p.contents_level1 {
+			font-weight : bold;
+			font-size : 110%;
+			margin : 0.5em;
+		}
+		p.contents_level2 {
+			position : relative;
+			left : 20px;
+			margin : 0.5em;
+		}
+	</style><script type="text/javascript">
+		function coordToMils(coord) {
+			var number = coord / 10000;
+			
+			if (number != number.toFixed(3))
+				number = number.toFixed(3);
+
+			return number + 'mil'
+		}
+
+		function coordToMM(coord) {
+			var number = 0.0254 * coord / 10000;
+			
+			if (number != number.toFixed(4))
+				number = number.toFixed(4);
+			
+			return number + 'mm'
+		}
+	
+		function convertCoord(coordNode, units) {
+			for (var i = 0; i < coordNode.childNodes.length; i++) {
+				coordNode.removeChild(coordNode.childNodes[i]);
+			}
+
+			var coord = coordNode.getAttribute('value');
+			if (coord != null) {
+				if (units == 'mm') {
+					textNode = document.createTextNode(coordToMM(coord));
+					coordNode.appendChild(textNode);
+				} else if (units == 'mil') {
+					textNode = document.createTextNode(coordToMils(coord));		
+					coordNode.appendChild(textNode);	
+				}
+			}
+		}
+	
+		function convertUnits(unitNode, units) {
+			for (var i = 0; i < unitNode.childNodes.length; i++) {
+				unitNode.removeChild(unitNode.childNodes[i]);		
+			}
+		
+			textNode = document.createTextNode(units); 
+			unitNode.appendChild(textNode);
+		}
+	
+		function changeUnits(radio_input, units) {
+			if (radio_input.checked) {
+			
+				var elements = document.getElementsByName('coordinate');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertCoord(elements[i], units);
+					}
+				}
+	
+				var elements = document.getElementsByName('units');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertUnits(elements[i], units);
+					}
+				}
+			}
+		}
+	</script><title>Design Rule Verification Report</title>
+</head>
+<body onload=""><img ALT="Altium" src="
+			file://C:\Users\Public\Documents\Altium\AD21\Templates\AD_logo.png
+		"><h1>Design Rule Verification Report</h1>
+<table class="header_holder">
+<td class="column1">
+<table class="front_matter">
+<tr class="front_matter">
+<td class="front_matter_column1">Date:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">3/12/2022</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">8:34:59 PM</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Elapsed Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">00:00:02</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Filename:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3"><a href="file:///C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc" class="file"><acronym title="C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc">C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc</acronym></a></td>
+</tr>
+</table>
+</td>
+<td class="column2">
+<table class="DRC_summary_header">
+<tr>
+<td class="DRC_summary_header_col1">Warnings:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3" style="color : red">10</td></tr>
+<tr>
+<td class="DRC_summary_header_col1">Rule Violations:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3" style="color : red">85</td></tr>
+</table>
+</td>
+</table><a name="IDNSAHYZKQZ0AQKCFBUZMY4ILVRJK5GZPYLWXJJ3IBRKK1MTQZDGGC"><h2>Summary</h2></a><table>
+<tr>
+<th class="column1">Warnings</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDCT5RKKWE12CDH40LTJYDXPTUMBDZY5A2KIZASZCWJWXQXEGPN5XK">Zero hole size multi-layer pad(s) detected</a></td>
+<td class="column2">4</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDVRFIKMFW4CYBEYR3ED0OI52YUIIF3NYOOU53TEBAVOYKMZ33T5EH">Multilayer Pads with 0 size Hole found</a></td>
+<td class="column2">6</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">10</td>
+</tr>
+</table><br><table>
+<tr>
+<th class="column1">Rule Violations</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID3NTXYW0ZO2UIHYSLCPDCEI0NWJGBVQDQ54HY3HJ1Y4P1G1EON4O">Clearance Constraint (Gap=20mil) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDVIJXXMFPK1RXFNH0GHOXPFQBEOYIY1GVNUCRBZF3N25F4OCIRGLK">Short-Circuit Constraint (Allowed=No) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDYQXD0QFBXIQXEKQYCN5WXVZLODYAEK541RZLFGOPX2BC00JDKIN">Un-Routed Net Constraint ( (All) )</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#ID1OWGARI3ADIPDUJDIEGV4WTOQCSQ1OTJBB1NHUIF0P1BALBRZB0F">Modified Polygon (Allow modified: No), (Allow shelved: No)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDWMYCR4G4U3KRHSCRFN3TBMTKFFXAARKVQQPBWFBG3UTZNGUEXKAO">Width Constraint (Min=30mil) (Max=10000mil) (Preferred=50mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#ID22DNSVU4FBDOKRZJBOQCGIZI2DTYSDEUM1KX3QJNAA2WOSEYCDNH">Power Plane Connect Rule(Relief Connect )(Expansion=20mil) (Conductor Width=10mil) (Air Gap=10mil) (Entries=4) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDUNNXAQVQNC3ZFBBBEKZZCVXPFB0A2JMN4PLJLXMTVAAP3SABM50O">Minimum Annular Ring (Minimum=17mil) (All)</a></td>
+<td class="column2">43</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDTYFPCV4C0I4LB4ZILVANHPA5QO2RLTGSN0FRCYPTM34HCT4P0OWF">Hole Size Constraint (Min=39.37mil) (Max=1000mil) (All)</a></td>
+<td class="column2">15</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDEFRMOCZDGYJDOID3TU4FYDAUCD1HCATVEF5D5I3MJP3LMQQGIRL">Hole To Hole Clearance (Gap=17mil) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDLBWCUKTVCC2DEEOPQY1BLOHDAGN01CCQCYJWKEODYGYQ0VO2VFLI">Minimum Solder Mask Sliver (Gap=10mil) (All),(All)</a></td>
+<td class="column2">6</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDNQ3NNQGUZFOLCGXVYZVQTVNMCMNCUCSMFG2TXCBWHGWZDJEXOFN">Silk To Solder Mask (Clearance=10mil) (IsPad),(All)</a></td>
+<td class="column2">10</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDLO1DBBPJ1B14NOFCJKBH31MPBOLTC50HPZ1PPYGEIOWA221W30WD">Silk to Silk (Clearance=0mil) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDGESLV34FSLEVCR5L1MNPA4LRWOSCU03GHG21SKNXPQRF1KATHIBK">Net Antennae (Tolerance=0mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDZCTPAI4BWY02CXKRN0SDBEOSSIUTJGV1C2FXHQN4GD1RHAYMVWLJ">Board Clearance Constraint (Gap=0mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDTQD3PCF0AFHIJVEFFBOEM2QVJO3VLFZSUCJNUVLQVZCD1YPRNDHK">Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1'))</a></td>
+<td class="column2">11</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDKV12N4GZUORZGVI52TRC40P0ND5ZQWLGVQI2E4MCEHYPHZQQ431H">Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">85</td>
+</tr>
+</table><br><a name="IDGNXTK0G3OCMLMZ5BPKOWMVN3DDVDQWKCQCAPJDL3BQPHGLZXAV0"><h2>Warnings</h2></a><a name="IDCT5RKKWE12CDH40LTJYDXPTUMBDZY5A2KIZASZCWJWXQXEGPN5XK"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="warning">Zero hole size multi-layer pad(s) detected</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1151.177mil|Location2.X=1229.177mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1151.177mil|Location2.X=1229.177mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True">Pad D1-1(190.177mil,2580mil) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1071.473mil|Location2.X=1809.193mil|Location1.Y=3146.472mil|Location2.Y=5519mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1071.473mil|Location2.X=1809.193mil|Location1.Y=3146.472mil|Location2.Y=5519mil|Absolute=True">Net +5</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1051.177mil|Location2.X=1129.177mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1051.177mil|Location2.X=1129.177mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True">Pad D1-2(90.177mil,2580mil) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1026.177mil|Location2.X=1146.736mil|Location1.Y=5058.441mil|Location2.Y=5539mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1026.177mil|Location2.X=1146.736mil|Location1.Y=5058.441mil|Location2.Y=5539mil|Absolute=True">Net NetD1_2</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1316mil|Location2.X=1394mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1316mil|Location2.X=1394mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True">Pad D2-2(355mil,2580mil) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1291mil|Location2.X=1411.559mil|Location1.Y=5058.441mil|Location2.Y=5539mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1291mil|Location2.X=1411.559mil|Location1.Y=5058.441mil|Location2.Y=5539mil|Absolute=True">Net NetD2_2</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1580.823mil|Location2.X=1658.823mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1580.823mil|Location2.X=1658.823mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True">Pad D3-2(619.823mil,2580mil) on Multi-Layer</acronym></a> on <a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1555.823mil|Location2.X=1676.382mil|Location1.Y=5058.441mil|Location2.Y=5539mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1555.823mil|Location2.X=1676.382mil|Location1.Y=5058.441mil|Location2.Y=5539mil|Absolute=True">Net NetD3_2</acronym></a></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDVRFIKMFW4CYBEYR3ED0OI52YUIIF3NYOOU53TEBAVOYKMZ33T5EH"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="warning">Multilayer Pads with 0 size Hole found</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1151.177mil|Location2.X=1229.177mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1151.177mil|Location2.X=1229.177mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True">Pad D1-1(190.177mil,2580mil) on Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1051.177mil|Location2.X=1129.177mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1051.177mil|Location2.X=1129.177mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True">Pad D1-2(90.177mil,2580mil) on Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1446mil|Location2.X=1464mil|Location1.Y=5471mil|Location2.Y=5489mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1446mil|Location2.X=1464mil|Location1.Y=5471mil|Location2.Y=5489mil|Absolute=True">Pad D2-1(455mil,2580mil) on Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1316mil|Location2.X=1394mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1316mil|Location2.X=1394mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True">Pad D2-2(355mil,2580mil) on Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1710.823mil|Location2.X=1728.823mil|Location1.Y=5471mil|Location2.Y=5489mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1710.823mil|Location2.X=1728.823mil|Location1.Y=5471mil|Location2.Y=5489mil|Absolute=True">Pad D3-1(719.823mil,2580mil) on Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1580.823mil|Location2.X=1658.823mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1580.823mil|Location2.X=1658.823mil|Location1.Y=5441mil|Location2.Y=5519mil|Absolute=True">Pad D3-2(619.823mil,2580mil) on Multi-Layer</acronym></a></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDUNNXAQVQNC3ZFBBBEKZZCVXPFB0A2JMN4PLJLXMTVAAP3SABM50O"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Minimum Annular Ring (Minimum=17mil) (All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1071.111mil|Location2.X=1089.361mil|Location1.Y=4270.875mil|Location2.Y=4289.125mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1071.111mil|Location2.X=1089.361mil|Location1.Y=4270.875mil|Location2.Y=4289.125mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-1(105mil,1380mil) on Multi-Layer (Annular Ring=9.528mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3395.639mil|Location2.Y=3413.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3395.639mil|Location2.Y=3413.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-10(105mil,480mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3295.639mil|Location2.Y=3313.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3295.639mil|Location2.Y=3313.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-11(105mil,380mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3195.639mil|Location2.Y=3213.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3195.639mil|Location2.Y=3213.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-12(105mil,280mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3095.639mil|Location2.Y=3113.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3095.639mil|Location2.Y=3113.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-13(105mil,180mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=2995.639mil|Location2.Y=3013.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=2995.639mil|Location2.Y=3013.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-14(105mil,80mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=4195.639mil|Location2.Y=4213.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=4195.639mil|Location2.Y=4213.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-2(105mil,1280mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=4095.639mil|Location2.Y=4113.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=4095.639mil|Location2.Y=4113.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-3(105mil,1180mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3995.639mil|Location2.Y=4013.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3995.639mil|Location2.Y=4013.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-4(105mil,1080mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3895.639mil|Location2.Y=3913.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3895.639mil|Location2.Y=3913.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-5(105mil,980mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3795.639mil|Location2.Y=3813.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3795.639mil|Location2.Y=3813.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-6(105mil,880mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3695.639mil|Location2.Y=3713.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3695.639mil|Location2.Y=3713.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-7(105mil,780mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3595.639mil|Location2.Y=3613.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3595.639mil|Location2.Y=3613.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-8(105mil,680mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3495.639mil|Location2.Y=3513.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1095.875mil|Location2.X=1114.125mil|Location1.Y=3495.639mil|Location2.Y=3513.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P1-9(105mil,580mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1671.111mil|Location2.X=1689.361mil|Location1.Y=2970.875mil|Location2.Y=2989.125mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1671.111mil|Location2.X=1689.361mil|Location1.Y=2970.875mil|Location2.Y=2989.125mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-1(705mil,80mil) on Multi-Layer (Annular Ring=9.528mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3895.639mil|Location2.Y=3913.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3895.639mil|Location2.Y=3913.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-10(705mil,980mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3995.639mil|Location2.Y=4013.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3995.639mil|Location2.Y=4013.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-11(705mil,1080mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=4095.639mil|Location2.Y=4113.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=4095.639mil|Location2.Y=4113.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-12(705mil,1180mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=4195.639mil|Location2.Y=4213.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=4195.639mil|Location2.Y=4213.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-13(705mil,1280mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=4295.639mil|Location2.Y=4313.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=4295.639mil|Location2.Y=4313.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-14(705mil,1380mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3095.639mil|Location2.Y=3113.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3095.639mil|Location2.Y=3113.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-2(705mil,180mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3195.639mil|Location2.Y=3213.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3195.639mil|Location2.Y=3213.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-3(705mil,280mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3295.639mil|Location2.Y=3313.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3295.639mil|Location2.Y=3313.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-4(705mil,380mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3395.639mil|Location2.Y=3413.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3395.639mil|Location2.Y=3413.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-5(705mil,480mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3495.639mil|Location2.Y=3513.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3495.639mil|Location2.Y=3513.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-6(705mil,580mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3595.639mil|Location2.Y=3613.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3595.639mil|Location2.Y=3613.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-7(705mil,680mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3695.639mil|Location2.Y=3713.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3695.639mil|Location2.Y=3713.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-8(705mil,780mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3795.639mil|Location2.Y=3813.889mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1695.875mil|Location2.X=1714.125mil|Location1.Y=3795.639mil|Location2.Y=3813.889mil|Absolute=True">Minimum Annular Ring: (9.527mil &lt; 17mil) Pad P2-9(705mil,880mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1131.052mil|Location2.X=1149.302mil|Location1.Y=4593.592mil|Location2.Y=4611.842mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1131.052mil|Location2.X=1149.302mil|Location1.Y=4593.592mil|Location2.Y=4611.842mil|Absolute=True">Minimum Annular Ring: (3.936mil &lt; 17mil) Pad Q1-1(140.177mil,1685mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1131.052mil|Location2.X=1149.302mil|Location1.Y=4543.592mil|Location2.Y=4561.842mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1131.052mil|Location2.X=1149.302mil|Location1.Y=4543.592mil|Location2.Y=4561.842mil|Absolute=True">Minimum Annular Ring: (3.936mil &lt; 17mil) Pad Q1-2(140.177mil,1635mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1131.052mil|Location2.X=1149.302mil|Location1.Y=4493.592mil|Location2.Y=4511.842mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1131.052mil|Location2.X=1149.302mil|Location1.Y=4493.592mil|Location2.Y=4511.842mil|Absolute=True">Minimum Annular Ring: (3.936mil &lt; 17mil) Pad Q1-3(140.177mil,1585mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1395.875mil|Location2.X=1414.125mil|Location1.Y=4593.592mil|Location2.Y=4611.842mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1395.875mil|Location2.X=1414.125mil|Location1.Y=4593.592mil|Location2.Y=4611.842mil|Absolute=True">Minimum Annular Ring: (3.936mil &lt; 17mil) Pad Q2-1(405mil,1685mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1395.875mil|Location2.X=1414.125mil|Location1.Y=4543.592mil|Location2.Y=4561.842mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1395.875mil|Location2.X=1414.125mil|Location1.Y=4543.592mil|Location2.Y=4561.842mil|Absolute=True">Minimum Annular Ring: (3.936mil &lt; 17mil) Pad Q2-2(405mil,1635mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1395.875mil|Location2.X=1414.125mil|Location1.Y=4493.592mil|Location2.Y=4511.842mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1395.875mil|Location2.X=1414.125mil|Location1.Y=4493.592mil|Location2.Y=4511.842mil|Absolute=True">Minimum Annular Ring: (3.936mil &lt; 17mil) Pad Q2-3(405mil,1585mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1660.698mil|Location2.X=1678.948mil|Location1.Y=4593.592mil|Location2.Y=4611.842mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1660.698mil|Location2.X=1678.948mil|Location1.Y=4593.592mil|Location2.Y=4611.842mil|Absolute=True">Minimum Annular Ring: (3.936mil &lt; 17mil) Pad Q3-1(669.823mil,1685mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1660.698mil|Location2.X=1678.948mil|Location1.Y=4543.592mil|Location2.Y=4561.842mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1660.698mil|Location2.X=1678.948mil|Location1.Y=4543.592mil|Location2.Y=4561.842mil|Absolute=True">Minimum Annular Ring: (3.936mil &lt; 17mil) Pad Q3-2(669.823mil,1635mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1660.698mil|Location2.X=1678.948mil|Location1.Y=4493.592mil|Location2.Y=4511.842mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1660.698mil|Location2.X=1678.948mil|Location1.Y=4493.592mil|Location2.Y=4511.842mil|Absolute=True">Minimum Annular Ring: (3.936mil &lt; 17mil) Pad Q3-3(669.823mil,1585mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1131.052mil|Location2.X=1149.302mil|Location1.Y=4783.021mil|Location2.Y=4801.271mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1131.052mil|Location2.X=1149.302mil|Location1.Y=4783.021mil|Location2.Y=4801.271mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 17mil) Pad R1-1(140.177mil,1870mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1131.052mil|Location2.X=1149.302mil|Location1.Y=5083.021mil|Location2.Y=5101.271mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1131.052mil|Location2.X=1149.302mil|Location1.Y=5083.021mil|Location2.Y=5101.271mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 17mil) Pad R1-2(140.177mil,2170mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1395.875mil|Location2.X=1414.125mil|Location1.Y=4783.021mil|Location2.Y=4801.271mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1395.875mil|Location2.X=1414.125mil|Location1.Y=4783.021mil|Location2.Y=4801.271mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 17mil) Pad R2-1(405mil,1870mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1395.875mil|Location2.X=1414.125mil|Location1.Y=5083.021mil|Location2.Y=5101.271mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1395.875mil|Location2.X=1414.125mil|Location1.Y=5083.021mil|Location2.Y=5101.271mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 17mil) Pad R2-2(405mil,2170mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1660.698mil|Location2.X=1678.948mil|Location1.Y=4783.021mil|Location2.Y=4801.271mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1660.698mil|Location2.X=1678.948mil|Location1.Y=4783.021mil|Location2.Y=4801.271mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 17mil) Pad R3-1(669.823mil,1870mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1660.698mil|Location2.X=1678.948mil|Location1.Y=5083.021mil|Location2.Y=5101.271mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1660.698mil|Location2.X=1678.948mil|Location1.Y=5083.021mil|Location2.Y=5101.271mil|Absolute=True">Minimum Annular Ring: (10.827mil &lt; 17mil) Pad R3-2(669.823mil,2170mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDTYFPCV4C0I4LB4ZILVANHPA5QO2RLTGSN0FRCYPTM34HCT4P0OWF"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Hole Size Constraint (Min=39.37mil) (Max=1000mil) (All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1123.804mil|Location2.X=1164.366mil|Location1.Y=4568.627mil|Location2.Y=4609.409mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1123.804mil|Location2.X=1164.366mil|Location1.Y=4568.627mil|Location2.Y=4609.409mil|Absolute=True">Hole Size Constraint: (31.496mil &lt; 39.37mil) Pad Q1-1(140.177mil,1685mil) on Multi-Layer Actual Hole Size = 31.496mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1123.804mil|Location2.X=1164.366mil|Location1.Y=4518.627mil|Location2.Y=4559.409mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1123.804mil|Location2.X=1164.366mil|Location1.Y=4518.627mil|Location2.Y=4559.409mil|Absolute=True">Hole Size Constraint: (31.496mil &lt; 39.37mil) Pad Q1-2(140.177mil,1635mil) on Multi-Layer Actual Hole Size = 31.496mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1123.804mil|Location2.X=1164.366mil|Location1.Y=4468.627mil|Location2.Y=4509.409mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1123.804mil|Location2.X=1164.366mil|Location1.Y=4468.627mil|Location2.Y=4509.409mil|Absolute=True">Hole Size Constraint: (31.496mil &lt; 39.37mil) Pad Q1-3(140.177mil,1585mil) on Multi-Layer Actual Hole Size = 31.496mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1388.627mil|Location2.X=1429.189mil|Location1.Y=4568.627mil|Location2.Y=4609.409mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1388.627mil|Location2.X=1429.189mil|Location1.Y=4568.627mil|Location2.Y=4609.409mil|Absolute=True">Hole Size Constraint: (31.496mil &lt; 39.37mil) Pad Q2-1(405mil,1685mil) on Multi-Layer Actual Hole Size = 31.496mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1388.627mil|Location2.X=1429.189mil|Location1.Y=4518.627mil|Location2.Y=4559.409mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1388.627mil|Location2.X=1429.189mil|Location1.Y=4518.627mil|Location2.Y=4559.409mil|Absolute=True">Hole Size Constraint: (31.496mil &lt; 39.37mil) Pad Q2-2(405mil,1635mil) on Multi-Layer Actual Hole Size = 31.496mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1388.627mil|Location2.X=1429.189mil|Location1.Y=4468.627mil|Location2.Y=4509.409mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1388.627mil|Location2.X=1429.189mil|Location1.Y=4468.627mil|Location2.Y=4509.409mil|Absolute=True">Hole Size Constraint: (31.496mil &lt; 39.37mil) Pad Q2-3(405mil,1585mil) on Multi-Layer Actual Hole Size = 31.496mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1653.45mil|Location2.X=1694.012mil|Location1.Y=4568.627mil|Location2.Y=4609.409mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1653.45mil|Location2.X=1694.012mil|Location1.Y=4568.627mil|Location2.Y=4609.409mil|Absolute=True">Hole Size Constraint: (31.496mil &lt; 39.37mil) Pad Q3-1(669.823mil,1685mil) on Multi-Layer Actual Hole Size = 31.496mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1653.45mil|Location2.X=1694.012mil|Location1.Y=4518.627mil|Location2.Y=4559.409mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1653.45mil|Location2.X=1694.012mil|Location1.Y=4518.627mil|Location2.Y=4559.409mil|Absolute=True">Hole Size Constraint: (31.496mil &lt; 39.37mil) Pad Q3-2(669.823mil,1635mil) on Multi-Layer Actual Hole Size = 31.496mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1653.45mil|Location2.X=1694.012mil|Location1.Y=4468.627mil|Location2.Y=4509.409mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1653.45mil|Location2.X=1694.012mil|Location1.Y=4468.627mil|Location2.Y=4509.409mil|Absolute=True">Hole Size Constraint: (31.496mil &lt; 39.37mil) Pad Q3-3(669.823mil,1585mil) on Multi-Layer Actual Hole Size = 31.496mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1122.82mil|Location2.X=1166.06mil|Location1.Y=4752.643mil|Location2.Y=4796.116mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1122.82mil|Location2.X=1166.06mil|Location1.Y=4752.643mil|Location2.Y=4796.116mil|Absolute=True">Hole Size Constraint: (33.465mil &lt; 39.37mil) Pad R1-1(140.177mil,1870mil) on Multi-Layer Actual Hole Size = 33.465mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1122.82mil|Location2.X=1166.06mil|Location1.Y=5052.643mil|Location2.Y=5096.116mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1122.82mil|Location2.X=1166.06mil|Location1.Y=5052.643mil|Location2.Y=5096.116mil|Absolute=True">Hole Size Constraint: (33.465mil &lt; 39.37mil) Pad R1-2(140.177mil,2170mil) on Multi-Layer Actual Hole Size = 33.465mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1387.643mil|Location2.X=1430.883mil|Location1.Y=4752.643mil|Location2.Y=4796.116mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1387.643mil|Location2.X=1430.883mil|Location1.Y=4752.643mil|Location2.Y=4796.116mil|Absolute=True">Hole Size Constraint: (33.465mil &lt; 39.37mil) Pad R2-1(405mil,1870mil) on Multi-Layer Actual Hole Size = 33.465mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1387.643mil|Location2.X=1430.883mil|Location1.Y=5052.643mil|Location2.Y=5096.116mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1387.643mil|Location2.X=1430.883mil|Location1.Y=5052.643mil|Location2.Y=5096.116mil|Absolute=True">Hole Size Constraint: (33.465mil &lt; 39.37mil) Pad R2-2(405mil,2170mil) on Multi-Layer Actual Hole Size = 33.465mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1652.466mil|Location2.X=1695.706mil|Location1.Y=4752.643mil|Location2.Y=4796.116mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1652.466mil|Location2.X=1695.706mil|Location1.Y=4752.643mil|Location2.Y=4796.116mil|Absolute=True">Hole Size Constraint: (33.465mil &lt; 39.37mil) Pad R3-1(669.823mil,1870mil) on Multi-Layer Actual Hole Size = 33.465mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1652.466mil|Location2.X=1695.706mil|Location1.Y=5052.643mil|Location2.Y=5096.116mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1652.466mil|Location2.X=1695.706mil|Location1.Y=5052.643mil|Location2.Y=5096.116mil|Absolute=True">Hole Size Constraint: (33.465mil &lt; 39.37mil) Pad R3-2(669.823mil,2170mil) on Multi-Layer Actual Hole Size = 33.465mil</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDLBWCUKTVCC2DEEOPQY1BLOHDAGN01CCQCYJWKEODYGYQ0VO2VFLI"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Minimum Solder Mask Sliver (Gap=10mil) (All),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1114.867mil|Location2.X=1126.117mil|Location1.Y=4554.375mil|Location2.Y=4565.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1114.867mil|Location2.X=1126.117mil|Location1.Y=4554.375mil|Location2.Y=4565.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (2.63mil &lt; 10mil) Between Pad Q1-1(140.177mil,1685mil) on Multi-Layer And Pad Q1-2(140.177mil,1635mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1114.867mil|Location2.X=1126.117mil|Location1.Y=4504.375mil|Location2.Y=4515.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1114.867mil|Location2.X=1126.117mil|Location1.Y=4504.375mil|Location2.Y=4515.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (2.63mil &lt; 10mil) Between Pad Q1-2(140.177mil,1635mil) on Multi-Layer And Pad Q1-3(140.177mil,1585mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1379.69mil|Location2.X=1390.94mil|Location1.Y=4554.375mil|Location2.Y=4565.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1379.69mil|Location2.X=1390.94mil|Location1.Y=4554.375mil|Location2.Y=4565.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (2.63mil &lt; 10mil) Between Pad Q2-1(405mil,1685mil) on Multi-Layer And Pad Q2-2(405mil,1635mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1379.69mil|Location2.X=1390.94mil|Location1.Y=4504.375mil|Location2.Y=4515.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1379.69mil|Location2.X=1390.94mil|Location1.Y=4504.375mil|Location2.Y=4515.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (2.63mil &lt; 10mil) Between Pad Q2-2(405mil,1635mil) on Multi-Layer And Pad Q2-3(405mil,1585mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1644.513mil|Location2.X=1655.763mil|Location1.Y=4554.375mil|Location2.Y=4565.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1644.513mil|Location2.X=1655.763mil|Location1.Y=4554.375mil|Location2.Y=4565.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (2.63mil &lt; 10mil) Between Pad Q3-1(669.823mil,1685mil) on Multi-Layer And Pad Q3-2(669.823mil,1635mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1644.513mil|Location2.X=1655.763mil|Location1.Y=4504.375mil|Location2.Y=4515.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1644.513mil|Location2.X=1655.763mil|Location1.Y=4504.375mil|Location2.Y=4515.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (2.63mil &lt; 10mil) Between Pad Q3-2(669.823mil,1635mil) on Multi-Layer And Pad Q3-3(669.823mil,1585mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDNQ3NNQGUZFOLCGXVYZVQTVNMCMNCUCSMFG2TXCBWHGWZDJEXOFN"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Silk To Solder Mask (Clearance=10mil) (IsPad),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1222.958mil|Location2.X=1230.625mil|Location1.Y=5441.167mil|Location2.Y=5448.833mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1222.958mil|Location2.X=1230.625mil|Location1.Y=5441.167mil|Location2.Y=5448.833mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad D1-1(190.177mil,2580mil) on Multi-Layer And Track (226.791mil,2406.772mil)(226.791mil,2658.74mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1049.73mil|Location2.X=1057.396mil|Location1.Y=5441.167mil|Location2.Y=5448.833mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1049.73mil|Location2.X=1057.396mil|Location1.Y=5441.167mil|Location2.Y=5448.833mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad D1-2(90.177mil,2580mil) on Multi-Layer And Track (53.563mil,2406.772mil)(53.563mil,2658.74mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1314.553mil|Location2.X=1322.219mil|Location1.Y=5441.167mil|Location2.Y=5448.833mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1314.553mil|Location2.X=1322.219mil|Location1.Y=5441.167mil|Location2.Y=5448.833mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad D2-2(355mil,2580mil) on Multi-Layer And Track (318.386mil,2406.772mil)(318.386mil,2658.74mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1579.375mil|Location2.X=1587.042mil|Location1.Y=5441.167mil|Location2.Y=5448.833mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1579.375mil|Location2.X=1587.042mil|Location1.Y=5441.167mil|Location2.Y=5448.833mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad D3-2(619.823mil,2580mil) on Multi-Layer And Track (583.209mil,2406.772mil)(583.209mil,2658.74mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1134.552mil|Location2.X=1145.802mil|Location1.Y=4796.692mil|Location2.Y=4807.942mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1134.552mil|Location2.X=1145.802mil|Location1.Y=4796.692mil|Location2.Y=4807.942mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.491mil &lt; 10mil) Between Pad R1-1(140.177mil,1870mil) on Multi-Layer And Track (140.177mil,1911mil)(140.177mil,1920mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1134.552mil|Location2.X=1145.802mil|Location1.Y=5032.058mil|Location2.Y=5043.308mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1134.552mil|Location2.X=1145.802mil|Location1.Y=5032.058mil|Location2.Y=5043.308mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.491mil &lt; 10mil) Between Pad R1-2(140.177mil,2170mil) on Multi-Layer And Track (140.177mil,2120mil)(140.177mil,2129mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1399.375mil|Location2.X=1410.625mil|Location1.Y=4796.692mil|Location2.Y=4807.942mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1399.375mil|Location2.X=1410.625mil|Location1.Y=4796.692mil|Location2.Y=4807.942mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.491mil &lt; 10mil) Between Pad R2-1(405mil,1870mil) on Multi-Layer And Track (405mil,1911mil)(405mil,1920mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1399.375mil|Location2.X=1410.625mil|Location1.Y=5032.058mil|Location2.Y=5043.308mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1399.375mil|Location2.X=1410.625mil|Location1.Y=5032.058mil|Location2.Y=5043.308mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.491mil &lt; 10mil) Between Pad R2-2(405mil,2170mil) on Multi-Layer And Track (405mil,2120mil)(405mil,2129mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1664.198mil|Location2.X=1675.448mil|Location1.Y=4796.692mil|Location2.Y=4807.942mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1664.198mil|Location2.X=1675.448mil|Location1.Y=4796.692mil|Location2.Y=4807.942mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.491mil &lt; 10mil) Between Pad R3-1(669.823mil,1870mil) on Multi-Layer And Track (669.823mil,1911mil)(669.823mil,1920mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1664.198mil|Location2.X=1675.448mil|Location1.Y=5032.058mil|Location2.Y=5043.308mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1664.198mil|Location2.X=1675.448mil|Location1.Y=5032.058mil|Location2.Y=5043.308mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.491mil &lt; 10mil) Between Pad R3-2(669.823mil,2170mil) on Multi-Layer And Track (669.823mil,2120mil)(669.823mil,2129mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDTQD3PCF0AFHIJVEFFBOEM2QVJO3VLFZSUCJNUVLQVZCD1YPRNDHK"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1'))</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=4333.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=4333.937mil|Absolute=True">Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And SIP Component P1-Header 14 (105mil,1380mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=4333.937mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=4333.937mil|Absolute=True">Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And SIP Component P2-Header 14 (705mil,80mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5561.24mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5561.24mil|Absolute=True">Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component D1-LED_R (140.177mil,2580mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5561.24mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5561.24mil|Absolute=True">Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component D2-LED_G (405mil,2580mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5561.24mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5561.24mil|Absolute=True">Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component D3-LED_B (669.823mil,2580mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=4634.941mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=4634.941mil|Absolute=True">Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component Q1-MOSFET-N (140.177mil,1635mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=4634.941mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=4634.941mil|Absolute=True">Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component Q2-MOSFET-N (405mil,1635mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=4634.941mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=4634.941mil|Absolute=True">Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component Q3-MOSFET-N (669.823mil,1635mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5101.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5101.559mil|Absolute=True">Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component R1-Res1 (140.177mil,2020mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5101.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5101.559mil|Absolute=True">Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component R2-Res1 (405mil,2020mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5101.559mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=0mil|Location2.X=2000mil|Location1.Y=0mil|Location2.Y=5101.559mil|Absolute=True">Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component R3-Res1 (669.823mil,2020mil) on Top Layer </acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br></body>
+</html>

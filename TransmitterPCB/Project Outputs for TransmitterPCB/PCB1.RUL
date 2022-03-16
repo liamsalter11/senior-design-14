@@ -1,0 +1,6 @@
+DRC Rules Export File for PCB: C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc
+RuleKind=MinimumAnnularRing|RuleName=MinimumAnnularRing|Scope=Board|Minimum=17.00
+RuleKind=ShortCircuit|RuleName=ShortCircuit|Scope=Board|Allowed=0
+RuleKind=SolderMaskExpansion|RuleName=SolderMaskExpansion_1|Scope=Board|Minimum=4.00
+RuleKind=Width|RuleName=Width|Scope=Board|Minimum=30.00
+RuleKind=Clearance|RuleName=Clearance|Scope=Board|Minimum=20.00
