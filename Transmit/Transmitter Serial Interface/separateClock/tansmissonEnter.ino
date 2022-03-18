@@ -16,10 +16,15 @@ char line[80];
 int count = 0;
 
 //blinking variables
+//green =12
+//blue = 11
+//red = 13
 char ledMessage[7];
-int binaryLED = 12;
+int binaryLED = 11; //green
+int binaryLEDb = 11;
+int binaryLEDr = 13;
 int clockLED = 4;
-int transRate = 10;
+int transRate = 20;
 
 void setup() {
   // put your setup code here, to run once:
@@ -28,7 +33,15 @@ void setup() {
 
   
   pinMode(binaryLED, OUTPUT);
+  pinMode(binaryLEDb, OUTPUT);
+  pinMode(binaryLEDr, OUTPUT);
+  
   pinMode(clockLED, OUTPUT);
+
+  digitalWrite(clockLED, LOW);
+  digitalWrite(binaryLED, LOW);
+  digitalWrite(binaryLEDb, LOW);
+  digitalWrite(binaryLEDr, LOW);
   
 }
 
@@ -129,7 +142,10 @@ void resetSystem(void)
     wholeBIN[i] = 0;
     
   }
+  digitalWrite(clockLED, LOW);
   digitalWrite(binaryLED, LOW);
+  digitalWrite(binaryLEDb, LOW);
+  digitalWrite(binaryLEDr, LOW);
   Serial.flush();
   Serial.print("\nRestarting..... \n \n");
 }
