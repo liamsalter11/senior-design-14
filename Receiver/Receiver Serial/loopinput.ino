@@ -5,7 +5,7 @@
 # define CLK 9
 # define DIN 7
 
-# define maxSize 100
+# define maxSize 200
 
 Receiver receive(CLK, DIN);
 
