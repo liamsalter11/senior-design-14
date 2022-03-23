@@ -1,5 +1,12 @@
+#include <Vector.h>
+
+
 //constant for defining the max size
 # define maxSize 200
+
+# define baud 1200
+
+#define maxFrames 100
 
 //vars for getting string
 String userString;
@@ -8,6 +15,10 @@ byte charByte[7]; //array for converting char into bin
 byte charByteSum=0; //array for store the final value of a char's bin
 
 byte wholeBIN[maxSize]; //replace the number with the max number of characters
+
+unsigned int storageArray[maxFrames];
+Vector<unsigned int> frames(storageArray);
+
 
 //loop vars 
 int state=0;
@@ -20,11 +31,16 @@ int count = 0;
 //blue = 11
 //red = 13
 char ledMessage[7];
-int binaryLED = 11; //green
-int binaryLEDb = 11;
+int binaryLED = 11; //blue
+int binaryLEDg = 12;
 int binaryLEDr = 13;
 int clockLED = 4;
-int transRate = 20;
+
+
+const int transRate = 100;
+const int frameDelay = 200;
+//10 bits in a frame, 0-9
+const int frameSize = 9;
 
 void setup() {
   // put your setup code here, to run once:
@@ -33,20 +49,22 @@ void setup() {
 
   
   pinMode(binaryLED, OUTPUT);
-  pinMode(binaryLEDb, OUTPUT);
+  pinMode(binaryLEDg, OUTPUT);
   pinMode(binaryLEDr, OUTPUT);
   
   pinMode(clockLED, OUTPUT);
 
   digitalWrite(clockLED, LOW);
   digitalWrite(binaryLED, LOW);
-  digitalWrite(binaryLEDb, LOW);
+  digitalWrite(binaryLEDg, LOW);
   digitalWrite(binaryLEDr, LOW);
   
 }
 
 void convertString2Binary(String inputMessage)
 {
+  //add header
+ addTransmissionStartEnd();
  int messageLength = inputMessage.length();
  char inputChars [messageLength]; 
  char inByte;
@@ -56,29 +74,16 @@ void convertString2Binary(String inputMessage)
  int bytes[messageLength];
  
   
- for(int i=0; i<messageLength; i++)
+ for(int i=0; i<messageLength-1; i++)
  {
 
    letter = inputMessage.charAt(i);
    wholeBIN[i] = inputMessage.charAt(i);
-    for(int j=7; j>=0; j--)
-    {
-      //get the bit value of the the first byte in a 
-      charByte[j] = bitRead(letter,j);
-      //Serial.print(charByte[j], BIN);
-      printLED(bitRead(letter,j));
-      
-     
-    }
-
-    //add it to the whole binary message
-      
-    //Serial.print("  which is ");
-    //Serial.print(letter);
-    
-    //Serial.println("");
+   frames.push_back(generateFrame(letter));
     
  }
+ //add footer
+ addTransmissionStartEnd();
 }
 
 void startUpPrompt(void)
@@ -120,12 +125,12 @@ void printAllBinary(void)
 { 
   Serial.println("----------");
   Serial.print("Whole message is:\n");
-  for(int i=0; i<maxSize;i++)
+  for(int i=0; i<frames.size();i++)
   {
     //Serial.print("print loop");
-    if(wholeBIN[i] == 0)
-      continue;
-    Serial.print(wholeBIN[i],BIN);
+    /*if(wholeBIN[i] == 0)
+      continue;*/
+    Serial.print(frames.at(i),BIN);
     
     Serial.print(" ");
   }
@@ -142,52 +147,77 @@ void resetSystem(void)
     wholeBIN[i] = 0;
     
   }
+
+  frames.clear();
   digitalWrite(clockLED, LOW);
   digitalWrite(binaryLED, LOW);
-  digitalWrite(binaryLEDb, LOW);
+  digitalWrite(binaryLEDg, LOW);
   digitalWrite(binaryLEDr, LOW);
   Serial.flush();
   Serial.print("\nRestarting..... \n \n");
 }
 
-void printLED(int input)
+
+void addTransmissionStartEnd(void)
 {
   
-  if(input == 1)
-    {
-      digitalWrite(binaryLED, HIGH);
-      //delay(transRate/2);
-    }
-   else
-   {
-      digitalWrite(binaryLED, LOW);
-      //delay(transRate/2);
-   }
-   digitalWrite(clockLED,HIGH);
-   delay(transRate/2);
-   digitalWrite(clockLED,LOW);
-   delay(transRate/2);
-  
-  
+    frames.push_back(generateFrame(255));
+    Serial.println("adding header/footer");
 }
 
-void sendTransmissionStartEnd(void)
+unsigned int generateFrame(byte charByte)
 {
-    //digitalWrite(clockLED,!digitalRead(clockLED));
-    digitalWrite(binaryLED, HIGH);
-    
-    for(int i=0; i<8; i++)
-    {
-      digitalWrite(clockLED,HIGH);
-      
-      delay(transRate/2);
-      digitalWrite(clockLED,LOW);
-      delay(transRate/2);
-     // digitalWrite(binaryLED, !digitalRead(binaryLED));
-    }
-    
+  //frame is: [header][zero pad][data][footer]
+
+  //header is binary 1
+  unsigned int frame = 1;
+
+  //shift in and add byte
+  frame = frame <<8;
+  frame = frame | charByte;
+
+
+  //add footer which is zero
+  frame = frame <<1;
+  //frame = frame | 1;
+  
+ /* Serial.print("\n------ frame:");
+  Serial.print(frame); 
+  Serial.print("  ");
+  Serial.print(frame,BIN); 
+  Serial.print("-----\n");*/
+
+  return frame;
 }
 
+
+void printFrames(void)
+{
+  
+  for(int i =0; i<frames.size();i++)
+  {
+    for(int j = 0; j<frameSize; j++)
+    {
+      //Serial.print("frameSize");
+      int singleBit = bitRead(frames.at(i),frameSize-j);
+      if(singleBit == 0)
+      {
+        digitalWrite(binaryLED, LOW);
+      }
+      else
+       {
+        digitalWrite(binaryLED, HIGH);
+       }
+
+      //wait a clock period before sending another bit
+      delay(transRate);
+       
+    }
+    digitalWrite(binaryLED, LOW);
+    //delay between frames
+    delay(frameDelay);
+  }
+}
 
 
 void loop() 
@@ -207,9 +237,10 @@ void loop()
     case 1: //conver the message to binary
       if(getInputMessage() == true)
       {
-        sendTransmissionStartEnd();
+        
         convertString2Binary(userString);
-        sendTransmissionStartEnd();
+        
+        printFrames();
         printAllBinary();
         state=2;
       }
