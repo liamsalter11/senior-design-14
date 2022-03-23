@@ -88,18 +88,24 @@ void edgeInterrupt(void)
   int i = 0;
   Serial.println(frameDone);
   frameTimer.update();
-  while(frameDone == false)
+  do
   { 
+    
     Serial.println("sampling frame");
     sampleTimer.update();
-    while(sampleDone == false)
+    do 
     {
       //Serial.println("sample bit time");
       if(digitalRead(DIN) == HIGH)
         sample++;
       else
         sample = sample -1;
+
+       //Serial.println(sample);
+
     }
+    while(sampleDone == false);
+    
     //reset the conditional
     sampleDone = false;
     
@@ -112,13 +118,13 @@ void edgeInterrupt(void)
     {
       receivedFrame<<0;
     }
-    
     //reset the sample counter
     sample = 0;
     i++;
     //loop will be broken when the timer ends
     
   }
+  while(frameDone == false);
   //reset the conditional
   frameDone = false;
   Serial.println(receivedFrame);
