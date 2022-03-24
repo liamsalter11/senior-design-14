@@ -20,10 +20,13 @@ const int frameDelay = 200;
 const int frameSize = 10;
 
 
+const int frameTime = transRate*frameSize;
+const int bitPeriod = transRate;
+
 //variables and objects for interrupt handling
 volatile int edge = 0;
-OneShotTimer frameTimer(1);
-OneShotTimer sampleTimer(1); 
+OneShotTimer frameTimer(frameTime/1000);
+OneShotTimer sampleTimer(bitPeriod/1000); 
 bool frameDone = false;
 bool sampleDone = false;
 int samplesPerBitTime = 100;
@@ -50,7 +53,7 @@ void setup()
   
   receive.setRGB(7, A3, A4);
   Serial.begin(9600);
-
+  
   pinMode(interruptControllerPin, OUTPUT);
   pinMode(DIN, INPUT);
   pinMode(interruptPin, INPUT);
@@ -60,19 +63,21 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
   
   //setup for the one shot timer that samples each frame
+ // frameTimer.setDurationMsec((double)transRate*frameSize*100);
   frameTimer.start();
-  frameTimer.setDurationMsec((double)transRate*frameSize);
   frameTimer.onUpdate([&]() {
         //this is what happens at the end of the timer
         frameDone = true;
+        Serial.println("frame timer done");
     });
 
   //setup onshot timer that counts between each sample taken during a frame
-  sampleTimer.start();
   sampleTimer.setDurationMsec((double)(transRate));
+  sampleTimer.start();
   sampleTimer.onUpdate([&]() {
         //this is what happens at the end of the timer
         sampleDone = true;
+        Serial.println("sample timer done");
     });
 }
 
@@ -80,19 +85,36 @@ void setup()
 void edgeInterrupt(void)
 {
 
+  //detach the interrupt so that it doesnt trigger inside of a frame
   detachInterrupt(digitalPinToInterrupt(interruptPin));
   Serial.println("edge interrupt");
-  Serial.println(frameDone);
+  Serial.println(micros());
+  
   
   int sample = 0;
   int i = 0;
-  Serial.println(frameDone);
+  //Serial.println(frameDone);
+  
+  //tigger the timer that last the duration of the frame, if the timmer already ran, restart the timer for the next frame
+  if(frameTimer.isRunning() == 0)
+  {
+    frameTimer.restart();
+    Serial.println("restarting frame timer");
+  }
   frameTimer.update();
   do
   { 
     
-    Serial.println("sampling frame");
+  //  Serial.println("sampling frame");
+    
+    //trigger the sampling timer, if the timer is over then restart the timer, restart the timer for the next frame
+    if(sampleTimer.isRunning() == 0)
+    {
+      sampleTimer.restart();
+      Serial.println("restarting sample timer");
+    }
     sampleTimer.update();
+    
     do 
     {
       //Serial.println("sample bit time");
@@ -103,12 +125,12 @@ void edgeInterrupt(void)
 
        //Serial.println(sample);
 
-    }
-    while(sampleDone == false);
+    }while(sampleDone == false);
+    sampleTimer.start();
     
     //reset the conditional
     sampleDone = false;
-    
+   // Serial.println(sample);
     if(sample > 0)
     {
       receivedFrame<<1;
@@ -116,21 +138,24 @@ void edgeInterrupt(void)
     }
     else 
     {
-      receivedFrame<<0;
+      receivedFrame<<1;
     }
     //reset the sample counter
     sample = 0;
     i++;
+    //Serial.println(micros());
     //loop will be broken when the timer ends
     
-  }
-  while(frameDone == false);
+  }while(frameDone == false);
+  
+  
   //reset the conditional
   frameDone = false;
   Serial.println(receivedFrame);
   frameHandler(receivedFrame);
   Serial.println("end of interrupt ");
   //digitalWrite(interruptControllerPin, HIGH);
+  Serial.println(micros());
   attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
 }
 
