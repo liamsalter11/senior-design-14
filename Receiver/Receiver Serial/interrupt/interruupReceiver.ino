@@ -14,8 +14,8 @@
 # define maxSize 200
 # define maxFrames 100
 
-const int transRate = 100;
-const int frameDelay = 200;
+const int transRate = 100; //ms
+const int frameDelay = 200; //ms
 //10 bits in a frame, 0-9
 const int frameSize = 10;
 
@@ -58,8 +58,8 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
 
   //setup onshot timer that counts between each sample taken during a frame
-  sampleTimer.setDurationMsec((double)(transRate));
-  sampleTimer.start();
+  //sampleTimer.setDurationMsec((double)(transRate));
+  /*sampleTimer.start();
   sampleTimer.onUpdate([&]() {
         //this is what happens at the end of the timer
         sampleDone = true;
@@ -73,7 +73,7 @@ void setup()
         //Serial.println("sample timer done");
         //Serial.println(micros());
 
-    });
+    });*/
 }
 
 //interrupt handler
@@ -96,50 +96,53 @@ void getFrame(void)
   frameDone = false;
   sampleDone = false; 
   volatile int sample = 0;
-  
+  int startTime = 0;
   while(frameDone == false)
   { 
     
     //Serial.println(frameDone);
     
     //trigger the sampling timer, if the timer is over then restart the timer, restart the timer for the next frame
-    if(sampleTimer.isRunning() == 0)
+    /*if(sampleTimer.isRunning() == 0)
     {
       sampleTimer.restart();
     }
-    sampleTimer.update();
-
+    sampleTimer.pause();
+    sampleTimer.start();*/
     //Serial.print(sampleDone);
     //Serial.print(frameDone);
+    startTime = micros();
     while(sampleDone == false && frameDone == false) 
     {
-      Serial.print(" ");
-      Serial.print(sample);
+      
+      //Serial.print(" ");
+      //Serial.print(sample);
       if(digitalRead(DIN) == HIGH)
         sample++;
       else
         sample = sample -1;
+      //sampleTimer.update();
 
+      if(micros()-startTime >= (transRate*1000))
+      {
+        sampleDone = true;
+        bitsReceived++;
+        if(bitsReceived == 10)
+        {
+          frameDone = true;
+          //Serial.println("frameDone");
+          bitsReceived = 0;
+        }
+      }
 
     }    
     //reset the conditional
     sampleDone = false;
-    //Serial.println(sample);
-
+    Serial.println(sample);
+    receivedFrame = receivedFrame<<1;
     if(sample > 0)
-    {
-      
-      receivedFrame<<1;
-      receivedFrame | 1;
-      if(receivedFrame == 0)
-      {
-        receivedFrame = 1;
-      }
-    }
-    else 
-    {
-      receivedFrame<<1;
-    }
+      receivedFrame++;
+  
     //reset the sample counter
     sample = 0;
         
@@ -147,7 +150,7 @@ void getFrame(void)
   
   
   
-  //Serial.println(receivedFrame);
+  Serial.println(receivedFrame, BIN);
   frameHandler(receivedFrame);
   //Serial.println("end of interrupt ");
   //digitalWrite(interruptControllerPin, HIGH);
