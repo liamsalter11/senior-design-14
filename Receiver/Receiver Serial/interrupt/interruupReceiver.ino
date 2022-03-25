@@ -22,7 +22,7 @@ const int frameSize = 10;
 
 
 //variables and objects for interrupt handling
-volatile int edge = 0;
+int edge = 0;
 OneShotTimer sampleTimer(transRate/1000); 
 volatile bool frameDone = false;
 volatile bool sampleDone = false;
@@ -31,8 +31,7 @@ volatile int bitsReceived = 0;
 Receiver receive(CLK, DIN);
 
 
-int state = 0;
-int binaryInput = 7;
+volatile int state = 0;
 
 
 //byte array to store message
@@ -41,7 +40,7 @@ byte wholeBIN[maxSize]; //replace number with max number of characters
 unsigned int storageArray[maxFrames];
 Vector<unsigned int> dataVector(storageArray);
 
-volatile unsigned int receivedFrame=0;
+unsigned int receivedFrame=0;
 
 void setup() 
 {
@@ -78,11 +77,17 @@ void setup()
 }
 
 //interrupt handler
+
 void edgeInterrupt(void)
+{
+  state = 5;
+}
+
+void getFrame(void)
 {
 
   //detach the interrupt so that it doesnt trigger inside of a frame
-  //detachInterrupt(digitalPinToInterrupt(interruptPin));
+  detachInterrupt(digitalPinToInterrupt(interruptPin));
   //noInterrupts();
   //Serial.println("edge interrupt");
   //Serial.println(micros());
@@ -98,16 +103,18 @@ void edgeInterrupt(void)
     //Serial.println(frameDone);
     
     //trigger the sampling timer, if the timer is over then restart the timer, restart the timer for the next frame
-    
     if(sampleTimer.isRunning() == 0)
     {
       sampleTimer.restart();
     }
     sampleTimer.update();
-    
+
+    //Serial.print(sampleDone);
+    //Serial.print(frameDone);
     while(sampleDone == false && frameDone == false) 
     {
-      //Serial.println("sample bit time");
+      Serial.print(" ");
+      Serial.print(sample);
       if(digitalRead(DIN) == HIGH)
         sample++;
       else
@@ -141,28 +148,25 @@ void edgeInterrupt(void)
   
   
   //Serial.println(receivedFrame);
-  //frameHandler(receivedFrame);
-  Serial.println("end of interrupt ");
+  frameHandler(receivedFrame);
+  //Serial.println("end of interrupt ");
   //digitalWrite(interruptControllerPin, HIGH);
   //Serial.println(micros());
   //reset the conditional
   //frameDone = false;
-  //attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
+  attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
   //interrupts();  
 }
 
 void frameHandler(unsigned int inputFrame)
 {
-  //Serial.println("will handle frame");
-  //check to see if the frame head and footer have been received
-  //if(bitRead(inputFrame,9) == 1 && bitRead(inputFrame,0) == 0)
- // {
+  //Serial.println(inputFrame, BIN);
+ 
     //get rid of frame footer 
     //0111111110 is the mask, gets rid of all start/stop bits
     int bitMask = 255;
     dataVector.push_back(inputFrame & bitMask);
-    //Serial.println("handled frame");
-  //}
+
 }
 
 String convertToString(byte bytes[maxSize])
@@ -242,7 +246,7 @@ void loop()
       
     case 2:
       //the footer of the transmisson was received
-      if(dataVector.back() == 255)  
+      if(dataVector.back() == 255 && dataVector.size()>1)  
         state = 3;
       else 
       {
@@ -258,6 +262,10 @@ void loop()
       resetSystem();
       delay(2000);
       state=1;
+      break;
+    case 5:
+      getFrame();
+      state = 1;
       break; 
 
       
