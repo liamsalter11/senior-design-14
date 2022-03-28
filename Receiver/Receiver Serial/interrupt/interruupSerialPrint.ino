@@ -145,7 +145,7 @@ void getFrame(void)
   
   
   
-  Serial.println(receivedFrame, BIN);
+  //Serial.println(receivedFrame, BIN);
   frameHandler(receivedFrame);
   //Serial.println("end of interrupt ");
   //digitalWrite(interruptControllerPin, HIGH);
@@ -219,6 +219,7 @@ void resetSystem(void)
   }
   Serial.flush();
   frameStartLock = false;
+  dataVector.clear();
   Serial.print("\nRestarting..... \n \n");
 }
 
