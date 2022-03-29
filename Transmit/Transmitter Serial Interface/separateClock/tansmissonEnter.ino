@@ -1,3 +1,4 @@
+
 #include <Vector.h>
 
 
@@ -37,10 +38,13 @@ int binaryLEDr = 13;
 int clockLED = 4;
 
 
-const int transRate = 100;
-const int frameDelay = 200;
+const int transRate = 5;  //100ms
+const int frameDelay = 50; //300ms
 //10 bits in a frame, 0-9
 const int frameSize = 9;
+
+int bitTimeStart = 0;
+int frameTimeEnd = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -205,17 +209,27 @@ void printFrames(void)
         digitalWrite(binaryLED, LOW);
       }
       else
-       {
+      {
         digitalWrite(binaryLED, HIGH);
-       }
+      }
 
       //wait a clock period before sending another bit
-      delay(transRate);
+      
+      bitTimeStart = micros();
+      while(micros()-bitTimeStart <= transRate*1000)
+      {
+        
+      }
        
     }
     digitalWrite(binaryLED, LOW);
     //delay between frames
-    delay(frameDelay);
+    frameTimeEnd = micros();
+    while(micros()-frameTimeEnd<=frameDelay*1000)
+    {
+      
+    }
+    
   }
 }
 
@@ -246,7 +260,7 @@ void loop()
       }
       else
       {
-        delay(10);
+        //delay(10);
         state=1;
       }
       break;
