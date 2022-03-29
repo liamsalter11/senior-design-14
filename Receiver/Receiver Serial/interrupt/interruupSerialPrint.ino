@@ -69,7 +69,7 @@ void edgeInterrupt(void)
 {
   interrupting = true;
   state = 5;
-  Serial.println("trigger");
+  //Serial.println("trigger");
 }
 
 void getFrame(void)
@@ -78,7 +78,7 @@ void getFrame(void)
   //detach the interrupt so that it doesnt trigger inside of a frame
   detachInterrupt(digitalPinToInterrupt(interruptPin));
   //noInterrupts();
-  Serial.println("edge interrupt");
+  //Serial.println("edge interrupt");
   //Serial.println(micros());
   
   receivedFrame = 0;
@@ -193,7 +193,7 @@ void printMessageToSerial(String message)
 void printDataVector()
 {
   Serial.println("printing data:");
-  for(int i =0; i<dataVector.size()-1;i++)
+  for(int i =1; i<dataVector.size()-1;i++)
   {
     Serial.print((char)dataVector.at(i));
   }
