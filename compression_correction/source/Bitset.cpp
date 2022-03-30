@@ -1,6 +1,8 @@
 #include "Bitset.hpp"
 
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 
 using LiFiData::Bitset;
 
@@ -54,7 +56,7 @@ Bitset::Bitset(const std::vector<uint8_t>& raw, const unsigned int& l) : data(ra
 
 Bitset::Bitset(const unsigned int& l) : length(l)
 {
-	for (int i = 0; i < l/8+1; i++) data.push_back(0);
+	for (int i = 0; i < l/8+(l%8)?1:0; i++) data.push_back(0);
 }
 
 const Bitset Bitset::operator+(const Bitset& rhs) const
@@ -120,3 +122,15 @@ std::string Bitset::asString() const
 }
 
 std::vector<uint8_t> Bitset::getDataVector() const { return data; }
+
+std::string Bitset::asASCIIString() const { return std::string(data.begin(), data.end()); }
+
+std::string Bitset::asHexString() const 
+{ 
+	std::stringstream ss;
+	for (uint8_t val : data)
+	{
+		ss << std::setw(2) << std::setfill('0') << std::hex << (int)val;
+	}
+	return ss.str();
+}

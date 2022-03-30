@@ -4,12 +4,16 @@
 
 #include "HuffmanTree.hpp"
 #include "LiFiCompression.hpp"
-#include "LiFiCodeAnalysis.hpp"
+#include "LiFiConstants.hpp"
+#include "Bitset.hpp"
 
 using LiFiCompression::readSource;
 
 using LiFiCompression::HuffmanTree;
 using LiFiCompression::HuffmanTreeNode;
+using LiFiCompression::writeLookupTableAsBitset;
+
+using LiFiData::Bitset;
 
 int main()
 {
@@ -23,7 +27,6 @@ int main()
 	std::cout << "Building Huffman Tree\n";
 	HuffmanTree tree;
 	tree.build(sourceData);
-	tree.findCode('a');
 	
 	std::map<char, std::string> stringCodes;
 	for (auto data : sourceData)
@@ -32,6 +35,9 @@ int main()
 		stringCodes[data.first] = tree.findCode(data.first).asString();
 	}
 	
-	LiFiCodeAnalysis::findSyncCode(stringCodes);
+	codeTable table = tree.getLookupTable();
+	Bitset squished = writeLookupTableAsBitset(table);
+	
+	std::cout << "Tree String: " << squished.asHexString();
 	return 0;
 }

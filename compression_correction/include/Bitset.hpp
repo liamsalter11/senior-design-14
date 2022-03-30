@@ -39,6 +39,8 @@ class LiFiData::Bitset
 		Bitset getSubset(const unsigned int&, const unsigned int&) const;
 		unsigned int getLength() const;
 		std::string asString() const;
+		std::string asASCIIString() const;
+		std::string asHexString() const;
 		std::vector<uint8_t> getDataVector() const;
 		
 		friend unsigned int LiFiData::hammingDistance(const Bitset&, const Bitset&);

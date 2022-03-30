@@ -11,14 +11,14 @@ using LiFiData::Bitset;
 
 HuffmanTree::HuffmanTree() { root = nullptr; alphabet = ""; refs = new unsigned int(1); }
 
-HuffmanTree(const HuffmanTree& copy)
+HuffmanTree::HuffmanTree(const HuffmanTree& copy)
 {
 	root = copy.root;
 	refs = copy.refs;
 	(*refs)++;
 }
 
-HuffmanTree& operator=(const HuffmanTree& rhs)
+HuffmanTree& HuffmanTree::operator=(const HuffmanTree& rhs)
 {
 	root = rhs.root;
 	refs = rhs.refs;

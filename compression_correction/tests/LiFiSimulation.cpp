@@ -2,6 +2,7 @@
 #include "LiFiCorrection.hpp"
 #include "LiFiCompression.hpp"
 #include "Bitset.hpp"
+#include "LiFiConstants.hpp"
 
 #include <iostream>
 #include <stdlib.h>
@@ -112,9 +113,6 @@ std::vector<double> LiFiSimulation::runLengthSimulation(const double& errorRate)
 
 /***Compression Simulations***/
 
-using LiFiCompression::compress;
-using LiFiCompression::decodeSymbols;
-
 std::vector<std::string> testStringVector;
 std::string testString;
 
@@ -128,6 +126,7 @@ std::vector<std::string> LiFiSimulation::getCompressionTestStringVector() { retu
 
 std::pair<std::string, double> runCompressionTest(const std::string &s)
 {
+	/*
 	std::cout << "Uncompressed: " << s << '\n';
 	Bitset compressed = compress(s);
 	std::cout << "Decoded: " << decodeSymbols(compressed) << '\n';
@@ -135,6 +134,8 @@ std::pair<std::string, double> runCompressionTest(const std::string &s)
 	double ratio = (double) compressed.getLength() / (s.size()*8);
 	std::cout << "Ratio: " << ratio << '\n';
 	return std::pair<std::string, double>(compressed.asString(), ratio);
+	*/
+	return std::pair<std::string, double>();
 }
 
 std::pair<std::string, double> LiFiSimulation::runSingleCompressionTest()
@@ -155,6 +156,7 @@ std::vector<std::pair<std::string, double>> LiFiSimulation::runFullCompressionTe
 
 void LiFiSimulation::compressAndSend(const std::string& data, const double& errRate)
 {
+	/*
 	std::cout << "End to end simulation for string: " << data << '\n';
 	Bitset compressed = compress(data);
 	std::string check = decodeSymbols(compressed);
@@ -163,5 +165,5 @@ void LiFiSimulation::compressAndSend(const std::string& data, const double& errR
 	Bitset rxData = decodeErrors(txData);
 	std::string result = decodeSymbols(rxData);
 	std::cout << "Decoded                         : " << result << '\n';
-	
+	*/
 }

@@ -14,6 +14,7 @@ using LiFiSimulation::compressAndSend;
 
 int main()
 {
+	/*
 	std::vector<std::string> strings({"this is an end to end test", 
 										"here is a string to send across the whole system",
 										"hopefully this string does not have any weird errors"});
@@ -26,5 +27,8 @@ int main()
 	runErrorRateSimulation(1000);
 	
 	for (std::string s : strings) compressAndSend(s, 0);
+	*/
+	
+	
 	return 0;
 }
