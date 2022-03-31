@@ -5,6 +5,7 @@
 #include <utility>
 #include <memory>
 
+#include "LiFiCompression.hpp"
 #include "Bitset.hpp"
 
 namespace LiFiCompression
@@ -34,7 +35,7 @@ class LiFiCompression::HuffmanTree
 		HuffmanTree& operator=(const HuffmanTree&);
 		~HuffmanTree();
 		
-		void build(const std::map<char, double>&);
+		void build(const LiFiCompression::freqTable&);
 		
 		LiFiData::Bitset findCode(const char&) const;
 		std::map<char, LiFiData::Bitset> getLookupTable() const;
