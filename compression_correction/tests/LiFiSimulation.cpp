@@ -2,7 +2,6 @@
 #include "LiFiCorrection.hpp"
 #include "LiFiCompression.hpp"
 #include "Bitset.hpp"
-#include "LiFiConstants.hpp"
 
 #include <iostream>
 #include <stdlib.h>
