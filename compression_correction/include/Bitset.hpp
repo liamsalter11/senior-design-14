@@ -10,34 +10,43 @@ namespace LiFiData
 	class Bitset;
 	
 	unsigned int hammingDistance(const Bitset&, const Bitset&);
-	
-	Bitset stringToBitset(const std::string&);
-	Bitset intArrToBitset(const int*, const unsigned int);
 };
 
 class LiFiData::Bitset
 {
 	private:
-		unsigned int length;
+		int length;
 		std::vector<uint8_t> data;
 		
+		void fromBinaryString(const std::string&);
+		void fromHexString(const std::string&);
+		void fromASCIIString(const std::string&);
+		
 	public:
+		enum stringType
+		{
+			BINARY,
+			HEX,
+			ASCII
+		};
+	
 		Bitset();
-		Bitset(const unsigned int&);
+		Bitset(int);
 		Bitset(const std::string&);
+		Bitset(const std::string&, stringType);
 		Bitset(const std::vector<uint8_t>&);
-		Bitset(const std::vector<uint8_t>&, const unsigned int&);
+		Bitset(const std::vector<uint8_t>&, int);
 		
 		const Bitset operator+(const Bitset&) const;
 		
-		bool operator[](const unsigned int&) const;
-		bool at(const unsigned int&) const;
-		void set(const unsigned int&);
-		void toggle(const unsigned int&);
-		void clear(const unsigned int&);
+		bool operator[](int) const;
+		bool at(int) const;
+		void set(int);
+		void toggle(int);
+		void clear(int);
 		
-		Bitset getSubset(const unsigned int&, const unsigned int&) const;
-		unsigned int getLength() const;
+		Bitset getSubset(int, int) const;
+		int getLength() const;
 		std::string asString() const;
 		std::string asASCIIString() const;
 		std::string asHexString() const;

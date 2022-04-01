@@ -7,6 +7,8 @@ using LiFiData::Bitset;
 
 using LiFiCompression::freqTable;
 using LiFiCompression::firstOrderFreqTable;
+using LiFiCompression::codeTable;
+using LiFiCompression::firstOrderCodeTable;
 using LiFiCompression::codeAlphabet;
 
 freqTable convertCountTableToFreqTable(freqTable& countTable)
@@ -27,9 +29,10 @@ Bitset LiFiCompression::writeLookupTableAsBitset(const codeTable& table)
 	{
 		int codeLength = table.at(c).getLength();
 		std::vector<uint8_t> length(1, codeLength);
-
+		std::cout << "Length " << codeLength <<'\n';
 		allData = allData + Bitset(length,4);
 		allData = allData + table.at(c);
+		std::cout << "Code " << table.at(c).asString() << '\n';
 	}
 	return allData;
 }
@@ -56,4 +59,14 @@ const firstOrderFreqTable getFirstOrderFreqTable(const std::string& source)
 	for (char c : codeAlphabet) table[c] = convertCountTableToFreqTable(table[c]);
 	
 	return table;
+}
+
+const codeTable makeCodeTable(const freqTable&)
+{
+	return codeTable();
+}
+
+const firstOrderCodeTable makeFirstOrderCodeTable(const firstOrderFreqTable&)
+{
+	return firstOrderCodeTable();
 }

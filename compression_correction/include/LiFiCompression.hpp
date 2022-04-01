@@ -9,7 +9,6 @@
 #include <numeric>
 
 using LiFiData::Bitset;
-using LiFiData::stringToBitset;
 
 namespace LiFiCompression
 {
@@ -37,9 +36,12 @@ namespace LiFiCompression
 	};
 	
 	typedef std::map<char, freqTable> firstOrderFreqTable;
+	typedef std::map<char, codeTable> firstOrderCodeTable;
 	
 	const freqTable getFreqTable(const std::string&);
 	const firstOrderFreqTable getFirstOrderFreqTable(const std::string&);
+	const codeTable makeCodeTable(const freqTable&);
+	const firstOrderCodeTable makeFirstOrderCodeTable(const firstOrderFreqTable&);
 	
 	LiFiData::Bitset writeLookupTableAsBitset(const codeTable&);
 }
