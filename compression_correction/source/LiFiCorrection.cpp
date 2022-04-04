@@ -4,10 +4,7 @@
 
 using LiFiData::Bitset;
 
-unsigned int codeLength;
-double channelErrorRate;
-
-struct statemachine
+namespace StateMachine
 {
 	const int prev1[4] = {0,2,0,2};
 	const int prev2[4] = {1,3,1,3};
@@ -17,18 +14,22 @@ struct statemachine
 	const int out2[4] = {0,0,1,1};
 };
 
+using StateMachine::prev1;
+using StateMachine::prev2;
+using StateMachine::in1;
+using StateMachine::in2;
+using StateMachine::out1;
+using StateMachine::out2;
+
 struct trellis
 {
 	int* metrics[4];
+	int length;
 	
-	trellis(const int& length)
+	trellis(const int& l) : length(l)
 	{
-		for (int i=0;i<4;i++)
-		{
-			metrics[i] = new int[length+1];
-			for (int j=0;j<length+1;j++) metrics[i][j] = 0;
-		}
-		
+		for (int i=0;i<4;i++) metrics[i] = new int[length+1]();
+		metrics[0][1] = metrics[0][2] = metrics[0][3] = 1000;
 	}
 	
 	~trellis()
@@ -66,51 +67,54 @@ Bitset LiFiCorrection::convolve(const Bitset& data)
 	return convolved;
 }
 
-Bitset LiFiCorrection::decodeErrors(const Bitset& encoded)
+void calculatePathMetrics(trellis& trell, const Bitset& encoded)
 {
-	Bitset data(encoded.getLength()/2);
-	
-	statemachine machine;
-	trellis trell(data.getLength());
-	trell[0][1] = trell[0][2] = trell[0][3] = 1000;
-	
-	//Calculate path metrics
-	for (int i = 1; i < data.getLength()+1; i++)
+	for (int i = 1; i < encoded.getLength()/2+1; i++)
 	{
 		int input = encoded[2*i-1] + (encoded[2*i-2] << 1);		
 		for (int j = 0; j < 4; j++)
 		{
-			int met1 = trell[machine.prev1[j]][i-1] + hamming(input, machine.in1[j]);
-			int met2 = trell[machine.prev2[j]][i-1] + hamming(input, machine.in2[j]);
+			int met1 = trell[prev1[j]][i-1] + hamming(input, in1[j]);
+			int met2 = trell[prev2[j]][i-1] + hamming(input, in2[j]);
 			if (met1 < met2)
 				trell[j][i] = met1;
 			else
 				trell[j][i] = met2;
 		}
 	}
-	
-	int min = 100000;
-	int minState = -1;
+}
+
+Bitset findBestPath(trellis& trell)
+{
+	Bitset data(trell.length);
+	int minState = -1, min = 100000;
 	for (int i = 0; i < 4; i++)
 	{
-		if (trell[i][data.getLength()] < min)
+		if (trell[i][trell.length] < min)
 		{
-			min = trell[i][data.getLength()];
+			min = trell[i][trell.length];
 			minState = i;
 		}
 	}
-	for (int i = data.getLength()-1; i>=0; i--)
+	for (int i = trell.length-1; i>=0; i--)
 	{
-		if (trell[machine.prev1[minState]][i] < trell[machine.prev2[minState]][i])
+		if (trell[prev1[minState]][i] < trell[prev2[minState]][i])
 		{
-			if (machine.out1[minState]) data.set(i);
-			minState = machine.prev1[minState];
+			if (out1[minState]) data.set(i);
+			minState = prev1[minState];
 		}
 		else
 		{
-			if (machine.out2[minState]) data.set(i);
-			minState = machine.prev2[minState];
+			if (out2[minState]) data.set(i);
+			minState = prev2[minState];
 		}
 	}
 	return data;
+}
+
+Bitset LiFiCorrection::decodeErrors(const Bitset& encoded)
+{
+	trellis trell(encoded.getLength()/2);
+	calculatePathMetrics(trell, encoded);
+	return findBestPath(trell);
 }

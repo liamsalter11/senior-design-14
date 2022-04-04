@@ -20,5 +20,8 @@ target_include_directories(bitsetTests PRIVATE include)
 
 add_executable(treeTests tests/treeTests.cpp ${TEST_SOURCES} ${SOURCES})
 target_include_directories(treeTests PRIVATE include)
+
+add_executable(syncTests tests/syncTests.cpp ${TEST_SOURCES} ${SOURCES})
+target_include_directories(syncTests PRIVATE include)
 	
 	

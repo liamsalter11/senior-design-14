@@ -20,12 +20,12 @@ int main()
 										"hopefully this string does not have any weird errors"});
 	setCompressionTestStringVector(strings);
 	runFullCompressionTest();
-	
+	*/
 	setLengths(100, 500, 50);
 	setErrorRates(0, 0.01, 0.001);
 	setNumberofRounds(100);
 	runErrorRateSimulation(1000);
-	
+	/*
 	for (std::string s : strings) compressAndSend(s, 0);
 	*/
 	

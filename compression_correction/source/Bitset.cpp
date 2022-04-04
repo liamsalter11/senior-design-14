@@ -30,7 +30,11 @@ Bitset::Bitset(const std::string& s) : Bitset(s.size())
 	}
 }
 
-Bitset(const std::string& s, stringType type)
+void Bitset::fromBinaryString(const std::string&) {}
+void Bitset::fromHexString(const std::string&) {}
+void Bitset::fromASCIIString(const std::string&) {}
+
+Bitset::Bitset(const std::string& s, stringType type)
 {
 	switch (type)
 	{
@@ -58,6 +62,29 @@ Bitset::Bitset(int l) : length(l)
 const Bitset Bitset::operator+(const Bitset& rhs) const
 {
 	//This could be a little better
+	//vector 1 ... vector 2
+	//Concatenated vector
+	//std::vector<uint8_t> newData = data;
+	//newData.insert(newData.end(), rhs.data.begin(), rhs.data.end());
+	
+	//std::vector<uint8_t> shifted;
+	//shifted.push_back(
+	
+	//Keep 0xFF << (8-length%8)
+	//Take 0xFF << (length%8)
+	
+	//Make 0 & rhs.data
+	//For each in vector
+	//Shift >> by length%8
+	//Take first 8-length%8 bits of next guy
+	//Place at the end
+	
+	//thing
+	//thing = thing >> (8-length&8);
+	//append = thing[+1] & (0xFF << (length%8))
+	//thing |= append | 0xFF >> (8-length%8);
+	
+	//From last of vector1 to end 
 	Bitset combined(length+rhs.length);
 	
 	for (int i = 0; i < length; i++)
