@@ -9,7 +9,14 @@ namespace LiFiData
 {
 	class Bitset;
 	
-	unsigned int hammingDistance(const Bitset&, const Bitset&);
+	int hammingDistance(const Bitset&, const Bitset&);
+	
+	enum stringType
+	{
+		BINARY_STRING,
+		HEX_STRING,
+		ASCII_STRING
+	};
 };
 
 class LiFiData::Bitset
@@ -22,18 +29,12 @@ class LiFiData::Bitset
 		void fromHexString(const std::string&);
 		void fromASCIIString(const std::string&);
 		
+		bool badIndex(int) const;
+		
 	public:
-		enum stringType
-		{
-			BINARY,
-			HEX,
-			ASCII
-		};
-	
 		Bitset();
 		Bitset(int);
-		Bitset(const std::string&);
-		Bitset(const std::string&, stringType);
+		Bitset(const std::string&, stringType=BINARY_STRING);
 		Bitset(const std::vector<uint8_t>&);
 		Bitset(const std::vector<uint8_t>&, int);
 		
@@ -52,7 +53,7 @@ class LiFiData::Bitset
 		std::string asHexString() const;
 		std::vector<uint8_t> getDataVector() const;
 		
-		friend unsigned int LiFiData::hammingDistance(const Bitset&, const Bitset&);
+		friend int LiFiData::hammingDistance(const Bitset&, const Bitset&);
 };
 
 #endif

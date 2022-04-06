@@ -29,10 +29,8 @@ Bitset LiFiCompression::writeLookupTableAsBitset(const codeTable& table)
 	{
 		int codeLength = table.at(c).getLength();
 		std::vector<uint8_t> length(1, codeLength);
-		std::cout << "Length " << codeLength <<'\n';
 		allData = allData + Bitset(length,4);
 		allData = allData + table.at(c);
-		std::cout << "Code " << table.at(c).asString() << '\n';
 	}
 	return allData;
 }

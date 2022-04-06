@@ -6,7 +6,67 @@
 
 using LiFiData::Bitset;
 
-unsigned int LiFiData::hammingDistance(const Bitset& set1, const Bitset& set2)
+std::string convertHexStringToBinary(const std::string& hex)
+{
+	std::string bin;
+	for (char c : hex)
+	{
+		switch (c)
+		{
+			case '0':
+				bin += "0000";
+				break;
+			case '1':
+				bin += "0001";
+				break;
+			case '2':
+				bin += "0010";
+				break;
+			case '3':
+				bin += "0011";
+				break;
+			case '4':
+				bin += "0100";
+				break;
+			case '5':
+				bin += "0101";
+				break;
+			case '6':
+				bin += "0110";
+				break;
+			case '7':
+				bin += "0111";
+				break;
+			case '8':
+				bin += "1000";
+				break;
+			case '9':
+				bin += "1001";
+				break;
+			case 'A':
+				bin += "1010";
+				break;
+			case 'B':
+				bin += "1011";
+				break;
+			case 'C':
+				bin += "1100";
+				break;
+			case 'D':
+				bin += "1101";
+				break;
+			case 'E':
+				bin += "1110";
+				break;
+			case 'F':
+				bin += "1111";
+				break;
+		}
+	}
+	return bin;
+}
+
+int LiFiData::hammingDistance(const Bitset& set1, const Bitset& set2)
 {
 	if (set1.length != set2.length) return 0;
 	unsigned int dist = 0;
@@ -22,33 +82,44 @@ Bitset::Bitset()
 	length = 0;
 }
 
-Bitset::Bitset(const std::string& s) : Bitset(s.size())
+void Bitset::fromBinaryString(const std::string& s)
 {
+	*this = Bitset(s.size());
 	for (int i = 0; i < length; i++)
 	{
-		if (s[i] == '1') set(i);
+		if (s[length-i-1] == '1') set(i);
 	}
 }
 
-void Bitset::fromBinaryString(const std::string&) {}
-void Bitset::fromHexString(const std::string&) {}
-void Bitset::fromASCIIString(const std::string&) {}
+void Bitset::fromHexString(const std::string& s)
+{
+	std::string binString = convertHexStringToBinary(s);
+	fromBinaryString(binString);
+}
 
-Bitset::Bitset(const std::string& s, stringType type)
+void Bitset::fromASCIIString(const std::string& s)
+{
+	length = s.size()*8;
+	data = std::vector<uint8_t>(s.begin(), s.end());
+}
+
+Bitset::Bitset(const std::string& s, stringType type) : length(0)
 {
 	switch (type)
 	{
-		case BINARY:
+		case BINARY_STRING:
 			fromBinaryString(s);
 			break;
-		case HEX:
+		case HEX_STRING:
 			fromHexString(s);
 			break;
-		case ASCII:
+		case ASCII_STRING:
 			fromASCIIString(s);
 			break;
 	}
 }
+
+bool Bitset::badIndex(int i) const { return i < 0 || i >= length; }
 
 Bitset::Bitset(const std::vector<uint8_t>& raw) : data(raw), length(raw.size()*8) {}
 
@@ -61,30 +132,6 @@ Bitset::Bitset(int l) : length(l)
 
 const Bitset Bitset::operator+(const Bitset& rhs) const
 {
-	//This could be a little better
-	//vector 1 ... vector 2
-	//Concatenated vector
-	//std::vector<uint8_t> newData = data;
-	//newData.insert(newData.end(), rhs.data.begin(), rhs.data.end());
-	
-	//std::vector<uint8_t> shifted;
-	//shifted.push_back(
-	
-	//Keep 0xFF << (8-length%8)
-	//Take 0xFF << (length%8)
-	
-	//Make 0 & rhs.data
-	//For each in vector
-	//Shift >> by length%8
-	//Take first 8-length%8 bits of next guy
-	//Place at the end
-	
-	//thing
-	//thing = thing >> (8-length&8);
-	//append = thing[+1] & (0xFF << (length%8))
-	//thing |= append | 0xFF >> (8-length%8);
-	
-	//From last of vector1 to end 
 	Bitset combined(length+rhs.length);
 	
 	for (int i = 0; i < length; i++)
@@ -105,27 +152,34 @@ bool Bitset::operator[](int i) const
 
 bool Bitset::at(int i) const
 {
+	if (badIndex(i)) return false;
 	return data[i/8] & (0x1<<(i%8));
 }
 
 void Bitset::set(int i)
 {
+	if (badIndex(i)) return;
 	data[i/8] |= (0x1<<(i%8));
 }
 
 void Bitset::toggle(int i)
 {
+	if (badIndex(i)) return;
 	data[i/8] ^= (0x1<<(i%8));
 }
 
 void Bitset::clear(int i)
 {
+	if (badIndex(i)) return;
 	data[i/8] &= ~(0x1<<(i%8));
 }
 
 Bitset Bitset::getSubset(int i1, int i2) const
 {
-	//This could probably be better as well
+	if (i1 > i2) return Bitset(0);
+	if (badIndex(i1)) return Bitset(0);
+	if (badIndex(i2)) return Bitset(0);
+	
 	Bitset b(i2-i1);
 	for (int i = i1; i < i2; i++)
 	{
@@ -141,7 +195,7 @@ std::string Bitset::asString() const
 	std::string str;
 	for (int i = 0; i < length; i++)
 	{
-		str += (at(i)) ? '1' : '0';
+		str = ((at(i)) ? '1' : '0') + str;
 	}
 	return str;
 }

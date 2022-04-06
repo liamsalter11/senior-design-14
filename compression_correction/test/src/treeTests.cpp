@@ -22,7 +22,7 @@ int main()
 	std::ifstream dataFile("../data/allcut.txt", std::ifstream::in);
 	std::stringstream sourceText;
 	sourceText << dataFile.rdbuf();
-	std::cout << "source length: " << sourceText.str().size();
+	std::cout << "source length: " << sourceText.str().size() << '\n';
 	
 	std::cout << "Reading books\n";
 	freqTable sourceData =  getFreqTable(sourceText.str());
@@ -30,12 +30,7 @@ int main()
 	HuffmanTree tree;
 	tree.build(sourceData);
 	
-	std::map<char, std::string> stringCodes;
-	for (auto data : sourceData)
-	{
-		std::cout << data.first << ": " << tree.findCode(data.first).asString() << '\n';
-		stringCodes[data.first] = tree.findCode(data.first).asString();
-	}
+	for (auto data : sourceData) std::cout << data.first << ": " << tree.findCode(data.first).asString() << '\n';
 	
 	codeTable table = tree.getLookupTable();
 	Bitset squished = writeLookupTableAsBitset(table);
