@@ -1,0 +1,156 @@
+Protel Design System Design Rule Check
+PCB File : C:\Users\LPS22\OneDrive\Documents\Pitt\Senior\Spring\ECE1896\git\senior-design-14\TransmitterPCB\PCB1.PcbDoc
+Date     : 3/12/2022
+Time     : 8:34:59 PM
+
+WARNING: Zero hole size multi-layer pad(s) detected
+   Pad D1-1(190.177mil,2580mil) on Multi-Layer on Net +5
+   Pad D1-2(90.177mil,2580mil) on Multi-Layer on Net NetD1_2
+   Pad D2-2(355mil,2580mil) on Multi-Layer on Net NetD2_2
+   Pad D3-2(619.823mil,2580mil) on Multi-Layer on Net NetD3_2
+
+WARNING: Multilayer Pads with 0 size Hole found
+   Pad D1-1(190.177mil,2580mil) on Multi-Layer
+   Pad D1-2(90.177mil,2580mil) on Multi-Layer
+   Pad D2-1(455mil,2580mil) on Multi-Layer
+   Pad D2-2(355mil,2580mil) on Multi-Layer
+   Pad D3-1(719.823mil,2580mil) on Multi-Layer
+   Pad D3-2(619.823mil,2580mil) on Multi-Layer
+
+Processing Rule : Clearance Constraint (Gap=20mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
+Rule Violations :0
+
+Processing Rule : Un-Routed Net Constraint ( (All) )
+Rule Violations :0
+
+Processing Rule : Modified Polygon (Allow modified: No), (Allow shelved: No)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=30mil) (Max=10000mil) (Preferred=50mil) (All)
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=20mil) (Conductor Width=10mil) (Air Gap=10mil) (Entries=4) (All)
+Rule Violations :0
+
+Processing Rule : Minimum Annular Ring (Minimum=17mil) (All)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-1(105mil,1380mil) on Multi-Layer (Annular Ring=9.528mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-10(105mil,480mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-11(105mil,380mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-12(105mil,280mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-13(105mil,180mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-14(105mil,80mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-2(105mil,1280mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-3(105mil,1180mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-4(105mil,1080mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-5(105mil,980mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-6(105mil,880mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-7(105mil,780mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-8(105mil,680mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P1-9(105mil,580mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-1(705mil,80mil) on Multi-Layer (Annular Ring=9.528mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-10(705mil,980mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-11(705mil,1080mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-12(705mil,1180mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-13(705mil,1280mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-14(705mil,1380mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-2(705mil,180mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-3(705mil,280mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-4(705mil,380mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-5(705mil,480mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-6(705mil,580mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-7(705mil,680mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-8(705mil,780mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (9.527mil < 17mil) Pad P2-9(705mil,880mil) on Multi-Layer (Annular Ring=9.527mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (3.936mil < 17mil) Pad Q1-1(140.177mil,1685mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (3.936mil < 17mil) Pad Q1-2(140.177mil,1635mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (3.936mil < 17mil) Pad Q1-3(140.177mil,1585mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (3.936mil < 17mil) Pad Q2-1(405mil,1685mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (3.936mil < 17mil) Pad Q2-2(405mil,1635mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (3.936mil < 17mil) Pad Q2-3(405mil,1585mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (3.936mil < 17mil) Pad Q3-1(669.823mil,1685mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (3.936mil < 17mil) Pad Q3-2(669.823mil,1635mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (3.936mil < 17mil) Pad Q3-3(669.823mil,1585mil) on Multi-Layer (Annular Ring=3.937mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (10.827mil < 17mil) Pad R1-1(140.177mil,1870mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (10.827mil < 17mil) Pad R1-2(140.177mil,2170mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (10.827mil < 17mil) Pad R2-1(405mil,1870mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (10.827mil < 17mil) Pad R2-2(405mil,2170mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (10.827mil < 17mil) Pad R3-1(669.823mil,1870mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
+   Violation between Minimum Annular Ring: (10.827mil < 17mil) Pad R3-2(669.823mil,2170mil) on Multi-Layer (Annular Ring=10.827mil) On (Top Layer)
+Rule Violations :43
+
+Processing Rule : Hole Size Constraint (Min=39.37mil) (Max=1000mil) (All)
+   Violation between Hole Size Constraint: (31.496mil < 39.37mil) Pad Q1-1(140.177mil,1685mil) on Multi-Layer Actual Hole Size = 31.496mil
+   Violation between Hole Size Constraint: (31.496mil < 39.37mil) Pad Q1-2(140.177mil,1635mil) on Multi-Layer Actual Hole Size = 31.496mil
+   Violation between Hole Size Constraint: (31.496mil < 39.37mil) Pad Q1-3(140.177mil,1585mil) on Multi-Layer Actual Hole Size = 31.496mil
+   Violation between Hole Size Constraint: (31.496mil < 39.37mil) Pad Q2-1(405mil,1685mil) on Multi-Layer Actual Hole Size = 31.496mil
+   Violation between Hole Size Constraint: (31.496mil < 39.37mil) Pad Q2-2(405mil,1635mil) on Multi-Layer Actual Hole Size = 31.496mil
+   Violation between Hole Size Constraint: (31.496mil < 39.37mil) Pad Q2-3(405mil,1585mil) on Multi-Layer Actual Hole Size = 31.496mil
+   Violation between Hole Size Constraint: (31.496mil < 39.37mil) Pad Q3-1(669.823mil,1685mil) on Multi-Layer Actual Hole Size = 31.496mil
+   Violation between Hole Size Constraint: (31.496mil < 39.37mil) Pad Q3-2(669.823mil,1635mil) on Multi-Layer Actual Hole Size = 31.496mil
+   Violation between Hole Size Constraint: (31.496mil < 39.37mil) Pad Q3-3(669.823mil,1585mil) on Multi-Layer Actual Hole Size = 31.496mil
+   Violation between Hole Size Constraint: (33.465mil < 39.37mil) Pad R1-1(140.177mil,1870mil) on Multi-Layer Actual Hole Size = 33.465mil
+   Violation between Hole Size Constraint: (33.465mil < 39.37mil) Pad R1-2(140.177mil,2170mil) on Multi-Layer Actual Hole Size = 33.465mil
+   Violation between Hole Size Constraint: (33.465mil < 39.37mil) Pad R2-1(405mil,1870mil) on Multi-Layer Actual Hole Size = 33.465mil
+   Violation between Hole Size Constraint: (33.465mil < 39.37mil) Pad R2-2(405mil,2170mil) on Multi-Layer Actual Hole Size = 33.465mil
+   Violation between Hole Size Constraint: (33.465mil < 39.37mil) Pad R3-1(669.823mil,1870mil) on Multi-Layer Actual Hole Size = 33.465mil
+   Violation between Hole Size Constraint: (33.465mil < 39.37mil) Pad R3-2(669.823mil,2170mil) on Multi-Layer Actual Hole Size = 33.465mil
+Rule Violations :15
+
+Processing Rule : Hole To Hole Clearance (Gap=17mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Minimum Solder Mask Sliver (Gap=10mil) (All),(All)
+   Violation between Minimum Solder Mask Sliver Constraint: (2.63mil < 10mil) Between Pad Q1-1(140.177mil,1685mil) on Multi-Layer And Pad Q1-2(140.177mil,1635mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]
+   Violation between Minimum Solder Mask Sliver Constraint: (2.63mil < 10mil) Between Pad Q1-2(140.177mil,1635mil) on Multi-Layer And Pad Q1-3(140.177mil,1585mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]
+   Violation between Minimum Solder Mask Sliver Constraint: (2.63mil < 10mil) Between Pad Q2-1(405mil,1685mil) on Multi-Layer And Pad Q2-2(405mil,1635mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]
+   Violation between Minimum Solder Mask Sliver Constraint: (2.63mil < 10mil) Between Pad Q2-2(405mil,1635mil) on Multi-Layer And Pad Q2-3(405mil,1585mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]
+   Violation between Minimum Solder Mask Sliver Constraint: (2.63mil < 10mil) Between Pad Q3-1(669.823mil,1685mil) on Multi-Layer And Pad Q3-2(669.823mil,1635mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]
+   Violation between Minimum Solder Mask Sliver Constraint: (2.63mil < 10mil) Between Pad Q3-2(669.823mil,1635mil) on Multi-Layer And Pad Q3-3(669.823mil,1585mil) on Multi-Layer [Top Solder] Mask Sliver [2.63mil] / [Bottom Solder] Mask Sliver [2.63mil]
+Rule Violations :6
+
+Processing Rule : Silk To Solder Mask (Clearance=10mil) (IsPad),(All)
+   Violation between Silk To Solder Mask Clearance Constraint: (Collision < 10mil) Between Pad D1-1(190.177mil,2580mil) on Multi-Layer And Track (226.791mil,2406.772mil)(226.791mil,2658.74mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]
+   Violation between Silk To Solder Mask Clearance Constraint: (Collision < 10mil) Between Pad D1-2(90.177mil,2580mil) on Multi-Layer And Track (53.563mil,2406.772mil)(53.563mil,2658.74mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]
+   Violation between Silk To Solder Mask Clearance Constraint: (Collision < 10mil) Between Pad D2-2(355mil,2580mil) on Multi-Layer And Track (318.386mil,2406.772mil)(318.386mil,2658.74mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]
+   Violation between Silk To Solder Mask Clearance Constraint: (Collision < 10mil) Between Pad D3-2(619.823mil,2580mil) on Multi-Layer And Track (583.209mil,2406.772mil)(583.209mil,2658.74mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]
+   Violation between Silk To Solder Mask Clearance Constraint: (9.491mil < 10mil) Between Pad R1-1(140.177mil,1870mil) on Multi-Layer And Track (140.177mil,1911mil)(140.177mil,1920mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]
+   Violation between Silk To Solder Mask Clearance Constraint: (9.491mil < 10mil) Between Pad R1-2(140.177mil,2170mil) on Multi-Layer And Track (140.177mil,2120mil)(140.177mil,2129mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]
+   Violation between Silk To Solder Mask Clearance Constraint: (9.491mil < 10mil) Between Pad R2-1(405mil,1870mil) on Multi-Layer And Track (405mil,1911mil)(405mil,1920mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]
+   Violation between Silk To Solder Mask Clearance Constraint: (9.491mil < 10mil) Between Pad R2-2(405mil,2170mil) on Multi-Layer And Track (405mil,2120mil)(405mil,2129mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]
+   Violation between Silk To Solder Mask Clearance Constraint: (9.491mil < 10mil) Between Pad R3-1(669.823mil,1870mil) on Multi-Layer And Track (669.823mil,1911mil)(669.823mil,1920mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]
+   Violation between Silk To Solder Mask Clearance Constraint: (9.491mil < 10mil) Between Pad R3-2(669.823mil,2170mil) on Multi-Layer And Track (669.823mil,2120mil)(669.823mil,2129mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.491mil]
+Rule Violations :10
+
+Processing Rule : Silk to Silk (Clearance=0mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Net Antennae (Tolerance=0mil) (All)
+Rule Violations :0
+
+Processing Rule : Board Clearance Constraint (Gap=0mil) (All)
+Rule Violations :0
+
+Processing Rule : Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1'))
+   Violation between Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And SIP Component P1-Header 14 (105mil,1380mil) on Top Layer 
+   Violation between Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And SIP Component P2-Header 14 (705mil,80mil) on Top Layer 
+   Violation between Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component D1-LED_R (140.177mil,2580mil) on Top Layer 
+   Violation between Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component D2-LED_G (405mil,2580mil) on Top Layer 
+   Violation between Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component D3-LED_B (669.823mil,2580mil) on Top Layer 
+   Violation between Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component Q1-MOSFET-N (140.177mil,1635mil) on Top Layer 
+   Violation between Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component Q2-MOSFET-N (405mil,1635mil) on Top Layer 
+   Violation between Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component Q3-MOSFET-N (669.823mil,1635mil) on Top Layer 
+   Violation between Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component R1-Res1 (140.177mil,2020mil) on Top Layer 
+   Violation between Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component R2-Res1 (405mil,2020mil) on Top Layer 
+   Violation between Room Definition: Between Room Sheet1 (Bounding Region = (0mil, 0mil, 2000mil, 1000mil) (InComponentClass('Sheet1')) And Small Component R3-Res1 (669.823mil,2020mil) on Top Layer 
+Rule Violations :11
+
+Processing Rule : Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)
+Rule Violations :0
+
+
+Violations Detected : 85
+Waived Violations : 0
+Time Elapsed        : 00:00:02
