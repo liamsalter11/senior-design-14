@@ -13,7 +13,7 @@
 # define maxSize 200
 # define maxFrames 100
 
-const int transRate = 5; //ms
+const int transRate = 1; //ms
 //const int frameDelay = 300; //ms
 //10 bits in a frame, 0-9
 const int frameSize = 10;
@@ -48,7 +48,7 @@ void setup()
   //pinMode(binaryInput, INPUT);
   
   receive.setRGB(7, A3, A4);
-  Serial.begin(9600);
+  Serial.begin(19200);
   
   pinMode(interruptControllerPin, OUTPUT);
   pinMode(DIN, INPUT);
@@ -160,7 +160,7 @@ void frameHandler(unsigned int inputFrame)
     inputFrame = inputFrame>>1;
     int bitMask = 255;
     dataVector.push_back(inputFrame & bitMask);
-    Serial.println((char)(inputFrame & bitMask));
+    //Serial.println((char)(inputFrame & bitMask));
 
 }
 
@@ -181,7 +181,7 @@ String convertToString(byte bytes[maxSize])
 
 void printStartUpMessage(void)
 {
-  Serial.print("Welcome! We are waiting for the message to be transmitted to us.\n");
+  //Serial.print("Welcome! We are waiting for the message to be transmitted to us.\n");
 }
 void printMessageToSerial(String message)
 {
@@ -192,7 +192,7 @@ void printMessageToSerial(String message)
 
 void printDataVector()
 {
-  Serial.println("printing data:");
+  Serial.println("");
   for(int i =0; i<dataVector.size()-1;i++)
   {
     Serial.print((char)dataVector.at(i));
@@ -228,7 +228,7 @@ void resetSystem(void)
   //Serial.println("resettging daatat");
   //printDataVector();
   
-  Serial.print("\nRestarting..... \n \n");
+  //Serial.print("\nRestarting..... \n \n");
 }
 
 void loop() 
@@ -249,7 +249,7 @@ void loop()
       //Serial.print("header State"); 
       if(dataVector.front()==255)
       {
-        Serial.println("header received");
+        //Serial.println("header received");
         frameStartLock = true;
         if(interrupting == false)  
           state=2;
@@ -287,7 +287,7 @@ void loop()
         state = 4;
     case 4:
       resetSystem();
-      delay(2000);
+      //delay(2000);
       state=1;
       break;
     case 5:
@@ -295,7 +295,7 @@ void loop()
       
       if(frameStartLock == false)
       {
-        Serial.println("locking");
+        //Serial.println("locking");
         frameStartLock = true;
         state = 1;
       }
