@@ -255,7 +255,7 @@ void loop()
       {
         convertString2Binary(userString);
         
-        printFrames();
+        printFramesRGB();
         printAllBinary();
         state=2;
       }
