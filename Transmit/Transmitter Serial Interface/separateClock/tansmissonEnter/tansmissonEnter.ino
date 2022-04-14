@@ -246,9 +246,9 @@ void printFramesRGB(void)
       for(unsigned int j = 0; j < frameSize; j++)
       {
         //Serial.print("frameSize");
-        uint8_t bitR = bitRead(frames.at(frames.size() - 3), frameSize - j );
+        uint8_t bitR = bitRead(frames.at(frames.size() - 1), frameSize - j );
         uint8_t bitG = bitRead(frames.at(frames.size() - 2), frameSize - j );
-        uint8_t bitB = bitRead(frames.at(frames.size() -1), frameSize - j);
+        uint8_t bitB = bitRead(frames.at(frames.size() -3), frameSize - j);
         digitalWrite(binaryLED, bitB);
         digitalWrite(binaryLEDg, bitG);
         digitalWrite(binaryLEDr, bitR);
@@ -267,17 +267,17 @@ void printFramesRGB(void)
       for(unsigned int j = 0; j < frameSize; j++)
         {
           //Serial.print("frameSize");
-          uint8_t bitG = bitRead(frames.at(frames.size() -2), frameSize - j );
-          uint8_t bitB = bitRead(frames.at(frames.size() -1), frameSize - j);
-          digitalWrite(binaryLED, bitB);
+          uint8_t bitR = bitRead(frames.at(frames.size() - 1), frameSize - j );
+          uint8_t bitG = bitRead(frames.at(frames.size() - 2), frameSize - j );
           digitalWrite(binaryLEDg, bitG);
+          digitalWrite(binaryLEDr, bitR);
 
           //wait a clock period before sending another bit
           unsigned int waitTime = transRate * 1000 + micros();
           while(micros() <= waitTime);
 
         }
-        digitalWrite(binaryLED, LOW);
+        digitalWrite(binaryLEDr, LOW);
         digitalWrite(binaryLEDg, LOW);
         break;
       
@@ -285,15 +285,15 @@ void printFramesRGB(void)
       for(unsigned int j = 0; j < frameSize; j++)
         {
           //Serial.print("frameSize");
-          uint8_t bitB = bitRead(frames.at(frames.size() -1), frameSize - j);
-          digitalWrite(binaryLED, bitB);
+          uint8_t bitR = bitRead(frames.at(frames.size() - 1), frameSize - j );
+          digitalWrite(binaryLEDr, bitR);
 
           //wait a clock period before sending another bit
           unsigned int waitTime = transRate * 1000 + micros();
           while(micros() <= waitTime);
 
         }
-        digitalWrite(binaryLED, LOW);
+        digitalWrite(binaryLEDr, LOW);
         break;
   } 
 }
