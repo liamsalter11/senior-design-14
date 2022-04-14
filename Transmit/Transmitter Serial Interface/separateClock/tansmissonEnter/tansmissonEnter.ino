@@ -271,6 +271,7 @@ void printFramesRGB(void)
           uint8_t bitG = bitRead(frames.at(frames.size() - 2), frameSize - j );
           digitalWrite(binaryLEDg, bitG);
           digitalWrite(binaryLEDr, bitR);
+          digitalWrite(binaryLED, bitR);
 
           //wait a clock period before sending another bit
           unsigned int waitTime = transRate * 1000 + micros();
@@ -279,14 +280,18 @@ void printFramesRGB(void)
         }
         digitalWrite(binaryLEDr, LOW);
         digitalWrite(binaryLEDg, LOW);
+        digitalWrite(binaryLED, LOW);
         break;
       
      case 1:
+     
       for(unsigned int j = 0; j < frameSize; j++)
         {
           //Serial.print("frameSize");
           uint8_t bitR = bitRead(frames.at(frames.size() - 1), frameSize - j );
           digitalWrite(binaryLEDr, bitR);
+          digitalWrite(binaryLEDg, bitR);
+          digitalWrite(binaryLED, bitR);
 
           //wait a clock period before sending another bit
           unsigned int waitTime = transRate * 1000 + micros();
@@ -294,6 +299,8 @@ void printFramesRGB(void)
 
         }
         digitalWrite(binaryLEDr, LOW);
+        digitalWrite(binaryLEDg, LOW);
+        digitalWrite(binaryLED, LOW);
         break;
   } 
 }
