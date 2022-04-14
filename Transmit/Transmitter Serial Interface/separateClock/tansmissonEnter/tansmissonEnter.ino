@@ -214,13 +214,13 @@ void printFramesRGB(void)
 {
   // PortA 16, 19, 17
   // Pins  11, 12, 13
-  for(unsigned int i = 0; i < frames.size(); i++)
+  for(unsigned int i = 0; i < frames.size(); i+=3)
   {
-    for(unsigned int j = 0; j < frameSize; j += 3)
+    for(unsigned int j = 0; j < frameSize; j++)
     {
       //Serial.print("frameSize");
-      uint8_t bitR = bitRead(frames.at(i), frameSize - j + 2);
-      uint8_t bitG = bitRead(frames.at(i), frameSize - j + 1);
+      uint8_t bitR = bitRead(frames.at(i+2), frameSize - j );
+      uint8_t bitG = bitRead(frames.at(i+1), frameSize - j );
       uint8_t bitB = bitRead(frames.at(i), frameSize - j);
       digitalWrite(binaryLED, bitB);
       digitalWrite(binaryLEDg, bitG);
