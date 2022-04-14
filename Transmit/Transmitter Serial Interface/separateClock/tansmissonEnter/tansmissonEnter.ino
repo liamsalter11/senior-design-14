@@ -246,9 +246,9 @@ void printFramesRGB(void)
       for(unsigned int j = 0; j < frameSize; j++)
       {
         //Serial.print("frameSize");
-        uint8_t bitR = bitRead(frames.at(i + 2), frameSize - j );
-        uint8_t bitG = bitRead(frames.at(i + 1), frameSize - j );
-        uint8_t bitB = bitRead(frames.at(i), frameSize - j);
+        uint8_t bitR = bitRead(frames.at(frames.size() - 3), frameSize - j );
+        uint8_t bitG = bitRead(frames.at(frames.size() - 2), frameSize - j );
+        uint8_t bitB = bitRead(frames.at(frames.size() -1), frameSize - j);
         digitalWrite(binaryLED, bitB);
         digitalWrite(binaryLEDg, bitG);
         digitalWrite(binaryLEDr, bitR);
@@ -267,8 +267,8 @@ void printFramesRGB(void)
       for(unsigned int j = 0; j < frameSize; j++)
         {
           //Serial.print("frameSize");
-          uint8_t bitG = bitRead(frames.at(i + 1), frameSize - j );
-          uint8_t bitB = bitRead(frames.at(i), frameSize - j);
+          uint8_t bitG = bitRead(frames.at(frames.size() -2), frameSize - j );
+          uint8_t bitB = bitRead(frames.at(frames.size() -1), frameSize - j);
           digitalWrite(binaryLED, bitB);
           digitalWrite(binaryLEDg, bitG);
 
@@ -285,7 +285,7 @@ void printFramesRGB(void)
       for(unsigned int j = 0; j < frameSize; j++)
         {
           //Serial.print("frameSize");
-          uint8_t bitB = bitRead(frames.at(i), frameSize - j);
+          uint8_t bitB = bitRead(frames.at(frames.size() -1), frameSize - j);
           digitalWrite(binaryLED, bitB);
 
           //wait a clock period before sending another bit
