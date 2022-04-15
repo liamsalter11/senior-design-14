@@ -23,7 +23,10 @@ byte wholeBIN[maxSize]; //replace the number with the max number of characters
 unsigned int storageArray[maxFrames];
 Vector<unsigned int> frames(storageArray);
 
+//Bitsets for correction
+//Raw message Bitset
 LiFiData::Bitset setOfBits(maxSize);
+//Convolved message Bitset
 LiFiData::Bitset convolBits(2*maxSize);
 
 //loop vars 
@@ -89,26 +92,23 @@ void convertString2Binary(String inputMessage)
   }
 
  
-   //error correction
+  //error correction
+  //Make Bitset from data (10 bits per frame?)
+  LiFiData::Bitset rawData(frames.size()*10);
   for(int i =0; i<frames.size();i++)
   {
     for(int j =0; j<9; j++)
      {
         if(bitRead(frames.at(i),j) == 1)
         {
-          setOfBits.set((10*i)+j);
+          rawData.set((10*i)+j);
         }
      }
-  convolBits = LiFiCorrection::convolve(setOfBits);  
-
-  
+  }
+  convolBits = LiFiCorrection::convolve(rawData);  
   
   //add footer
   addTransmissionStartEnd();
-
-  
-  }
-  
 }
 
 void startUpPrompt(void)
