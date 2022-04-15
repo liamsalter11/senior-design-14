@@ -1,4 +1,3 @@
-from email import message
 import serial
 import time
 import os.path
@@ -25,6 +24,11 @@ while(True):
         textInput = input("Please enter text:\n") + '\n'
         mcu.write(textInput.encode())
         time.sleep(0.1)
+    elif choice == '4':
+        f = open("Bee_stripped.txt", 'r').readlines()
+        for line in f:
+            mcu.write(line.encode())
+            time.sleep(0.1)
     else:
         break
     print('\n')
