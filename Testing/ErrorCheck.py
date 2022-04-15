@@ -22,8 +22,12 @@ masterLines = masterLines[:len(receivedLines)]
 errors = 0
 totalSize = 0
 for i in range(len(masterLines)):
-    masterLine = masterLines[i]
-    receivedLine = receivedLines[i]
+    masterLine = masterLines[i].strip()
+    receivedLine = receivedLines[i].strip()
+
+    last = False
+    if receivedLine == receivedLines[-1].strip():
+        last = True
     
     sizeDif = len(masterLine) - len(receivedLine)
     lineSize = 0
@@ -32,13 +36,22 @@ for i in range(len(masterLines)):
         lineSize = len(masterLine)
     else:
         lineSize = len(receivedLine)
-    errors += sizeDif
+    
+    if not last:
+        errors += sizeDif
     totalSize += lineSize
     
     for j in range(lineSize):
         if masterLine[j] != receivedLine[j]:
-            errors += 1
+            shifted = False
+            for k in range(sizeDif):
+                if masterLine[j + k] == receivedLine[j]:
+                    shifted = True
+                    break
+            
+            if shifted or last:
+                errors += 1
 
 print()
 print(errors, " errors found.")
-print("{:.3f}".format(100 * errors / totalSize), "% error rate")
+print("{:.3%}".format(errors / totalSize), "error rate")
