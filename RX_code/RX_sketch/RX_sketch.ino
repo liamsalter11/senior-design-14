@@ -20,8 +20,6 @@ const int transRate = 1; //ms
 //10 bits in a frame, 0-9
 const int frameSize = 10;
 
-
-
 //variables and objects for interrupt handling
 int edge = 0;
 volatile bool frameDone = false;
@@ -30,7 +28,6 @@ volatile bool interrupting = false;
 volatile int bitsReceived = 0;
 
 Receiver receive(CLK, DIN);
-
 
 volatile int state = 0;
 int frameStartTime = 0;
@@ -44,6 +41,34 @@ unsigned int storageArray[maxFrames];
 Vector<unsigned int> dataVector(storageArray);
 
 unsigned int receivedFrame=0;
+
+/***Serial Print Functions***/
+
+void printStartUpMessage(void)
+{
+  //Serial.print("Welcome! We are waiting for the message to be transmitted to us.\n");
+}
+
+void printMessageToSerial(String message)
+{
+  Serial.print("Here is the converted message:\n");
+  Serial.print(message);
+  Serial.println("\n----------\n");
+}
+
+void printDataVector()
+{
+  Serial.println("");
+  for(int i =0; i<dataVector.size()-1;i++)
+  {
+    Serial.print((char)dataVector.at(i));
+  //  Serial.print(" ");
+  //  Serial.print(dataVector.at(i));
+  //Serial.println();
+  }
+}
+
+/***Do Stuff Functions***/
 
 void setup() 
 {
@@ -62,7 +87,6 @@ void setup()
 
   //setup onshot timer that counts between each sample taken during a frame
   //sampleTimer.setDurationMsec((double)(transRate));
-
 }
 
 //interrupt handler
@@ -76,7 +100,6 @@ void edgeInterrupt(void)
 
 void getFrame(void)
 {
-
   //detach the interrupt so that it doesnt trigger inside of a frame
   detachInterrupt(digitalPinToInterrupt(interruptPin));
   //noInterrupts();
@@ -136,8 +159,6 @@ void getFrame(void)
     sample = 0;       
   }
   
-  
-  
   //Serial.println(receivedFrame, BIN);
   frameHandler(receivedFrame);
   //Serial.println("end of interrupt ");
@@ -152,7 +173,6 @@ void getFrame(void)
 
 void getFrameRGB(void)
 {
-
   //detach the interrupt so that it doesnt trigger inside of a frame
   detachInterrupt(digitalPinToInterrupt(interruptPin));
   
@@ -213,7 +233,6 @@ void frameHandler(unsigned int inputFrame)
     uint8_t bitMask = 255;
     dataVector.push_back(inputFrame & bitMask);
     //Serial.println((char)(inputFrame & bitMask));
-
 }
 
 String convertToString(byte bytes[maxSize])
@@ -222,36 +241,12 @@ String convertToString(byte bytes[maxSize])
   //Serial.println(sizeof(bytes));
   for(int i=0; i<=maxSize;i++)
   {
-    
      if(bytes[i] ==13)
       break;
      convertedMessage.concat((char)dataVector.at(i));
   }
   
   return convertedMessage;
-}
-
-void printStartUpMessage(void)
-{
-  //Serial.print("Welcome! We are waiting for the message to be transmitted to us.\n");
-}
-void printMessageToSerial(String message)
-{
-  Serial.print("Here is the converted message:\n");
-  Serial.print(message);
-  Serial.println("\n----------\n");
-}
-
-void printDataVector()
-{
-  Serial.println("");
-  for(int i =0; i<dataVector.size()-1;i++)
-  {
-    Serial.print((char)dataVector.at(i));
-  //  Serial.print(" ");
-  //  Serial.print(dataVector.at(i));
-  //Serial.println();
-  }
 }
 
 void getInputBinary(void)
