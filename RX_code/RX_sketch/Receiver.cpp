@@ -10,14 +10,17 @@ uint8_t Receiver::ReadByte() {
   
     for (uint8_t i = 0; i < 8; i++) {
         // Hold so there is only one read per clock
-        while (analogRead(clk) <= 5);
+        while (digitalRead(clk) ==LOW);
+          uint8_t inBit = digitalRead(receive);
+          //Serial.println("low");
 
         // Read in bit at falling clock edge
-        while (analogRead(clk) > 5);
-        uint8_t inBit = analogRead(receive) > 5;
-
-        // Shift bits then add incoming bit
+        
+        
         readByte = (readByte << 1) ^ inBit;
+
+        while (digitalRead(clk) == HIGH);
+        // Shift bits then add incoming bit
     }
   
     return readByte;
