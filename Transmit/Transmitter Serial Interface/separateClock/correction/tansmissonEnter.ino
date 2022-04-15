@@ -23,10 +23,7 @@ byte wholeBIN[maxSize]; //replace the number with the max number of characters
 unsigned int storageArray[maxFrames];
 Vector<unsigned int> frames(storageArray);
 
-//Bitsets for correction
-//Raw message Bitset
-LiFiData::Bitset setOfBits(maxSize);
-//Convolved message Bitset
+//Bitset for correction
 LiFiData::Bitset convolBits(2*maxSize);
 
 //loop vars 
@@ -252,7 +249,7 @@ void printFrames(void)
 void sendConvolBits(void)
 {
   
-  for(int i =0; i<convolBits.getLength();i++)
+  for(int i =0; i<frames.size();i++)
   {
     for(unsigned int j = 0; j<frameSize; j++)
     {
