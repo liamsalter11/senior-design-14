@@ -19,7 +19,7 @@ unsigned int storageArray[maxFrames];
 Vector<unsigned int> frames(storageArray);
 
 //Bitset for correction
-LiFiData::Bitset convolBits(2*maxSize);
+LiFiData::Bitset convolBits(LiFiData::MAX_BITSET_LENGTH);
 
 //loop vars 
 int state;
