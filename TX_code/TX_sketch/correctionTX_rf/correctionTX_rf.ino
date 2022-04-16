@@ -2,6 +2,7 @@
 
 #include "LiFiCorrection.hpp"
 #include "LiFiTXController.hpp"
+#include "LiFiTXSerial.hpp"
 
 using namespace LiFiData;
 
@@ -40,56 +41,24 @@ const int frameDelay = 5; //300ms
 //10 bits in a frame, 0-9
 const int frameSize = 9;
 
-/***Serial Print Functions***/
-
-void startUpPrompt(void)
-{
-  Serial.println("Hello! You can input a message below and have it turned into binary!");
-  Serial.println("Enter Message: "); 
-}
-
-void printAllBinary(void)
-{ 
-  Serial.println("----------");
-  Serial.print("Whole message is:\n");
-  for(unsigned int i = 0; i < frames.size(); i++)
-  {
-    Serial.print(frames.at(i),BIN);
-    Serial.print(" ");
-  }
-  Serial.println("\n----------");
-}
-
-void printAllConvolBits(void)
-{
-  Serial.println("----------");
-  Serial.print("Convoled message is:\n");
-  Serial.print(convolBits.getLength());
-  for(int i = 0; i<convolBits.getLength();i++)
-  {
-    Serial.print(convolBits[i], BIN);
-    Serial.print(" ");
-  }
-}
-
 /***Doing Stuff Functions***/
 
 void setup() {
-  Serial.begin(19200);
-  Serial.print("Starting\n");
+	Serial.begin(19200);
+	Serial.print("Starting\n");
 
-  pinMode(binaryLED, OUTPUT);
-  pinMode(binaryLEDg, OUTPUT);
-  pinMode(binaryLEDr, OUTPUT);
-  
-  pinMode(clockLED, OUTPUT);
+	pinMode(binaryLED, OUTPUT);
+	pinMode(binaryLEDg, OUTPUT);
+	pinMode(binaryLEDr, OUTPUT);
 
-  digitalWrite(clockLED, LOW);
-  digitalWrite(binaryLED, LOW);
-  digitalWrite(binaryLEDg, LOW);
-  digitalWrite(binaryLEDr, LOW);
+	pinMode(clockLED, OUTPUT);
 
-  state = 1;
+	digitalWrite(clockLED, LOW);
+	digitalWrite(binaryLED, LOW);
+	digitalWrite(binaryLEDg, LOW);
+	digitalWrite(binaryLEDr, LOW);
+
+	state = 1;
 }
 
 void convertString2Binary(String inputMessage)
@@ -201,6 +170,11 @@ void printFramesRGB(void)
 
 namespace LiFiTXStateMachine
 {
+	namespace
+	{
+		int state = 1;
+	}
+	
 	void startState()
 	{
 		state = 1;
@@ -212,8 +186,8 @@ namespace LiFiTXStateMachine
 		{
 			convertString2Binary(userString);
 			sendConvolBits();
-			printAllBinary();
-			printAllConvolBits();
+			LiFiTXSerial::writeBitset(LiFiData::Bitset(frames.data(), frames.size()));
+			LiFiTXSerial::writeBitset(convolBits);
 			state = 2;
 			return;
 		}
@@ -225,23 +199,28 @@ namespace LiFiTXStateMachine
 		resetSystem();
 		state = 0;
 	}
+	
+	void handleState()
+	{
+		switch(state)
+		{
+			case 0:
+				startState();
+				break;
+			case 1:
+				transmitState();
+				break;
+			case 2:
+				resetState();
+				break;
+			default:
+				state = 2;
+		}
+	}
 }
 
 
 void loop() 
 {
-	switch(state)
-	{
-		case 0:
-			LiFiTXStateMachine::startState();
-			break;
-		case 1:
-			LiFiTXStateMachine::transmitState();
-			break;
-		case 2:
-			LiFiTXStateMachine::resetState();
-			break;
-		default:
-			state = 2;
-	}
+	LiFiTXStateMachine::handleState();
 }
