@@ -3,6 +3,7 @@
 #include "LiFiCorrection.hpp"
 #include "LiFiTXController.hpp"
 #include "LiFiTXSerial.hpp"
+#include "LiFiTXConsts.hpp"
 
 using LiFiData::Bitset;
 
@@ -12,8 +13,8 @@ byte charByte[7]; //array for converting char into bin
 byte charByteSum=0; //array for store the final value of a char's bin
 byte wholeBIN[MAX_SIZE]; //replace the number with the max number of characters
 
-unsigned int storageArray[MAX_FRAMES];
-Vector<unsigned int> frames(storageArray);
+int storageArray[MAX_FRAMES];
+Vector<int> frames(storageArray);
 
 //Bitset for correction
 LiFiData::Bitset convolBits(LiFiData::MAX_BITSET_LENGTH);
@@ -110,8 +111,8 @@ void resetSystem(void)
 	digitalWrite(LED_PIN_G, LOW);
 	digitalWrite(LED_PIN_B, LOW);
 	digitalWrite(LED_PIN_CLOCK, LOW);
-	Serial.flush();
-	Serial.print("\nRestarting..... \n \n");
+	
+	LiFiTXSerial::reset();
 }
 
 
@@ -121,9 +122,9 @@ void addTransmissionStartEnd(void)
     Serial.println("adding header/footer");
 }
 
-unsigned int generateFrame(byte charByte)
+int generateFrame(byte charByte)
 {
-	unsigned int frame = 1;
+	int frame = 1;
 	frame = frame << 8;
 	frame |= charByte;
 	frame = frame << 1;

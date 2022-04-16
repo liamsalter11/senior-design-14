@@ -6,6 +6,7 @@
 namespace LiFiTXSerial
 {
 	void initialize();
+	void reset();
 	void writeStartUpMessage(void);
 	void writeBitset(const LiFiData::Bitset&);
 }

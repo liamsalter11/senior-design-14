@@ -6,6 +6,12 @@ void LiFiTXSerial::initialize()
 	Serial.print("Starting\n");
 }
 
+void LiFiTXSerial::reset()
+{
+	Serial.flush();
+	Serial.print("\nRestarting..... \n \n");
+}
+
 void LiFiTXSerial::writeStartUpMessage()
 {
 	Serial.println("Hello! You can input a message below and have it turned into binary!");
