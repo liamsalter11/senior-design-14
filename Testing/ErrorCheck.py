@@ -39,12 +39,14 @@ for i in range(len(masterLines)):
     
     if not last:
         errors += sizeDif
-    totalSize += lineSize
+    totalSize += len(masterLine)
     
     for j in range(lineSize):
         if masterLine[j] != receivedLine[j]:
             shifted = False
             for k in range(sizeDif):
+                if len(masterLine) > (j + k):
+                    break
                 if masterLine[j + k] == receivedLine[j]:
                     shifted = True
                     break
@@ -55,3 +57,4 @@ for i in range(len(masterLines)):
 print()
 print(errors, " errors found.")
 print("{:.3%}".format(errors / totalSize), "error rate")
+input()
