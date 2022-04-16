@@ -88,7 +88,7 @@ String Bitset::asString() const
 	String str;
 	for (int i = 0; i < length; i++)
 	{
-		str = ((at(i)) ? '1' : '0') + str;
+		str += ((at(i)) ? '1' : '0');
 	}
 	return str;
 }
