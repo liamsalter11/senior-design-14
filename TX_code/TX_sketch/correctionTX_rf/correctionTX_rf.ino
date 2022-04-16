@@ -1,6 +1,7 @@
 #include <Vector.h>
 
 #include "LiFiCorrection.hpp"
+#include "LiFiTXController.hpp"
 
 using namespace LiFiData;
 
@@ -181,69 +182,21 @@ unsigned int generateFrame(byte charByte)
 	return frame;
 }
 
-struct Pinset
-{
-	int length;
-	int pins[3];
-};
-
-namespace LiFiTXController
-{
-	namespace
-	{
-		void writeToPinset(const Pinset& pins, bool val)
-		{
-			for (int i = 0; i < pins.length; i++) digitalWrite(pins.pins[i], val);
-		}
-		
-		void sendFrame(const Bitset& bits, const Pinset& pins, int index)
-		{
-			for (int i = 0; i < frameSize; i++)
-			{
-				for (int j = 0; j < pins.length; j++) digitalWrite(pins.pins[i], bits[i+index+j]);
-				unsigned int waitTime = transRate * 1000 + micros();
-				while(micros() <= waitTime);
-			}
-		}
-	}
-	
-	void sendBitset(const Bitset& bits, const Pinset& pins)
-	{
-		for (int i = 0; i < bits.getLength(); i += frameSize)
-		{
-			sendFrame(bits, pins, i);
-			
-			writeToPinset(pins, LOW);
-			unsigned int frameWaitTime = frameDelay * 1000 + micros();
-			while(micros() <= frameWaitTime);
-		}
-	}
-}
-
-LiFiData::Bitset framesToBitset(const Vector<unsigned int>& frames)
-{
-	LiFiData::Bitset data(frames.data(), frames.size());
-	return data;
-}
-
 void printFrames(void)
 {
-	LiFiData::Bitset data = framesToBitset(frames);
-	Pinset pins = {1, {binaryLED, 0, 0}};
-	LiFiTXController::sendBitset(data, pins);
+	LiFiData::Bitset data(frames.data(), frames.size());
+	LiFiTXController::TXOneChannel(data);
 }
 
 void sendConvolBits(void)
 {
-	Pinset pins = {1, {binaryLED, 0, 0}};
-	LiFiTXController::sendBitset(convolBits, pins);
+	LiFiTXController::TXOneChannel(convolBits);
 }
 
 void printFramesRGB(void)
 {
-	LiFiData::Bitset data = framesToBitset(frames);
-	Pinset pins = {3, {binaryLED, binaryLEDg, binaryLEDr}};
-	LiFiTXController::sendBitset(data, pins);
+	LiFiData::Bitset data(frames.data(), frames.size());
+	LiFiTXController::TXThreeChannel(data);
 }
 
 namespace LiFiTXStateMachine
@@ -262,11 +215,9 @@ namespace LiFiTXStateMachine
 			printAllBinary();
 			printAllConvolBits();
 			state = 2;
+			return;
 		}
-		else
-		{
-			state = 1;
-		}
+		state = 1;
 	}
 	
 	void resetState()
