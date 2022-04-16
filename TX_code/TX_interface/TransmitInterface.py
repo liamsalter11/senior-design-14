@@ -18,17 +18,28 @@ while(True):
             continue
 
         for line in f:
-            mcu.write(line.encode())
-            time.sleep(0.1)
+            try:
+                mcu.write(line.encode())
+            except:
+                mcu.close()
+                print("ERROR! Device disconnected.\n")
+                quit()
+            time.sleep(0.19)
     elif choice == '1':
         textInput = input("Please enter text:\n") + '\n'
         mcu.write(textInput.encode())
-        time.sleep(0.1)
+        #time.sleep(0.1)
     elif choice == '4':
         f = open("Bee_stripped.txt", 'r').readlines()
         for line in f:
-            mcu.write(line.encode())
-            time.sleep(0.1)
+            try:
+                mcu.write(line.encode())
+            except:
+                mcu.close()
+                print("ERROR! Device disconnected.\n")
+                quit()
+            time.sleep(0.19)
     else:
         break
+
     print('\n')
