@@ -99,9 +99,9 @@ String Bitset::asASCIIString() const
 	for (int i = 0; i < length; i += 8)
 	{
 		char letter = 0;
-		for (int j = 7; j >= 0; j--)
+		for (int j = 0; j < 8; j++)
 		{
-			if (at(i+j)) letter |= 0x1 << j;
+			if (at(i+j)) letter |= 0x80 >> j;
 		}
 		str += letter;
 	}
