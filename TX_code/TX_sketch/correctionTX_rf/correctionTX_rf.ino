@@ -148,21 +148,21 @@ bool getInputMessage(void)
 
 void resetSystem(void)
 {
-  userString="";
-  line[0]='\0';
-  count=0;
-  for(unsigned int i = 0; i < maxSize; i++)
-  {
-    wholeBIN[i] = 0;
-  }
+	userString="";
+	line[0]='\0';
+	count=0;
+	for(unsigned int i = 0; i < maxSize; i++)
+	{
+		wholeBIN[i] = 0;
+	}
 
-  frames.clear();
-  digitalWrite(clockLED, LOW);
-  digitalWrite(binaryLED, LOW);
-  digitalWrite(binaryLEDg, LOW);
-  digitalWrite(binaryLEDr, LOW);
-  Serial.flush();
-  Serial.print("\nRestarting..... \n \n");
+	frames.clear();
+	digitalWrite(clockLED, LOW);
+	digitalWrite(binaryLED, LOW);
+	digitalWrite(binaryLEDg, LOW);
+	digitalWrite(binaryLEDr, LOW);
+	Serial.flush();
+	Serial.print("\nRestarting..... \n \n");
 }
 
 
@@ -174,21 +174,18 @@ void addTransmissionStartEnd(void)
 
 unsigned int generateFrame(byte charByte)
 {
-  unsigned int frame = 1;
-
-  frame = frame << 8;
-  frame |= charByte;
-
-  frame = frame << 1;
-
-  return frame;
+	unsigned int frame = 1;
+	frame = frame << 8;
+	frame |= charByte;
+	frame = frame << 1;
+	return frame;
 }
 
 struct Pinset
 {
-	int length = 0;
-	int pins[3] = {0, 0, 0};
-}
+	int length;
+	int pins[3];
+};
 
 namespace LiFiTXController
 {
@@ -214,7 +211,7 @@ namespace LiFiTXController
 	{
 		for (int i = 0; i < bits.getLength(); i += frameSize)
 		{
-			sendFrame(bits, pin, i);
+			sendFrame(bits, pins, i);
 			
 			writeToPinset(pins, LOW);
 			unsigned int frameWaitTime = frameDelay * 1000 + micros();
@@ -269,7 +266,6 @@ namespace LiFiTXStateMachine
 		else
 		{
 			state = 1;
-			break;
 		}
 	}
 	
