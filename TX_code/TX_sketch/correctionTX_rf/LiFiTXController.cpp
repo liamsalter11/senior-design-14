@@ -31,18 +31,13 @@ void waitFrameTime()
 	while(micros() <= waitTime);
 }
 
-void sendBit(bool val, const Pinset& pins)
-{
-	for (int j = 0; j < pins.length; j++) digitalWrite(pins.pins[j], val);
-	waitBitTime();
-}
-
 //Sends a 10-bit frame starting from index
 void sendFrame(const Bitset& bits, const Pinset& pins, int index)
 {
 	for (int i = 0; i < FRAME_SIZE; i++)
 	{
-		sendBit(bits[i+index], pins);
+		for (int j = 0; j < pins.length; j++) digitalWrite(pins.pins[j], bits[i+index+j]);
+		waitBitTime();
 	}
 }
 	
