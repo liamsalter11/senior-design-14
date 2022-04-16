@@ -6,8 +6,8 @@ using LiFiData::Bitset;
 //Makes a single byte Bitset with all 1's
 Bitset getHeaderFooterBitset()
 {
-	Bitset hf(8);
-	for (int i = 0; i < 8; i++) hf.set(i);
+	Bitset hf(10);
+	for (int i = 0; i < 9; i++) hf.set(i);
 	return hf;
 }
 

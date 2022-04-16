@@ -42,7 +42,7 @@ void sendFrame(const Bitset& bits, const Pinset& pins, int index)
 {
 	for (int i = 0; i < FRAME_SIZE; i++)
 	{
-		sendBit(bits[i+index+j], pins);
+		sendBit(bits[i+index], pins);
 	}
 }
 	

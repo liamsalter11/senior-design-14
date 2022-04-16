@@ -1,23 +1,7 @@
-// a 11111111 indicates the start and end of transmission
 #include <Vector.h>
 
 #include "Receiver.h"
-
-# define BLUE 7
-# define GREEN 9
-# define RED 10
-# define CLK 9
-# define DIN 7
-# define interruptPin 13
-# define interruptControllerPin 12
-
-# define maxSize 200
-# define maxFrames 100
-
-const int transRate = 1; //ms
-//const int frameDelay = 300; //ms
-//10 bits in a frame, 0-9
-const int frameSize = 10;
+#include "LiFiRXConsts.hpp"
 
 //variables and objects for interrupt handling
 int edge = 0;
@@ -28,7 +12,6 @@ volatile int bitsReceived = 0;
 
 Receiver receive(CLK, DIN);
 
-volatile int state = 0;
 int frameStartTime = 0;
 bool frameStartLock = false;
 int frameTimeOut = 10000000;
@@ -41,10 +24,6 @@ Vector<unsigned int> dataVector(storageArray);
 unsigned int receivedFrame=0;
 
 /***Serial Print Functions***/
-
-void printStartUpMessage(void)
-{
-}
 
 void printMessageToSerial(String message)
 {
@@ -79,12 +58,6 @@ void setup()
 }
 
 //interrupt handler
-
-void edgeInterrupt(void)
-{
-  interrupting = true;
-  state = 5;
-}
 
 void getFrame(void)
 {
@@ -215,13 +188,8 @@ void resetSystem(void)
 
 namespace LiFiRXStateMachine
 {
-	/*
-	namespace
-	{
-		int state;
-	}
-	*/
-
+	volatile int state;
+	
 	void startState()
 	{
 		printStartUpMessage();
@@ -283,38 +251,43 @@ namespace LiFiRXStateMachine
 	{
 		state = 6;
 	}
+	
+	void handleState()
+	{
+		switch(state)
+		{
+			case 0:	
+				startState();
+				break;
+			case 1:
+				state1();      
+				break;
+			case 2:
+				state2();
+				break;
+			case 3:
+				state3();
+				break;			
+			case 4:
+				state4();
+				break;			
+			case 5:
+				state5();
+				break;			
+			case 6:
+				state6();
+				break;  
+		}
+	}
+}
+
+void edgeInterrupt(void)
+{
+  interrupting = true;
+  LiFiRXStateMachine::state = 5;
 }
 
 void loop() 
 {
-	switch(state)
-	{
-		case 0:	
-			LiFiRXStateMachine::startState();
-			break;
-
-		case 1:
-			LiFiRXStateMachine::state1();      
-			break;
-
-		case 2:
-			LiFiRXStateMachine::state2();
-			break;
-
-		case 3:
-			LiFiRXStateMachine::state3();
-			break;
-			
-		case 4:
-			LiFiRXStateMachine::state4();
-			break;
-			
-		case 5:
-			LiFiRXStateMachine::state5();
-			break;
-			
-		case 6:
-			LiFiRXStateMachine::state6();
-			break;  
-	}
+	LiFiRXStateMachine::handleState();
 }
