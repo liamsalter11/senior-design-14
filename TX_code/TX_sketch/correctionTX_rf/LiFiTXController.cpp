@@ -49,16 +49,12 @@ void sendFrame(const Bitset& bits, const Pinset& pins, int index)
 //Sends a full Bitset 
 void sendBitset(const Bitset& bits, const Pinset& pins)
 {	
-	for (int i = 0; i < 8; i++) sendBit(bits[i], pins);
-	
-	for (int i = 8; i < bits.getLength()-8; i += FRAME_SIZE)
+	for (int i = 0; i < bits.getLength(); i += FRAME_SIZE)
 	{
 		sendFrame(bits, pins, i);
 		writeToPinset(pins, LOW);
 		waitFrameTime();
 	}
-	
-	for (int i = bits.getLength()-8; i < bits.getLength(); i++) sendBit(bits[i], pins);
 }
 
 //Sends a Bitset over a single LED
