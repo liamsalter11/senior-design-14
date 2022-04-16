@@ -3,7 +3,6 @@
 
 #include "Receiver.h"
 
-
 # define BLUE 7
 # define GREEN 9
 # define RED 10
@@ -214,68 +213,108 @@ void resetSystem(void)
   dataVector.clear();
 }
 
+namespace LiFiRXStateMachine
+{
+	/*
+	namespace
+	{
+		int state;
+	}
+	*/
+
+	void startState()
+	{
+		printStartUpMessage();
+		if(!interrupting)
+		state = 6;
+	}
+	
+	void state1()
+	{
+		if(dataVector.front()==255)
+		{
+			frameStartLock = true;
+			if(!interrupting)  
+			state = 2;
+		}
+		else
+		{
+			if(!interrupting) state = 1;
+		}
+	}
+	
+	void state2()
+	{
+		if (dataVector.back() == 255 && dataVector.size()>1)
+		{  
+			if(!interrupting) state = 3;
+		}
+		else 
+		{
+			if(!interrupting) state = 2;
+		}
+	}
+	
+	void state3()
+	{
+		printDataVector();
+		if(!interrupting) state = 4;
+	}
+	
+	void state4()
+	{
+		resetSystem();
+		state = 1;
+	}
+	
+	void state5()
+	{
+		getFrame();
+
+		if(!frameStartLock)
+		{
+			frameStartLock = true;
+			state = 1;
+		}
+		else state = 2;
+	}
+	
+	void state6()
+	{
+		state = 6;
+	}
+}
+
 void loop() 
 {
-  switch(state)
-  {
-    case 0:
-      printStartUpMessage();
-      if(!interrupting)
-        state=6;
-      break;
+	switch(state)
+	{
+		case 0:	
+			LiFiRXStateMachine::startState();
+			break;
 
-    case 1:
-      if(dataVector.front()==255)
-      {
-        frameStartLock = true;
-        if(!interrupting)  
-          state=2;
-      }
-      else
-      {
-       if(!interrupting)   
-          state=1;
-      }
-      
-      break;
-      
-    case 2:
-      if(dataVector.back() == 255 && dataVector.size()>1)
-      {  
-        if(!interrupting)
-          state = 3;
-      }
-      else 
-      {
-        if(!interrupting)
-          state = 2;
-      }
-      break;
-    
-    case 3:
-      printDataVector();
-      if(!interrupting)
-        state = 4;
-    case 4:
-      resetSystem();
-      state=1;
-      break;
-    case 5:
-      getFrame();
-      
-      if(!frameStartLock)
-      {
-        frameStartLock = true;
-        state = 1;
-      }
-      else
-        state=2;
-      
-      break; 
-    case 6:
-      state=6;
-      break;
+		case 1:
+			LiFiRXStateMachine::state1();      
+			break;
 
-      
-  }
+		case 2:
+			LiFiRXStateMachine::state2();
+			break;
+
+		case 3:
+			LiFiRXStateMachine::state3();
+			break;
+			
+		case 4:
+			LiFiRXStateMachine::state4();
+			break;
+			
+		case 5:
+			LiFiRXStateMachine::state5();
+			break;
+			
+		case 6:
+			LiFiRXStateMachine::state6();
+			break;  
+	}
 }
