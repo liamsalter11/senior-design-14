@@ -12,7 +12,6 @@ class Receiver {
     public:
         Receiver(uint8_t, uint8_t);
         uint8_t ReadByte();
-        uint8_t ReadByte2();
         void setRGB(uint8_t, uint8_t, uint8_t);
 };
 
