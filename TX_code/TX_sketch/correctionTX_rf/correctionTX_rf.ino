@@ -13,11 +13,13 @@ namespace LiFiTXStateMachine
 		int state = 0;
 	}
 	
+	//Startup state for power on
 	void startState()
 	{
 		state = 1;
 	}
 	
+	//State for waiting for a message and sending it
 	void transmitState()
 	{
 		String message = LiFiTXSerial::getInputMessage();
@@ -30,6 +32,7 @@ namespace LiFiTXStateMachine
 		state = 2;
 	}
 	
+	//State for resetting and preparing for next message
 	void resetState()
 	{
 		LiFiTXController::setAllLEDs(LOW);
@@ -37,6 +40,7 @@ namespace LiFiTXStateMachine
 		state = 0;
 	}
 	
+	//Switch case to match state index to state function
 	void handleState()
 	{
 		switch(state)
@@ -56,6 +60,7 @@ namespace LiFiTXStateMachine
 	}
 }
 
+//Initialize all GPIO pins
 void setup() 
 {
 	LiFiTXSerial::initialize();
@@ -68,6 +73,7 @@ void setup()
 	LiFiTXController::setAllLEDs(LOW);
 }
 
+//Run state machine continuously
 void loop() 
 {
 	LiFiTXStateMachine::handleState();
