@@ -11,6 +11,6 @@ const int LED_PIN_CLOCK = 4;
 const int TRANSMISSION_RATE = 1; //Bit time in milliseconds
 const int FRAME_DELAY = 5;		 //Frame delay time in milliseconds
 const int FRAME_SIZE = 10;	
-const bool USE_CORRECTION = false;	
+const bool USE_CORRECTION = true;	
 
 #endif

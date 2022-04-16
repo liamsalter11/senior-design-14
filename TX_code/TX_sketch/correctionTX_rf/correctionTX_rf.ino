@@ -32,7 +32,7 @@ namespace LiFiTXStateMachine
 	
 	void resetState()
 	{
-		LiFiTXController::setAllLEDs(LOW);	
+		LiFiTXController::setAllLEDs(LOW);
 		LiFiTXSerial::reset();
 		state = 0;
 	}

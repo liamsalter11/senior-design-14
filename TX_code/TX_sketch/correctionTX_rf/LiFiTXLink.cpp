@@ -39,7 +39,10 @@ Bitset frameData(const Bitset& data)
   {
       Bitset frame(10);
       frame.set(0);
-      for (int j = 0; j < 7; j++) frame.set(data[j+8*i]);
+      for (int j = 0; j < 8; j++)
+      {
+        if (data[j+8*i]) frame.set(j+1);
+      }
       allFrames = allFrames + frame; 
   }
 
@@ -58,7 +61,7 @@ Bitset LiFiTXLink::makeTXBitsetFromString(const String& inputMessage, bool corre
 	}
 	data = data + getHeaderFooterBitset();
 
-	return data;
+	//return data;
 
 	//Test this part
 	Bitset tx;
@@ -73,4 +76,5 @@ Bitset LiFiTXLink::makeTXBitsetFromString(const String& inputMessage, bool corre
 	tx = frameData(tx);
 
 	tx = getHeaderFooterBitset() + tx + getHeaderFooterBitset();
+  return tx;
 }
