@@ -13,15 +13,16 @@ Bitset getFrameFromLetter(char c)
 {
 	Bitset frame(10);
 	frame.set(0);
-	for (int i = 1; i < 9; i++)
+	for (int i = 0; i < 8; i++)
 	{
-		if (bitRead(c, i-1)) frame.set(i);
+		if (c&(0x80>>i)) frame.set(i+1);
 	}
 	return frame;
 }
 
 Bitset LiFiTXLink::makeTXBitsetFromString(String inputMessage)
 {
+  Serial.println("Linking String into TX Bitset");
 	Bitset data(0);
 	
 	data = data + getHeaderFooterBitset();

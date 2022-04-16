@@ -22,7 +22,9 @@ void LiFiTXSerial::writeBitset(const LiFiData::Bitset& data)
 {
 	Serial.println("----------");
 	Serial.print("Message is:\n");
+  Serial.print("Length: ");
 	Serial.print(data.getLength());
+  Serial.print("\n");
 	for(int i = 0; i<data.getLength();i++)
 	{
 		Serial.print(data[i], BIN);
@@ -32,16 +34,17 @@ void LiFiTXSerial::writeBitset(const LiFiData::Bitset& data)
 String LiFiTXSerial::getInputMessage(void)
 {
 	String message = "";
+  Serial.flush();
 	while (!Serial.available());
-	while (Serial.available()) 
+  char letter = Serial.read();
+	while (letter != '\r' && letter != '\n') 
 	{
-		char letter = Serial.read();
-		message += letter;
-		if (letter == '\n')
-		{
-			Serial.println("----------\nYour message is: ");
-			Serial.println(message); 
-		}
+    Serial.println(letter, HEX);
+    message += letter;
+    while (!Serial.available());
+		letter = Serial.read();
 	}
-	return message;
+	Serial.println("----------\nYour message is: ");
+  Serial.println(message);
+  return message; 
 }

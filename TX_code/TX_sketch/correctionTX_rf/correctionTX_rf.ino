@@ -56,7 +56,8 @@ namespace LiFiTXStateMachine
 	}
 }
 
-void setup() {
+void setup() 
+{
 	LiFiTXSerial::initialize();
 
 	pinMode(LED_PIN_R, OUTPUT);
