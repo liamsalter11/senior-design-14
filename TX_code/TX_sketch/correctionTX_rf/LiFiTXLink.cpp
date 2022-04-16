@@ -48,29 +48,29 @@ Bitset frameData(const Bitset& data)
 
 Bitset LiFiTXLink::makeTXBitsetFromString(const String& inputMessage, bool correct)
 {
-  Serial.println("Linking String into TX Bitset");
+	Serial.println("Linking String into TX Bitset");
 	Bitset data;
-	
+
 	data = data + getHeaderFooterBitset();
 	for (char c : inputMessage)
 	{
 		data = data + getFrameFromLetter(c);
 	}
 	data = data + getHeaderFooterBitset();
-	
+
 	return data;
 
-  //Test this part
-  Bitset tx;
+	//Test this part
+	Bitset tx;
 
-  for (char c : inputMessage)
-  {
-    tx = tx + makeBitsetFromChar(c);
-  }
+	for (char c : inputMessage)
+	{
+		tx = tx + makeBitsetFromChar(c);
+	}
 
-  if (correct) tx = LiFiCorrection::convolve(tx);
+	if (correct) tx = LiFiCorrection::convolve(tx);
 
-  tx = frameData(tx);
+	tx = frameData(tx);
 
-  tx = getHeaderFooterBitset() + tx + getHeaderFooterBitset();
+	tx = getHeaderFooterBitset() + tx + getHeaderFooterBitset();
 }

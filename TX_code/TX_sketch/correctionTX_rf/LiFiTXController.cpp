@@ -38,10 +38,10 @@ void sendBitset(const Bitset& bits, const Pinset& pins)
 
 void LiFiTXController::TXOneChannel(const LiFiData::Bitset& data)
 {
-  Serial.println("\nNow sending message");
+	Serial.println("\nNow sending message");
 	Pinset pins = {1, {LED_PIN_B, 0, 0}};
 	sendBitset(data, pins);
-  Serial.println("Bitset sent");
+	Serial.println("Bitset sent");
 }
 
 void LiFiTXController::TXThreeChannel(const LiFiData::Bitset& data)
