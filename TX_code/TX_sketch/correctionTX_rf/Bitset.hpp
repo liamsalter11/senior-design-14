@@ -35,6 +35,7 @@ class LiFiData::Bitset
 		void set(int);
 		void toggle(int);
 		void clear(int);
+		void setLength(int);
 		
 		Bitset getSubset(int, int) const;
 		int getLength() const;

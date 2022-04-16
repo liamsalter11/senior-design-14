@@ -28,7 +28,7 @@ Bitset::Bitset(const int* arr, const int l) : length(l*8)
 	for (int i = 0; i < l; i++) data[i] = arr[i];
 }
 
-bool Bitset::badIndex(int i) const { return i < 0 || i >= length; }
+bool Bitset::badIndex(int i) const { return i < 0 || i >= MAX_BITSET_LENGTH; }
 
 Bitset::Bitset(int l) : length(l)
 { 
@@ -78,6 +78,8 @@ void Bitset::clear(int i)
 	if (badIndex(i)) return;
 	data[i/8] &= ~(0x1<<(i%8));
 }
+
+void Bitset::setLength(int l) { length = l; }
 
 int Bitset::getLength() const { return length; }
 
