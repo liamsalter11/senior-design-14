@@ -1,6 +1,6 @@
 #include <Vector.h>
+
 #include "LiFiCorrection.hpp"
-//#include "Bitset.hpp"
 
 using namespace LiFiData;
 
@@ -23,10 +23,8 @@ LiFiData::Bitset convolBits(LiFiData::MAX_BITSET_LENGTH);
 
 //loop vars 
 int state;
-
 char line[100];
 int count = 0;
-
 //blinking variables
 //green =12
 //blue = 11
@@ -36,7 +34,6 @@ const int binaryLED = 11; //blue
 const int binaryLEDg = 12;
 const int binaryLEDr = 13;
 const int clockLED = 4;
-
 const int transRate = 1;  //100ms
 const int frameDelay = 5; //300ms
 //10 bits in a frame, 0-9
@@ -46,11 +43,7 @@ const int frameSize = 9;
 
 void startUpPrompt(void)
 {
-  //delay(3000);
   Serial.println("Hello! You can input a message below and have it turned into binary!");
-  //double hertz = 1/(transRate);
-  //Serial.print(hertz);
- // Serial.print(" khz");
   Serial.println("Enter Message: "); 
 }
 
@@ -60,11 +53,7 @@ void printAllBinary(void)
   Serial.print("Whole message is:\n");
   for(unsigned int i = 0; i < frames.size(); i++)
   {
-    //Serial.print("print loop");
-    /*if(wholeBIN[i] == 0)
-      continue;*/
     Serial.print(frames.at(i),BIN);
-    
     Serial.print(" ");
   }
   Serial.println("\n----------");
@@ -77,7 +66,6 @@ void printAllConvolBits(void)
   Serial.print(convolBits.getLength());
   for(int i = 0; i<convolBits.getLength();i++)
   {
-    //Serial.print("asdas");
     Serial.print(convolBits[i], BIN);
     Serial.print(" ");
   }
@@ -86,7 +74,6 @@ void printAllConvolBits(void)
 /***Doing Stuff Functions***/
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(19200);
   Serial.print("Starting\n");
 
@@ -106,7 +93,6 @@ void setup() {
 
 void convertString2Binary(String inputMessage)
 {
-  //add header
   addTransmissionStartEnd();
   int messageLength = inputMessage.length();
   char inputChars[messageLength]; 
@@ -123,8 +109,6 @@ void convertString2Binary(String inputMessage)
     frames.push_back(generateFrame(letter));  
   }
  
-  //error correction
-  //Make Bitset from data (10 bits per frame?)
   LiFiData::Bitset rawData(frames.size()*10);
   for(int i =0; i<frames.size();i++)
   {
@@ -137,8 +121,6 @@ void convertString2Binary(String inputMessage)
      }
   }
   convolBits = LiFiCorrection::convolve(rawData);  
-  
-  //add footer
   addTransmissionStartEnd();
 }
 
@@ -192,24 +174,12 @@ void addTransmissionStartEnd(void)
 
 unsigned int generateFrame(byte charByte)
 {
-  //frame is: [header][zero pad][data][footer]
-
-  //header is binary 1
   unsigned int frame = 1;
 
-  //shift in and add byte
   frame = frame << 8;
   frame |= charByte;
 
-  //add footer which is zero
   frame = frame << 1;
-  //frame = frame | 1;
-  
- /* Serial.print("\n------ frame:");
-  Serial.print(frame); 
-  Serial.print("  ");
-  Serial.print(frame,BIN); 
-  Serial.print("-----\n");*/
 
   return frame;
 }
@@ -222,18 +192,14 @@ void printFrames(void)
   {
     for(unsigned int j = 0; j<frameSize; j++)
     {
-      //Serial.print("frameSize");
       uint8_t singleBit = bitRead(frames.at(i),frameSize-j);
       digitalWrite(binaryLED, singleBit);
-
-      //wait a clock period before sending another bit
       unsigned int waitTime = transRate * 1000 + micros();
       while(micros() <= waitTime);
     }
     
     digitalWrite(binaryLED, LOW);
-    
-    //delay between frames
+
     unsigned int frameWaitTime = frameDelay * 1000 + micros();
     while(micros() <= frameWaitTime);
   }
@@ -246,18 +212,14 @@ void sendConvolBits(void)
   {
     for(unsigned int j = 0; j<frameSize; j++)
     {
-      //Serial.print("frameSize");
       uint8_t singleBit = convolBits[(10*i)+j];
       digitalWrite(binaryLED, singleBit);
-
-      //wait a clock period before sending another bit
       unsigned int waitTime = transRate * 1000 + micros();
       while(micros() <= waitTime);
     }
     
     digitalWrite(binaryLED, LOW);
     
-    //delay between frames
     unsigned int frameWaitTime = frameDelay * 1000 + micros();
     while(micros() <= frameWaitTime);
   }
@@ -265,13 +227,10 @@ void sendConvolBits(void)
 
 void printFramesRGB(void)
 {
-  // PortA 16, 19, 17
-  // Pins  11, 12, 13
   for(unsigned int i = 0; i < frames.size(); i++)
   {
     for(unsigned int j = 0; j < frameSize; j += 3)
     {
-      //Serial.print("frameSize");
       uint8_t bitR = bitRead(frames.at(i), frameSize - j + 2);
       uint8_t bitG = bitRead(frames.at(i), frameSize - j + 1);
       uint8_t bitB = bitRead(frames.at(i), frameSize - j);
@@ -279,7 +238,6 @@ void printFramesRGB(void)
       digitalWrite(binaryLEDg, bitG);
       digitalWrite(binaryLEDr, bitR);
 
-      //wait a clock period before sending another bit
       unsigned int waitTime = transRate * 1000 + micros();
       while(micros() <= waitTime);
        
@@ -287,7 +245,6 @@ void printFramesRGB(void)
     digitalWrite(binaryLED, LOW);
     digitalWrite(binaryLEDg, LOW);
     digitalWrite(binaryLEDr, LOW);
-    //delay between frames
     unsigned int frameWaitTime = frameDelay * 1000 + micros();
     while(micros() <= frameWaitTime); 
   }
@@ -299,8 +256,6 @@ void loop()
   switch(state)
   {
     case 0: //startup state
-      //startUpPrompt();
-      //delay(10);
       state=1;
   
     case 1: //conver the message to binary
@@ -309,20 +264,17 @@ void loop()
         convertString2Binary(userString);
         
         sendConvolBits();
-        //printFramesRGB();
         printAllBinary();
         printAllConvolBits();
         state=2;
       }
       else
       {
-        //delay(10);
         state=1;
         break;
       }
 
     case 2:
-      //delay(1000);
       resetSystem();
       state=0;
       break;
@@ -330,6 +282,4 @@ void loop()
     default:
       state = 2;
   }
-
-  //delay(200);
 }
