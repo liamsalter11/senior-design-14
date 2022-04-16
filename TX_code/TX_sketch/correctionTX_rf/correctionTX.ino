@@ -184,70 +184,69 @@ unsigned int generateFrame(byte charByte)
   return frame;
 }
 
+struct Pinset
+{
+	int length = 0;
+	int pins[3] = {0, 0, 0};
+}
+
+namespace LiFiTXController
+{
+	namespace
+	{
+		void writeToPinset(const Pinset& pins, bool val)
+		{
+			for (int i = 0; i < pins.length; i++) digitalWrite(pins.pins[i], val);
+		}
+		
+		void sendFrame(const Bitset& bits, const Pinset& pins, int index)
+		{
+			for (int i = 0; i < frameSize; i++)
+			{
+				for (int j = 0; j < pins.length; j++) digitalWrite(pins.pins[i], bits[i+index+j]);
+				unsigned int waitTime = transRate * 1000 + micros();
+				while(micros() <= waitTime);
+			}
+		}
+	}
+	
+	void sendBitset(const Bitset& bits, const Pinset& pins)
+	{
+		for (int i = 0; i < bits.getLength(); i += frameSize)
+		{
+			sendFrame(bits, pin, i);
+			
+			writeToPinset(pins, LOW);
+			unsigned int frameWaitTime = frameDelay * 1000 + micros();
+			while(micros() <= frameWaitTime);
+		}
+	}
+}
+
+LiFiData::Bitset framesToBitset(const Vector<unsigned int>& frames)
+{
+	LiFiData::Bitset data(frames.data(), frames.size());
+	return data;
+}
 
 void printFrames(void)
 {
-  
-  for(unsigned int i =0; i<frames.size();i++)
-  {
-    for(unsigned int j = 0; j<frameSize; j++)
-    {
-      uint8_t singleBit = bitRead(frames.at(i),frameSize-j);
-      digitalWrite(binaryLED, singleBit);
-      unsigned int waitTime = transRate * 1000 + micros();
-      while(micros() <= waitTime);
-    }
-    
-    digitalWrite(binaryLED, LOW);
-
-    unsigned int frameWaitTime = frameDelay * 1000 + micros();
-    while(micros() <= frameWaitTime);
-  }
+	LiFiData::Bitset data = framesToBitset(frames);
+	Pinset pins = {1, {binaryLED, 0, 0}};
+	LiFiTXController::sendBitset(data, pins);
 }
 
 void sendConvolBits(void)
 {
-  
-  for(int i =0; i<frames.size();i++)
-  {
-    for(unsigned int j = 0; j<frameSize; j++)
-    {
-      uint8_t singleBit = convolBits[(10*i)+j];
-      digitalWrite(binaryLED, singleBit);
-      unsigned int waitTime = transRate * 1000 + micros();
-      while(micros() <= waitTime);
-    }
-    
-    digitalWrite(binaryLED, LOW);
-    
-    unsigned int frameWaitTime = frameDelay * 1000 + micros();
-    while(micros() <= frameWaitTime);
-  }
+	Pinset pins = {1, {binaryLED, 0, 0}};
+	LiFiTXController::sendBitset(convolBits, pins);
 }
 
 void printFramesRGB(void)
 {
-  for(unsigned int i = 0; i < frames.size(); i++)
-  {
-    for(unsigned int j = 0; j < frameSize; j += 3)
-    {
-      uint8_t bitR = bitRead(frames.at(i), frameSize - j + 2);
-      uint8_t bitG = bitRead(frames.at(i), frameSize - j + 1);
-      uint8_t bitB = bitRead(frames.at(i), frameSize - j);
-      digitalWrite(binaryLED, bitB);
-      digitalWrite(binaryLEDg, bitG);
-      digitalWrite(binaryLEDr, bitR);
-
-      unsigned int waitTime = transRate * 1000 + micros();
-      while(micros() <= waitTime);
-       
-    }
-    digitalWrite(binaryLED, LOW);
-    digitalWrite(binaryLEDg, LOW);
-    digitalWrite(binaryLEDr, LOW);
-    unsigned int frameWaitTime = frameDelay * 1000 + micros();
-    while(micros() <= frameWaitTime); 
-  }
+	LiFiData::Bitset data = framesToBitset(frames);
+	Pinset pins = {3, {binaryLED, binaryLEDg, binaryLEDr}};
+	LiFiTXController::sendBitset(data, pins);
 }
 
 namespace LiFiTXStateMachine

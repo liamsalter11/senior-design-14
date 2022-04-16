@@ -26,6 +26,7 @@ class LiFiData::Bitset
 		Bitset();
 		Bitset(int);
 		Bitset(const String&);
+		Bitset(const int*, const int);
 		
 		const Bitset operator+(const Bitset&) const;
 		

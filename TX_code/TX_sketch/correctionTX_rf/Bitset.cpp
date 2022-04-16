@@ -23,6 +23,11 @@ Bitset::Bitset(const String& s) : length(s.length())
 	}
 }
 
+Bitset::Bitset(const int* arr, const int l) : length(l*8)
+{
+	for (int i = 0; i < l; i++) data[i] = arr[i];
+}
+
 bool Bitset::badIndex(int i) const { return i < 0 || i >= length; }
 
 Bitset::Bitset(int l) : length(l) { }
