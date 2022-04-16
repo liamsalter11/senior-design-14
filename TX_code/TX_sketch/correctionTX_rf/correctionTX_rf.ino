@@ -1,5 +1,3 @@
-#include <Vector.h>
-
 #include "LiFiCorrection.hpp"
 #include "LiFiTXController.hpp"
 #include "LiFiTXSerial.hpp"
