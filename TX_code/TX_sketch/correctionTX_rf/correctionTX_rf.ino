@@ -7,25 +7,61 @@
 
 using LiFiData::Bitset;
 
-//vars for getting string
-String userString;
-byte charByte[7]; //array for converting char into bin
-byte charByteSum=0; //array for store the final value of a char's bin
-byte wholeBIN[MAX_SIZE]; //replace the number with the max number of characters
+Bitset getHeaderFooterBitset()
+{
+	Bitset hf(8);
+	for (int i = 0; i < 8; i++) hf.set(i);
+	return hf;
+}
 
-int storageArray[MAX_FRAMES];
-Vector<int> frames(storageArray);
+Bitset getFrameFromLetter(char c)
+{
+	Bitset frame(10);
+	frame.set(0);
+	for (int i = 1; i < 9; i++)
+	{
+		if (bitRead(c, i-1)) frame.set(i);
+	}
+	return frame;
+}
 
-//Bitset for correction
-LiFiData::Bitset convolBits(LiFiData::MAX_BITSET_LENGTH);
+Bitset makeTXBitsetFromString(String inputMessage)
+{
+	Bitset data(0);
+	
+	data = data + getHeaderFooterBitset();
+	for (char c : inputMessage)
+	{
+		data = data + getFrameFromLetter(c);
+	}
+	data = data + getHeaderFooterBitset();
+	
+	return data;
+}
 
-//loop vars 
-int state;
-char line[100];
-int count = 0;
-char ledMessage[7];
+String getInputMessage(void)
+{
+	String message = "";
+	while (Serial.available()) 
+	{
+		char letter = Serial.read();
+		message += letter;
+		if (letter == '\n')
+		{
+			Serial.println("----------\nYour message is: ");
+			Serial.println(message); 
+		}
+	}
+	return message;
+}
 
-/***Doing Stuff Functions***/
+void setAllLEDs(bool val)
+{
+	digitalWrite(LED_PIN_R, val);
+	digitalWrite(LED_PIN_G, val);
+	digitalWrite(LED_PIN_B, val);
+	digitalWrite(LED_PIN_CLOCK, val);
+}
 
 void setup() {
 	LiFiTXSerial::initialize();
@@ -35,124 +71,20 @@ void setup() {
 	pinMode(LED_PIN_B, OUTPUT);
 	pinMode(LED_PIN_CLOCK, OUTPUT);
 
-	digitalWrite(LED_PIN_R, LOW);
-	digitalWrite(LED_PIN_G, LOW);
-	digitalWrite(LED_PIN_B, LOW);
-	digitalWrite(LED_PIN_CLOCK, LOW);
-}
-
-void convertString2Binary(String inputMessage)
-{
-  addTransmissionStartEnd();
-  int messageLength = inputMessage.length();
-  char inputChars[messageLength]; 
-  char inByte;
-  int inputPosition=0;
-  
-  char letter;
-  int bytes[messageLength];
-    
-  for(int i=0; i<messageLength-1; i++)
-  {
-    letter = inputMessage.charAt(i);
-    wholeBIN[i] = inputMessage.charAt(i);
-    frames.push_back(generateFrame(letter));  
-  }
- 
-  LiFiData::Bitset rawData(frames.size()*10);
-  for(int i =0; i<frames.size();i++)
-  {
-    for(int j =0; j<9; j++)
-     {
-        if(bitRead(frames.at(i),j) == 1)
-        {
-          rawData.set((10*i)+j);
-        }
-     }
-  }
-  convolBits = LiFiCorrection::convolve(rawData);  
-  addTransmissionStartEnd();
-}
-
-bool getInputMessage(void)
-{
-  if (Serial.available() > 0) 
-  {
-  
-    line[count] = (char)Serial.read(); // store the char
-    if (line[count++] == '\n'){        // if its a CR,
-       line[count] = '\0';             //  zero-terminate it
-       Serial.println("----------\nYour message is: ");
-       Serial.println(line);           //  and print it.
-       userString = line;
-       if(userString.length()>1)  
-         return(true);
-         
-       Serial.println("loop");         // re-prompt
-       count = 0;                      //  and reset the index.
-    }
-  }
-
-  return(false);
+	setAllLEDs(LOW);
 }
 
 void resetSystem(void)
 {
-	userString="";
-	line[0]='\0';
-	count=0;
-	for(unsigned int i = 0; i < MAX_SIZE; i++)
-	{
-		wholeBIN[i] = 0;
-	}
-
-	frames.clear();
-	digitalWrite(LED_PIN_R, LOW);
-	digitalWrite(LED_PIN_G, LOW);
-	digitalWrite(LED_PIN_B, LOW);
-	digitalWrite(LED_PIN_CLOCK, LOW);
-	
+	setAllLEDs(LOW);	
 	LiFiTXSerial::reset();
-}
-
-
-void addTransmissionStartEnd(void)
-{
-    frames.push_back(generateFrame(255));
-    Serial.println("adding header/footer");
-}
-
-int generateFrame(byte charByte)
-{
-	int frame = 1;
-	frame = frame << 8;
-	frame |= charByte;
-	frame = frame << 1;
-	return frame;
-}
-
-void printFrames(void)
-{
-	LiFiData::Bitset data(frames.data(), frames.size());
-	LiFiTXController::TXOneChannel(data);
-}
-
-void sendConvolBits(void)
-{
-	LiFiTXController::TXOneChannel(convolBits);
-}
-
-void printFramesRGB(void)
-{
-	LiFiData::Bitset data(frames.data(), frames.size());
-	LiFiTXController::TXThreeChannel(data);
 }
 
 namespace LiFiTXStateMachine
 {
 	namespace
 	{
-		int state = 1;
+		int state = 0;
 	}
 	
 	void startState()
@@ -162,16 +94,14 @@ namespace LiFiTXStateMachine
 	
 	void transmitState()
 	{
-		if(getInputMessage())
+		String message = getInputMessage();
+		if (message.length())
 		{
-			convertString2Binary(userString);
-			sendConvolBits();
-			LiFiTXSerial::writeBitset(LiFiData::Bitset(frames.data(), frames.size()));
-			LiFiTXSerial::writeBitset(convolBits);
-			state = 2;
-			return;
+			Bitset data = makeTXBitsetFromString(message);
+			LiFiTXSerial::writeBitset(data);
+			LiFiTXController::TXOneChannel(data);
 		}
-		state = 1;
+		state = 2;
 	}
 	
 	void resetState()
