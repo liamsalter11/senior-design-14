@@ -3,6 +3,7 @@
 
 using LiFiData::Bitset;
 
+//Makes a single byte Bitset with all 1's
 Bitset getHeaderFooterBitset()
 {
 	Bitset hf(8);
@@ -10,6 +11,7 @@ Bitset getHeaderFooterBitset()
 	return hf;
 }
 
+//Copies a char value into a Bitset from most significant bit down
 Bitset makeBitsetFromChar(char c)
 {
 	Bitset letter(8);
@@ -20,6 +22,7 @@ Bitset makeBitsetFromChar(char c)
 	return letter;
 }
 
+//Cuts a raw data Bitset into 8-bit frames with appended frame header bits
 Bitset frameData(const Bitset& data)
 {
 	Bitset allFrames;
@@ -38,6 +41,7 @@ Bitset frameData(const Bitset& data)
 	return allFrames;
 }
 
+//Creates a full linked Bitset from a raw data string, will use error correction if correct = true
 Bitset LiFiTXLink::makeTXBitsetFromString(const String& inputMessage, bool correct)
 {
 	Bitset tx;
