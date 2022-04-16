@@ -32,6 +32,7 @@ void LiFiTXSerial::writeBitset(const LiFiData::Bitset& data)
 String LiFiTXSerial::getInputMessage(void)
 {
 	String message = "";
+	while (!Serial.available());
 	while (Serial.available()) 
 	{
 		char letter = Serial.read();
