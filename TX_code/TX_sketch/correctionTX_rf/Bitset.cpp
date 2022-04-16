@@ -30,7 +30,10 @@ Bitset::Bitset(const int* arr, const int l) : length(l*8)
 
 bool Bitset::badIndex(int i) const { return i < 0 || i >= length; }
 
-Bitset::Bitset(int l) : length(l), data({0}) { }
+Bitset::Bitset(int l) : length(l)
+{ 
+	for (int i = 0; i < MAX_ARR_LENGTH; i++) data[i] = 0;
+}
 
 const Bitset Bitset::operator+(const Bitset& rhs) const
 {
