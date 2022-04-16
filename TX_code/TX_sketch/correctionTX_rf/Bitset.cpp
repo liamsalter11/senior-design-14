@@ -90,3 +90,18 @@ String Bitset::asString() const
 	}
 	return str;
 }
+
+String Bitset::asASCIIString() const
+{
+	String str;
+	for (int i = 0; i < length; i += 8)
+	{
+		char letter = 0;
+		for (int j = 7; j >= 0; j--)
+		{
+			if (at(i+j)) letter |= 0x1 << j;
+		}
+		str += letter;
+	}
+	return str;
+}

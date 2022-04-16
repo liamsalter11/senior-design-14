@@ -39,6 +39,7 @@ class LiFiData::Bitset
 		Bitset getSubset(int, int) const;
 		int getLength() const;
 		String asString() const;
+		String asASCIIString() const;
 		
 		friend int LiFiData::hammingDistance(const Bitset&, const Bitset&);
 };
