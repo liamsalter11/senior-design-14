@@ -9,6 +9,8 @@ namespace LiFiTXSerial
 	void reset();
 	void writeStartUpMessage(void);
 	void writeBitset(const LiFiData::Bitset&);
+	
+	String getInputMessage();
 }
 
 #endif

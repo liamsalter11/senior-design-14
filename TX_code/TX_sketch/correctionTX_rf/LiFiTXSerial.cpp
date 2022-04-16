@@ -28,3 +28,19 @@ void LiFiTXSerial::writeBitset(const LiFiData::Bitset& data)
 		Serial.print(data[i], BIN);
 	}
 }
+
+String LiFiTXSerial::getInputMessage(void)
+{
+	String message = "";
+	while (Serial.available()) 
+	{
+		char letter = Serial.read();
+		message += letter;
+		if (letter == '\n')
+		{
+			Serial.println("----------\nYour message is: ");
+			Serial.println(message); 
+		}
+	}
+	return message;
+}

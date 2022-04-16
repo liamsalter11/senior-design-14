@@ -48,3 +48,11 @@ void LiFiTXController::TXThreeChannel(const LiFiData::Bitset& data)
 	Pinset pins = {3, {LED_PIN_B, LED_PIN_R, LED_PIN_G}};
 	sendBitset(data, pins);
 }
+
+void LiFiTXController::setAllLEDs(bool val)
+{
+	digitalWrite(LED_PIN_R, val);
+	digitalWrite(LED_PIN_G, val);
+	digitalWrite(LED_PIN_B, val);
+	digitalWrite(LED_PIN_CLOCK, val);
+}
