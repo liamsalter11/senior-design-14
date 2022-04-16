@@ -1,5 +1,11 @@
 #include "LiFiTXSerial.hpp"
 
+void LiFiTXSerial::initialize()
+{
+	Serial.begin(19200);
+	Serial.print("Starting\n");
+}
+
 void LiFiTXSerial::writeStartUpMessage()
 {
 	Serial.println("Hello! You can input a message below and have it turned into binary!");

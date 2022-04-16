@@ -4,20 +4,15 @@
 #include "LiFiTXController.hpp"
 #include "LiFiTXSerial.hpp"
 
-using namespace LiFiData;
-
-//constant for defining the max size
-#define maxSize 200
-#define baud 1200
-#define maxFrames 100
+using LiFiData::Bitset;
 
 //vars for getting string
 String userString;
 byte charByte[7]; //array for converting char into bin
 byte charByteSum=0; //array for store the final value of a char's bin
-byte wholeBIN[maxSize]; //replace the number with the max number of characters
+byte wholeBIN[MAX_SIZE]; //replace the number with the max number of characters
 
-unsigned int storageArray[maxFrames];
+unsigned int storageArray[MAX_FRAMES];
 Vector<unsigned int> frames(storageArray);
 
 //Bitset for correction
@@ -27,38 +22,22 @@ LiFiData::Bitset convolBits(LiFiData::MAX_BITSET_LENGTH);
 int state;
 char line[100];
 int count = 0;
-//blinking variables
-//green =12
-//blue = 11
-//red = 13
 char ledMessage[7];
-const int binaryLED = 11; //blue
-const int binaryLEDg = 12;
-const int binaryLEDr = 13;
-const int clockLED = 4;
-const int transRate = 1;  //100ms
-const int frameDelay = 5; //300ms
-//10 bits in a frame, 0-9
-const int frameSize = 9;
 
 /***Doing Stuff Functions***/
 
 void setup() {
-	Serial.begin(19200);
-	Serial.print("Starting\n");
+	LiFiTXSerial::initialize();
 
-	pinMode(binaryLED, OUTPUT);
-	pinMode(binaryLEDg, OUTPUT);
-	pinMode(binaryLEDr, OUTPUT);
+	pinMode(LED_PIN_R, OUTPUT);
+	pinMode(LED_PIN_G, OUTPUT);
+	pinMode(LED_PIN_B, OUTPUT);
+	pinMode(LED_PIN_CLOCK, OUTPUT);
 
-	pinMode(clockLED, OUTPUT);
-
-	digitalWrite(clockLED, LOW);
-	digitalWrite(binaryLED, LOW);
-	digitalWrite(binaryLEDg, LOW);
-	digitalWrite(binaryLEDr, LOW);
-
-	state = 1;
+	digitalWrite(LED_PIN_R, LOW);
+	digitalWrite(LED_PIN_G, LOW);
+	digitalWrite(LED_PIN_B, LOW);
+	digitalWrite(LED_PIN_CLOCK, LOW);
 }
 
 void convertString2Binary(String inputMessage)
@@ -121,16 +100,16 @@ void resetSystem(void)
 	userString="";
 	line[0]='\0';
 	count=0;
-	for(unsigned int i = 0; i < maxSize; i++)
+	for(unsigned int i = 0; i < MAX_SIZE; i++)
 	{
 		wholeBIN[i] = 0;
 	}
 
 	frames.clear();
-	digitalWrite(clockLED, LOW);
-	digitalWrite(binaryLED, LOW);
-	digitalWrite(binaryLEDg, LOW);
-	digitalWrite(binaryLEDr, LOW);
+	digitalWrite(LED_PIN_R, LOW);
+	digitalWrite(LED_PIN_G, LOW);
+	digitalWrite(LED_PIN_B, LOW);
+	digitalWrite(LED_PIN_CLOCK, LOW);
 	Serial.flush();
 	Serial.print("\nRestarting..... \n \n");
 }
