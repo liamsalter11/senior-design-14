@@ -5,7 +5,7 @@
 
 namespace LiFiTXLink
 {
-	LiFiData::Bitset makeTXBitsetFromString(String inputMessage);
+	LiFiData::Bitset makeTXBitsetFromString(const String& inputMessage, bool);
 }
 
 #endif

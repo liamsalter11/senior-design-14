@@ -23,7 +23,7 @@ namespace LiFiTXStateMachine
 		String message = LiFiTXSerial::getInputMessage();
 		if (message.length())
 		{
-			Bitset data = LiFiTXLink::makeTXBitsetFromString(message);
+			Bitset data = LiFiTXLink::makeTXBitsetFromString(message, USE_CORRECTION);
 			LiFiTXSerial::writeBitset(data);
 			LiFiTXController::TXOneChannel(data);
 		}
