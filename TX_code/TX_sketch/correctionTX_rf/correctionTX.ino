@@ -250,36 +250,52 @@ void printFramesRGB(void)
   }
 }
 
+namespace LiFiTXStateMachine
+{
+	void startState()
+	{
+		state = 1;
+	}
+	
+	void transmitState()
+	{
+		if(getInputMessage())
+		{
+			convertString2Binary(userString);
+			sendConvolBits();
+			printAllBinary();
+			printAllConvolBits();
+			state = 2;
+		}
+		else
+		{
+			state = 1;
+			break;
+		}
+	}
+	
+	void resetState()
+	{
+		resetSystem();
+		state = 0;
+	}
+}
+
 
 void loop() 
 {
-  switch(state)
-  {
-    case 0: //startup state
-      state=1;
-  
-    case 1: //conver the message to binary
-      if(getInputMessage())
-      {
-        convertString2Binary(userString);
-        
-        sendConvolBits();
-        printAllBinary();
-        printAllConvolBits();
-        state=2;
-      }
-      else
-      {
-        state=1;
-        break;
-      }
-
-    case 2:
-      resetSystem();
-      state=0;
-      break;
-      
-    default:
-      state = 2;
-  }
+	switch(state)
+	{
+		case 0:
+			LiFiTXStateMachine::startState();
+			break;
+		case 1:
+			LiFiTXStateMachine::transmitState();
+			break;
+		case 2:
+			LiFiTXStateMachine::resetState();
+			break;
+		default:
+			state = 2;
+	}
 }
