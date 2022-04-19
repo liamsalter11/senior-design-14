@@ -5,17 +5,10 @@
 
 using namespace LiFiData;
 
-# define BLUE 7
-# define GREEN 9
-# define RED 10
-# define CLK 9
-# define interruptPin 13
-# define interruptControllerPin 12
-# define maxSize 200
-# define maxFrames 100
-const int transRate = 1000;
-const int frameSize = 10;
+/***MOVE TO CONSTS***/
+#include "LiFiRXConsts.hpp"
 
+/***REMOVE GLOBAL VARS***/
 int edge = 0;
 volatile bool frameDone = false;
 volatile bool sampleDone = false;
@@ -32,7 +25,7 @@ unsigned int numFrames = 0;
 unsigned int numFramesReceived = 0;
 unsigned int receivedFrame=0;
 
-/***Serial Print Functions***/
+/***MOVE TO SERIAL***/
 
 void printStartUpMessage(void) { }
 
@@ -67,29 +60,32 @@ void printBitSet()
   Serial.println(receivedBits.asASCIIString()); 
 }
 
-/***Do Stuff Functions***/
+/***QUARANTINE ZONE***/
 
-void setup() 
+/*
+*	Functions/modules:
+		Read bit
+		Wait for frame
+*/
+
+bool readBit()
 {
-  Serial.begin(19200);
-  
-  pinMode(interruptControllerPin, OUTPUT);
-  pinMode(BLUE, INPUT);
-  pinMode(GREEN, INPUT);
-  pinMode(RED,INPUT);
-  pinMode(interruptPin, INPUT);
-
-  digitalWrite(interruptControllerPin,HIGH);
-  
-  attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
+	int samples = 0;
+	int endTime = micros() + transRate;
+	while (endTime > micros()) digitalRead(BLUE) ? sample++ : sample--;
+	return sample >= 0;
 }
 
-void edgeInterrupt(void)
+LiFiData::Bitset readFrame()
 {
-  interrupting = true;
-  state = 5;
+	LiFiData::Bitset frame(10);
+	for (int i = 0; i < frameSize; i++)
+	{
+		if (readBit()) frame.set(i);
+	}
 }
 
+//These 3 functions appear to do almost the same thing
 void getFrame(void)
 {
   detachInterrupt(digitalPinToInterrupt(interruptPin));
@@ -97,7 +93,7 @@ void getFrame(void)
   receivedFrame = 0;
   frameDone = false;
   sampleDone = false; 
-  volatile int sample = 0;
+  volatile int sample = 0;	//Why volatile???
   int startTime = 0;
   while(!frameDone)
   { 
@@ -106,7 +102,7 @@ void getFrame(void)
     {
       digitalRead(BLUE) ? sample++ : sample--;
 
-      int t = transRate + startTime;
+      int t = transRate + startTime;	//Shouldn't calculate this every loop
       if(micros() >= t)
       {
         sampleDone = true;
@@ -248,6 +244,31 @@ void resetSystem(void)
   for(int i =0;i<MAX_BITSET_LENGTH;i++)
     receivedBits.clear(i);
 }
+
+/******/
+
+void setup() 
+{
+  Serial.begin(19200);
+  
+  pinMode(interruptControllerPin, OUTPUT);
+  pinMode(BLUE, INPUT);
+  pinMode(GREEN, INPUT);
+  pinMode(RED,INPUT);
+  pinMode(interruptPin, INPUT);
+
+  digitalWrite(interruptControllerPin,HIGH);
+  
+  attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
+}
+
+void edgeInterrupt(void)
+{
+  interrupting = true;
+  state = 5;
+}
+
+/***MAKE STATE MACHINE/SIMPLIFY***/
 
 void loop() 
 {
