@@ -14,6 +14,7 @@ void LiFiRXInterrupts::waitForFrameInterrupt()
 {
   attachInterrupt(digitalPinToInterrupt(interruptPin), frameIntHandler, RISING);
   hitFrame = false;
-	while (!hitFrame);
+  int timeout = millis() + frameTimeout;
+  while (!hitFrame || micros() > timeout);
   detachInterrupt(digitalPinToInterrupt(interruptPin));
 }

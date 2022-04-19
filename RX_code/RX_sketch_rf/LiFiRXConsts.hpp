@@ -11,6 +11,7 @@ const int maxSize = 200;
 const int maxFrames = 100;
 const int transRate = 1000; //us
 const int frameSize = 10;
+const int frameTimeout = 100; //ms
 
 const bool USE_CORRECTION = true;
 

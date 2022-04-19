@@ -31,7 +31,9 @@ int readBit(const LiFiData::Pinset& pins)
 LiFiData::Bitset LiFiRXSampling::readFrame(const int frameLength, const LiFiData::Pinset& pins)
 {
 	LiFiData::Bitset frame(frameLength*pins.num);
-	for (int i = 0; i < frameLength*pins.num; i += pins.num)
+	if (!readBit()) return frame;
+	frame.set(0);
+	for (int i = 1; i < frameLength*pins.num; i += pins.num)
 	{
 		int bits = readBit(pins);
 		//if (bits&1) frame.set(i+2);
