@@ -11,6 +11,18 @@ Bitset getHeaderFooterBitset()
 	return hf;
 }
 
+//Make frame number 
+Bitset getNumFramesBitset(int Num)
+{
+  Bitset NumFrame(10);
+  NumFrame.set(0);
+  for (int i = 1; i < 9; i++)
+  {
+    if (bitRead(Num, 8-i)) NumFrame.set(i);
+  }
+  return NumFrame;
+}
+
 //Copies a char value into a Bitset from most significant bit down
 Bitset makeBitsetFromChar(char c)
 {
@@ -50,7 +62,8 @@ Bitset LiFiTXLink::makeTXBitsetFromString(const String& inputMessage, bool corre
 		tx = tx + makeBitsetFromChar(c);
 	}
 	if (correct) tx = LiFiCorrection::convolve(tx);
+  int NumF=tx.getLength()/8;
 	tx = frameData(tx);
-	tx = getHeaderFooterBitset() + tx + getHeaderFooterBitset();
+	tx = getHeaderFooterBitset()+ getNumFramesBitset(NumF) + tx;
 	return tx;
 }
