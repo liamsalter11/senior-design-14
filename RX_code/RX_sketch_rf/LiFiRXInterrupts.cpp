@@ -3,17 +3,9 @@
 
 #include <Arduino.h>
 
-volatile bool hitFrame = false;
-
-void frameIntHandler()
-{
-	hitFrame = true;
-}
+const int intPinBitMask = 1 << (13 - interruptPin);
 
 void LiFiRXInterrupts::waitForFrameInterrupt()
 {
-  attachInterrupt(digitalPinToInterrupt(interruptPin), frameIntHandler, RISING);
-  hitFrame = false;
-	while (!hitFrame);
-  detachInterrupt(digitalPinToInterrupt(interruptPin));
+  while (PORTB & intPinBitMask);
 }
