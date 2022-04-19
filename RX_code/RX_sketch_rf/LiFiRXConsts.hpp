@@ -1,14 +1,14 @@
 #ifndef LIFIRXCONSTS
 #define LIFIRXCONSTS
 
-# define BLUE 7
-# define GREEN 9
-# define RED 10
-# define CLK 9
-# define interruptPin 13
-# define interruptControllerPin 12
-# define maxSize 200
-# define maxFrames 100
+const int BLUE = 7;
+const int GREEN = 9;
+const int RED = 10;
+const int CLK = 9;
+const int interruptPin = 13;
+const int interruptControllerPin = 12;
+const int maxSize = 200;
+const int maxFrames = 100;
 const int transRate = 1000;
 const int frameSize = 10;
 

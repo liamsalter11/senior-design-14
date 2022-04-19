@@ -10,6 +10,8 @@
 		pins[0] - Channel 1
 		pins[1] - Channel 2
 		pins[2] - Channel 3
+		
+	I suspect this isn't the way this was done before but the TX doesn't handle multi channel right now as well anyway
 */
 
 int readBit(const LiFiData::Pinset& pins)
@@ -31,7 +33,7 @@ LiFiData::Bitset LiFiRXSampling::readFrame(const int frameLength, const LiFiData
 	LiFiData::Bitset frame(frameLength*pins.num);
 	for (int i = 0; i < frameLength*pins.num; i += pins.num)
 	{
-		int bits = readBit();
+		int bits = readBit(pins);
 		if (bits&1) frame.set(i+2);
 		if (bits&2) frame.set(i+1);
 		if (bits&4) frame.set(i);

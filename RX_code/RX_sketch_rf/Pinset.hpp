@@ -7,7 +7,7 @@ namespace LiFiData
 	{
 		int pins[3];
 		int num;
-	}
+	};
 }
 
 #endif
