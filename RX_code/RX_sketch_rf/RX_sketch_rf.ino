@@ -68,23 +68,6 @@ void printBitSet()
 		Wait for frame
 */
 
-bool readBit()
-{
-	int samples = 0;
-	int endTime = micros() + transRate;
-	while (endTime > micros()) digitalRead(BLUE) ? sample++ : sample--;
-	return sample >= 0;
-}
-
-LiFiData::Bitset readFrame()
-{
-	LiFiData::Bitset frame(10);
-	for (int i = 0; i < frameSize; i++)
-	{
-		if (readBit()) frame.set(i);
-	}
-}
-
 //These 3 functions appear to do almost the same thing
 void getFrame(void)
 {
@@ -223,12 +206,10 @@ void getFrameRGB(void)
   attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING); 
 }
 
+//Cuts the header and footer bits off of the frame
 void frameHandler(unsigned int inputFrame)
 {
-    inputFrame = inputFrame>>1;
-    uint8_t bitMask = 255;
-    
-    inputFrame = inputFrame & bitMask;
+	inputFrame = (inputFrame >> 1) & 0xFF;
     dataVector.push_back(inputFrame);
 }
 

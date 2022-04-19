@@ -1,5 +1,7 @@
 #include "LiFiRXSampling.hpp"
 
+#include "LiFiRXConsts.hpp"
+
 bool readBit()
 {
 	int samples = 0;
