@@ -1,20 +1,40 @@
 #include "LiFiRXSampling.hpp"
-
 #include "LiFiRXConsts.hpp"
 
-bool readBit()
+/*
+ 	Multi channel frames
+	Bitset is ordered received bits in the following order:
+		<- Channel 1 - Channel 2 - Channel 3 ->
+	Interleaving channel bits
+	Pinset
+		pins[0] - Channel 1
+		pins[1] - Channel 2
+		pins[2] - Channel 3
+*/
+
+int readBit(const LiFiData::Pinset& pins)
 {
-	int samples = 0;
+	int samp0 = 0, samp1 = 0, samp2 = 0;
 	int endTime = micros() + transRate;
-	while (endTime > micros()) digitalRead(BLUE) ? sample++ : sample--;
-	return sample >= 0;
+	while (endTime > micros())
+	{
+		if (pins.pins[0]) digitalRead(pins.pins[0]) ? samp0++ : samp0--;
+		if (pins.pins[1]) digitalRead(pins.pins[1]) ? samp1++ : samp1--;
+		if (pins.pins[2]) digitalRead(pins.pins[2]) ? samp2++ : samp2--;
+	}
+	int result = 4*(samp0>0) + 2*(samp1>0) + (samp2>0);
+	return result;
 }
 
-LiFiData::Bitset LiFiRXSampling::readFrame(const int frameLength)
+LiFiData::Bitset LiFiRXSampling::readFrame(const int frameLength, const LiFiData::Pinset& pins)
 {
-	LiFiData::Bitset frame(10);
-	for (int i = 0; i < frameLength; i++)
+	LiFiData::Bitset frame(frameLength*pins.num);
+	for (int i = 0; i < frameLength*pins.num; i += pins.num)
 	{
-		if (readBit()) frame.set(i);
+		int bits = readBit();
+		if (bits&1) frame.set(i+2);
+		if (bits&2) frame.set(i+1);
+		if (bits&4) frame.set(i);
 	}
+	return frame;
 }

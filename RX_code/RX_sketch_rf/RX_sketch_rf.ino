@@ -2,6 +2,7 @@
 #include <Vector.h>
 
 #include "LiFiCorrection.hpp"
+#include "LiFiRXSampling.hpp"
 
 using namespace LiFiData;
 
@@ -24,6 +25,41 @@ LiFiData::Bitset receivedBits(MAX_BITSET_LENGTH);
 unsigned int numFrames = 0;
 unsigned int numFramesReceived = 0;
 unsigned int receivedFrame=0;
+
+LiFiData::Bitset unLinkFrame(const LiFiData::Bitset& frame)
+{
+	LiFiData::Bitset data(frame.getLength()-2);
+	for (int i = 0; i < frame.getLength()-2; i++)
+	{
+		if (frame[i+1]) data.set(i);
+	}
+	return data;
+}
+
+LiFiData::Bitset getFrame(const LiFiData::Pinset& pins)
+{
+	detachInterrupt(digitalPinToInterrupt(interruptPin));
+	LiFiData::Bitset frame = LiFiRXSampling::readFrame(frameSize, pins);
+	frame = unLinkFrame(frame);
+	interrupting = false; //???
+	attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
+	return frame;
+}
+
+LiFiData::Bitset getFrameOneChannel()
+{
+	return getFrame({{BLUE, 0, 0}, 1});
+}
+
+LiFiData::Bitset getFrameRB()
+{
+	return getFrame({{BLUE, RED, 0}, 2});
+}
+
+LiFiData::Bitset getFrameRGB()
+{
+	return getFrame({{BLUE, RED, GREEN}, 3});
+}
 
 /***MOVE TO SERIAL***/
 
@@ -68,155 +104,9 @@ void printBitSet()
 		Wait for frame
 */
 
-//These 3 functions appear to do almost the same thing
-void getFrame(void)
-{
-  detachInterrupt(digitalPinToInterrupt(interruptPin));
-  
-  receivedFrame = 0;
-  frameDone = false;
-  sampleDone = false; 
-  volatile int sample = 0;	//Why volatile???
-  int startTime = 0;
-  while(!frameDone)
-  { 
-    startTime = micros();
-    while(!sampleDone && !frameDone) 
-    {
-      digitalRead(BLUE) ? sample++ : sample--;
-
-      int t = transRate + startTime;	//Shouldn't calculate this every loop
-      if(micros() >= t)
-      {
-        sampleDone = true;
-        bitsReceived++;
-        if(bitsReceived == frameSize)
-        {
-          frameDone = true;
-          bitsReceived = 0;
-        }
-      }
-
-    }    
-    sampleDone = false;
-    receivedFrame = receivedFrame<<1;
-    if(sample > 0)
-      receivedFrame++;
-    sample = 0;       
-  }
-  frameHandler(receivedFrame);
-  interrupting = false;
-  attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);  
-}
-
-void getFrameRB(void)
-{
-  detachInterrupt(digitalPinToInterrupt(interruptPin));
-  
-  unsigned int receivedFrameR = 0;
-  unsigned int receivedFrameB = 0;
-  frameDone = false;
-  sampleDone = false; 
-  volatile int sampleB = 0;
-  volatile int sampleR = 0;
-  int startTime = 0;
-  while(!frameDone)
-  { 
-    startTime = micros();
-    while(!sampleDone && !frameDone) 
-    {
-      digitalRead(BLUE) ? sampleB++ : sampleB--;
-      digitalRead(RED) ? sampleR++ : sampleR--;
-
-      int t = transRate + startTime;
-      if(micros() >= t)
-      {
-        sampleDone = true;
-        bitsReceived++;
-        if(bitsReceived == frameSize)
-        {
-          frameDone = true;
-          bitsReceived = 0;
-        }
-      }
-
-    }    
-    sampleDone = false;
-    receivedFrameB = receivedFrameB<<1;
-    if(sampleB > 0)
-      receivedFrameB++;
-
-    receivedFrameR = receivedFrameR<<1;
-    if(sampleR > 0)
-      receivedFrameR++;
-    sampleR = 0;
-    sampleB = 0;
-  }
-  frameHandler(receivedFrameB);
-  frameHandler(receivedFrameR);
-
-  interrupting = false;
-  attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
-}
-
-void getFrameRGB(void)
-{
-  detachInterrupt(digitalPinToInterrupt(interruptPin));
-  
-  receivedFrame = 0;
-  frameDone = false;
-  sampleDone = false; 
-  volatile int sampleR = 0, sampleG = 0, sampleB = 0;
-  int startTime = 0;
-  while(!frameDone)
-  {
-    startTime = micros();
-    while(!sampleDone && !frameDone) 
-    {
-      digitalRead(GREEN) ? sampleG++ : sampleG--;
-      digitalRead(BLUE) ? sampleB++ : sampleB--;
-      digitalRead(RED) ? sampleR++ : sampleR--;
-
-      int t = transRate * 1000 + startTime;
-      if(micros() >= t)
-      {
-        sampleDone = true;
-        bitsReceived++;
-        if(bitsReceived == frameSize)
-        {
-          frameDone = true;
-          bitsReceived = 0;
-        }
-      }
-
-    }
-    sampleDone = false;
-
-    receivedFrame = receivedFrame << 3;
-    receivedFrame |= ((sampleB > 0) << 2) | ((sampleG > 0) << 1) | (sampleR > 0);
-
-    sampleR = 0;
-    sampleG = 0;
-    sampleB = 0; 
-  }
-  
-  frameHandler(receivedFrame);
-
-  interrupting = false;
-  attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING); 
-}
-
-//Cuts the header and footer bits off of the frame
-void frameHandler(unsigned int inputFrame)
-{
-	inputFrame = (inputFrame >> 1) & 0xFF;
-    dataVector.push_back(inputFrame);
-}
-
 
 void resetSystem(void)
 {
- 
   Serial.flush();
   frameStartLock = false;
   gotNumFrames = false;

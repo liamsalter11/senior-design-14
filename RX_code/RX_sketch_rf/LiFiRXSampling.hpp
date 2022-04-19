@@ -1,12 +1,13 @@
 #ifndef LIFIRXSAMPLER
 #define LIFIRXSAMPLER
 
-#include "LiFiData::Bitset"
+#include "Bitset.hpp"
+#include "Pinset.hpp"
 
 namespace LiFiRXSampling
 {
-	//Returns a frame of the given length
-	LiFiData::Bitset readFrame(const int);
+	//Returns a frame of the given length*number of pins
+	LiFiData::Bitset readFrame(const int, const LiFiData::Pinset&);
 }
 
 #endif
