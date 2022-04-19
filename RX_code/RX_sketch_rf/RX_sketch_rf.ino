@@ -3,7 +3,6 @@
 #include "LiFiRXSampling.hpp"
 #include "LiFiRXConsts.hpp"
 #include "LiFiRXLink.hpp"
-#include "LiFiRXInterrupts.hpp"
 #include "LiFiCorrection.hpp"
 
 volatile bool interrupting = false;
@@ -19,8 +18,6 @@ void setup()
 	pinMode(interruptPin, INPUT);
 
 	digitalWrite(interruptControllerPin,HIGH);
-
-	LiFiRXInterrupts::enableFrameInterrupt();
 }
 
 int lengthBitsetToInt(const LiFiData::Bitset& bits)
