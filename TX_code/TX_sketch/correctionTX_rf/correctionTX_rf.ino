@@ -4,62 +4,6 @@
 #include "LiFiTXConsts.hpp"
 #include "LiFiTXLink.hpp"
 
-using LiFiData::Bitset;
-
-namespace LiFiTXStateMachine
-{
-	namespace
-	{
-		int state = 0;
-	}
-	
-	//Startup state for power on
-	void startState()
-	{
-		state = 1;
-	}
-	
-	//State for waiting for a message and sending it
-	void transmitState()
-	{
-		String message = LiFiTXSerial::getInputMessage();
-		if (message.length())
-		{
-			Bitset data = LiFiTXLink::makeTXBitsetFromString(message, USE_CORRECTION);
-			LiFiTXSerial::writeBitset(data);
-			LiFiTXController::TXOneChannel(data);
-		}
-		state = 2;
-	}
-	
-	//State for resetting and preparing for next message
-	void resetState()
-	{
-		LiFiTXController::setAllLEDs(LOW);
-		LiFiTXSerial::reset();
-		state = 0;
-	}
-	
-	//Switch case to match state index to state function
-	void handleState()
-	{
-		switch(state)
-		{
-			case 0:
-				startState();
-				break;
-			case 1:
-				transmitState();
-				break;
-			case 2:
-				resetState();
-				break;
-			default:
-				state = 2;
-		}
-	}
-}
-
 //Initialize all GPIO pins
 void setup() 
 {
@@ -73,8 +17,35 @@ void setup()
 	LiFiTXController::setAllLEDs(LOW);
 }
 
+String getNextMessage()
+{
+	return LiFiTXSerial::getInputMessage();
+}
+
+void linkMessage(String& message)
+{
+	LiFiData::Bitset data;
+	if (message.length()) LiFiData::Bitset data = LiFiTXLink::makeTXBitsetFromString(message, USE_CORRECTION);
+	return data;
+}
+
+void transmitMessage(Bitset& data)
+{
+	LiFiTXSerial::writeBitset(data);
+	LiFiTXController::TXOneChannel(data);
+}
+
+void resetTX()
+{
+	LiFiTXController::setAllLEDs(LOW);
+	LiFiTXSerial::reset();
+}
+
 //Run state machine continuously
 void loop() 
 {
-	LiFiTXStateMachine::handleState();
+	String message = getNextMessage();
+	LiFiData::Bitset data = linkMessage(message);
+	transmitMessage(data);
+	resetTX();
 }
