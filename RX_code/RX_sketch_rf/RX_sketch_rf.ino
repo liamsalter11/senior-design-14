@@ -9,49 +9,32 @@ using namespace LiFiData;
 # define GREEN 9
 # define RED 10
 # define CLK 9
-//# define BLUE 7
 # define interruptPin 13
 # define interruptControllerPin 12
-
 # define maxSize 200
 # define maxFrames 100
-
-const int transRate = 1000; //us
-//const int frameDelay = 300; //ms
-//10 bits in a frame, 0-9
+const int transRate = 1000;
 const int frameSize = 10;
 
-//variables and objects for interrupt handling
 int edge = 0;
 volatile bool frameDone = false;
 volatile bool sampleDone = false;
 volatile bool interrupting = false;
 volatile int bitsReceived = 0;
-
-
 volatile int state = 0;
 int frameStartTime = 0;
 bool frameStartLock = false;
 bool gotNumFrames = false;
-
-//byte array to store message
-
 unsigned int storageArray[maxFrames*2];
 Vector<unsigned int> dataVector(storageArray);
-
 LiFiData::Bitset receivedBits(MAX_BITSET_LENGTH);
-
 unsigned int numFrames = 0;
 unsigned int numFramesReceived = 0;
-
 unsigned int receivedFrame=0;
 
 /***Serial Print Functions***/
 
-void printStartUpMessage(void)
-{
-  //Serial.print("Welcome! We are waiting for the message to be transmitted to us.\n");
-}
+void printStartUpMessage(void) { }
 
 
 void printDataVector()
@@ -60,15 +43,11 @@ void printDataVector()
   for(int i =0; i<dataVector.size()-1;i++)
   {
     Serial.print((char)dataVector.at(i));
-  //  Serial.print(" ");
-  //  Serial.print(dataVector.at(i));
-  //Serial.println();
   }
 }
 
 void printBitSet()
 {
-  //get rid of header and footer
   dataVector.remove(0);
   dataVector.pop_back();
 
@@ -84,24 +63,14 @@ void printBitSet()
       }
     }
   }
-  //Serial.println("\nReceived Bits:");
-  //Serial.println(receivedBits.asString());
-  //Serial.println(receivedBits[5]);
-  //Serial.println("\nDeocoded:");
   receivedBits = LiFiCorrection::decodeErrors(receivedBits);
-  Serial.println(receivedBits.asASCIIString());
-  //Serial.println(receivedBits.asString());
-
-
-  
+  Serial.println(receivedBits.asASCIIString()); 
 }
 
 /***Do Stuff Functions***/
 
 void setup() 
 {
-  //pinMode(binaryInput, INPUT);
-  
   Serial.begin(19200);
   
   pinMode(interruptControllerPin, OUTPUT);
@@ -113,27 +82,17 @@ void setup()
   digitalWrite(interruptControllerPin,HIGH);
   
   attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
-
-  //setup onshot timer that counts between each sample taken during a frame
-  //sampleTimer.setDurationMsec((double)(transRate));
 }
-
-//interrupt handler
 
 void edgeInterrupt(void)
 {
   interrupting = true;
   state = 5;
-  //Serial.println("trigger");
 }
 
 void getFrame(void)
 {
-  //detach the interrupt so that it doesnt trigger inside of a frame
   detachInterrupt(digitalPinToInterrupt(interruptPin));
-  //noInterrupts();
-  //Serial.println("edge interrupt");
-  //Serial.println(micros());
   
   receivedFrame = 0;
   frameDone = false;
@@ -142,26 +101,10 @@ void getFrame(void)
   int startTime = 0;
   while(!frameDone)
   { 
-    
-    //Serial.println(frameDone);
-    
-    //trigger the sampling timer, if the timer is over then restart the timer, restart the timer for the next frame
-    /*if(sampleTimer.isRunning() == 0)
-    {
-      sampleTimer.restart();
-    }
-    sampleTimer.pause();
-    sampleTimer.start();*/
-    //Serial.print(sampleDone);
-    //Serial.print(frameDone);
     startTime = micros();
     while(!sampleDone && !frameDone) 
     {
-      
-      //Serial.print(" ");
-      //Serial.print(sample);
       digitalRead(BLUE) ? sample++ : sample--;
-      //sampleTimer.update();
 
       int t = transRate + startTime;
       if(micros() >= t)
@@ -171,42 +114,25 @@ void getFrame(void)
         if(bitsReceived == frameSize)
         {
           frameDone = true;
-          //Serial.println("frameDone");
           bitsReceived = 0;
         }
       }
 
     }    
-    //reset the conditional
     sampleDone = false;
-    //Serial.println(sample);
     receivedFrame = receivedFrame<<1;
     if(sample > 0)
       receivedFrame++;
-  
-    //reset the sample counter
     sample = 0;       
   }
-  
-  //Serial.println(receivedFrame, BIN);
   frameHandler(receivedFrame);
-  //Serial.println("end of interrupt ");
-  //digitalWrite(interruptControllerPin, HIGH);
-  //Serial.println(micros());
-  //reset the conditional
-  //frameDone = false;
   interrupting = false;
-  attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
-  //interrupts();  
+  attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);  
 }
 
 void getFrameRB(void)
 {
-  //detach the interrupt so that it doesnt trigger inside of a frame
   detachInterrupt(digitalPinToInterrupt(interruptPin));
-  //noInterrupts();
-  //Serial.println("edge interrupt");
-  //Serial.println(micros());
   
   unsigned int receivedFrameR = 0;
   unsigned int receivedFrameB = 0;
@@ -217,28 +143,11 @@ void getFrameRB(void)
   int startTime = 0;
   while(!frameDone)
   { 
-    
-    //Serial.println(frameDone);
-    
-    //trigger the sampling timer, if the timer is over then restart the timer, restart the timer for the next frame
-    /*if(sampleTimer.isRunning() == 0)
-    {
-      sampleTimer.restart();
-    }
-    sampleTimer.pause();
-    sampleTimer.start();*/
-    //Serial.print(sampleDone);
-    //Serial.print(frameDone);
     startTime = micros();
     while(!sampleDone && !frameDone) 
     {
-      
-      //Serial.print(" ");
-      //Serial.print(sample);
       digitalRead(BLUE) ? sampleB++ : sampleB--;
       digitalRead(RED) ? sampleR++ : sampleR--;
-
-      //sampleTimer.update();
 
       int t = transRate + startTime;
       if(micros() >= t)
@@ -248,15 +157,12 @@ void getFrameRB(void)
         if(bitsReceived == frameSize)
         {
           frameDone = true;
-          //Serial.println("frameDone");
           bitsReceived = 0;
         }
       }
 
     }    
-    //reset the conditional
     sampleDone = false;
-    //Serial.println(sample);
     receivedFrameB = receivedFrameB<<1;
     if(sampleB > 0)
       receivedFrameB++;
@@ -264,16 +170,10 @@ void getFrameRB(void)
     receivedFrameR = receivedFrameR<<1;
     if(sampleR > 0)
       receivedFrameR++;
-  
-    //reset the sample counter
     sampleR = 0;
-    sampleB = 0; 
-
-    
+    sampleB = 0;
   }
-  //Serial.print("blu");
   frameHandler(receivedFrameB);
-  //Serial.print("red");
   frameHandler(receivedFrameR);
 
   interrupting = false;
@@ -282,7 +182,6 @@ void getFrameRB(void)
 
 void getFrameRGB(void)
 {
-  //detach the interrupt so that it doesnt trigger inside of a frame
   detachInterrupt(digitalPinToInterrupt(interruptPin));
   
   receivedFrame = 0;
@@ -292,7 +191,6 @@ void getFrameRGB(void)
   int startTime = 0;
   while(!frameDone)
   {
-    //trigger the sampling timer, if the timer is over then restart the timer, restart the timer for the next frame
     startTime = micros();
     while(!sampleDone && !frameDone) 
     {
@@ -313,14 +211,11 @@ void getFrameRGB(void)
       }
 
     }
-      
-    //reset the conditional
     sampleDone = false;
 
     receivedFrame = receivedFrame << 3;
     receivedFrame |= ((sampleB > 0) << 2) | ((sampleG > 0) << 1) | (sampleR > 0);
-  
-    //reset the sample counter
+
     sampleR = 0;
     sampleG = 0;
     sampleB = 0; 
@@ -334,16 +229,11 @@ void getFrameRGB(void)
 
 void frameHandler(unsigned int inputFrame)
 {
-  //Serial.println(inputFrame, BIN);
- 
-    //get rid of frame footer 
-    //0111111110 is the mask, gets rid of all start/stop bits
     inputFrame = inputFrame>>1;
     uint8_t bitMask = 255;
     
     inputFrame = inputFrame & bitMask;
     dataVector.push_back(inputFrame);
-
 }
 
 
@@ -357,17 +247,10 @@ void resetSystem(void)
   
   for(int i =0;i<MAX_BITSET_LENGTH;i++)
     receivedBits.clear(i);
-    
-  //Serial.println("resettging daatat");
-  //printDataVector();
-  
-  //Serial.print("\nRestarting..... \n \n");
 }
 
 void loop() 
 {
-  
-  //Serial.print("State \n");
   switch(state)
   {
     case 0:
@@ -377,12 +260,8 @@ void loop()
       break;
 
     case 1:
-      
-      //the header of the transmission was received  
-      //Serial.print("header State"); 
       if(dataVector.front()==255)
       {
-        //Serial.println("header received");
         frameStartLock = true;
         if(!interrupting)  
           state=7;
@@ -396,15 +275,9 @@ void loop()
       break;
       
     case 2:
-      //the number of frames was received
       if(numFramesReceived >= numFrames)
       {  
-        //Serial.println(interrupting);
-        //if(!interrupting)
-        //{
-          //Serial.println("fuck");
           state = 3;
-        //}
       }
       else 
       {
@@ -414,32 +287,25 @@ void loop()
       break;
     
     case 3:
-      //Serial.print("staet 3");
-      //printMessageToSerial(convertToString(wholeBIN));
       printDataVector();
-      //printBitSet();
       
       if(!interrupting)
         state = 4;
         
     case 4:
       resetSystem();
-      //delay(2000);
       state=1;
       break;
     case 5:
-      //state in which the entire frame is sampled
       getFrame();
       
       if(gotNumFrames == true)
       {
         numFramesReceived++;
-        //Serial.println(numFramesReceived);
       }
        
       if(!frameStartLock)
       {
-        //Serial.println("locking");
         frameStartLock = true;
         state = 1;
       }
@@ -455,16 +321,10 @@ void loop()
       break;
 
     case 7:
-      //case to get the number of frames received
-      //wait until the number of frames being transmitted is received
       if(dataVector.size()==2 && !gotNumFrames)
       {
         numFrames = dataVector.at(1);
         gotNumFrames = true;
-        /*
-        Serial.print("# frames: ");
-        Serial.print(numFrames);
-        Serial.println();*/
         if(!interrupting)
           state = 2;
       }
@@ -476,8 +336,4 @@ void loop()
       break;
       
   }
-  /*if(frameDone == true)
-    attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);*/
-
-
 }
