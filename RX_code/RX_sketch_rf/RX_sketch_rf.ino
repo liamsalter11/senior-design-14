@@ -4,6 +4,7 @@
 #include "LiFiRXConsts.hpp"
 #include "LiFiRXLink.hpp"
 #include "LiFiRXInterrupts.hpp"
+#include "LiFiCorrection.hpp"
 
 volatile bool interrupting = false;
 
@@ -29,14 +30,15 @@ int lengthBitsetToInt(const LiFiData::Bitset& bits)
 	return length;
 }
 
-void waitForHeaderFrame()
+bool waitForHeaderFrame()
 {
 	LiFiData::Bitset header = LiFiRXLink::getFrameOneChannel();
 	int headerVal = lengthBitsetToInt(header);
 	if (headerVal != 255)
 	{
-		//Bad news
+		return false;
 	}
+  return true;
 }
 
 int getMessageLengthFrame()
@@ -48,7 +50,10 @@ int getMessageLengthFrame()
 LiFiData::Bitset readMessage(int messageLength)
 {
 	LiFiData::Bitset message(0);
-	for (int i = 0; i < messageLength; i++) message = message + LiFiRXLink::getFrameOneChannel();
+	for (int i = 0; i < messageLength; i++)
+	{
+	  message = message + LiFiRXLink::getFrameOneChannel();
+	}
   return message;
 }
 
@@ -59,10 +64,10 @@ void reset()
 
 void loop()
 {
-	waitForHeaderFrame();
+	while (!waitForHeaderFrame());
 	int numBytes = getMessageLengthFrame();
 	LiFiData::Bitset message = readMessage(numBytes);
-	Serial.println(message.asString());
+  if (USE_CORRECTION) message = LiFiCorrection::decodeErrors(message);
 	Serial.println(message.asASCIIString());
 	reset();
 }

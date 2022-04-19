@@ -13,6 +13,7 @@ void frameIntHandler()
 void LiFiRXInterrupts::enableFrameInterrupt()
 {
 	attachInterrupt(digitalPinToInterrupt(interruptPin), frameIntHandler, RISING);
+  hitFrame = false;
 }
 
 void LiFiRXInterrupts::disableFrameInterrupt()
@@ -22,6 +23,13 @@ void LiFiRXInterrupts::disableFrameInterrupt()
 
 void LiFiRXInterrupts::waitForFrameInterrupt()
 {
+  attachInterrupt(digitalPinToInterrupt(interruptPin), frameIntHandler, RISING);
+  hitFrame = false;
 	while (!hitFrame);
-	hitFrame = false;
+  detachInterrupt(digitalPinToInterrupt(interruptPin));
+}
+
+void LiFiRXInterrupts::resetFrameInterrupt()
+{
+  hitFrame = false;
 }

@@ -17,10 +17,8 @@ LiFiData::Bitset unLinkFrame(const LiFiData::Bitset& frame)
 LiFiData::Bitset getFrame(const LiFiData::Pinset& pins)
 {
 	LiFiRXInterrupts::waitForFrameInterrupt();
-	LiFiRXInterrupts::disableFrameInterrupt();
 	LiFiData::Bitset frame = LiFiRXSampling::readFrame(frameSize, pins);
 	frame = unLinkFrame(frame);
-	LiFiRXInterrupts::enableFrameInterrupt();
 	return frame;
 }
 

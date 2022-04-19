@@ -25,7 +25,7 @@ int readBit(const LiFiData::Pinset& pins)
 		if (pins.pins[2]) digitalRead(pins.pins[2]) ? samp2++ : samp2--;
 	}
 	int result = 4*(samp0>0) + 2*(samp1>0) + (samp2>0);
-	return result;
+	return samp0>0;
 }
 
 LiFiData::Bitset LiFiRXSampling::readFrame(const int frameLength, const LiFiData::Pinset& pins)
@@ -34,9 +34,9 @@ LiFiData::Bitset LiFiRXSampling::readFrame(const int frameLength, const LiFiData
 	for (int i = 0; i < frameLength*pins.num; i += pins.num)
 	{
 		int bits = readBit(pins);
-		if (bits&1) frame.set(i+2);
-		if (bits&2) frame.set(i+1);
-		if (bits&4) frame.set(i);
+		//if (bits&1) frame.set(i+2);
+		//if (bits&2) frame.set(i+1);
+		if (bits) frame.set(i);
 	}
 	return frame;
 }

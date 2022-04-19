@@ -9,7 +9,9 @@ const int interruptPin = 13;
 const int interruptControllerPin = 12;
 const int maxSize = 200;
 const int maxFrames = 100;
-const int transRate = 1000;
+const int transRate = 1000; //us
 const int frameSize = 10;
+
+const bool USE_CORRECTION = true;
 
 #endif
