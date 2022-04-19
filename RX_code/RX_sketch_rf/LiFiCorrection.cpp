@@ -1,4 +1,6 @@
 #include "LiFiCorrection.hpp"	
+	
+#include <iostream>
 
 using LiFiData::Bitset;
 
@@ -85,7 +87,7 @@ void calculatePathMetrics(trellis& trell, const Bitset& encoded)
 Bitset findBestPath(trellis& trell)
 {
 	Bitset data(trell.length);
-	int minState = -1, min = 30000;
+	int minState = -1, min = 100000;
 	for (int i = 0; i < 4; i++)
 	{
 		if (trell[i][trell.length] < min)

@@ -23,9 +23,17 @@ Bitset::Bitset(const String& s) : length(s.length())
 	}
 }
 
-bool Bitset::badIndex(int i) const { return i < 0 || i >= length; }
+Bitset::Bitset(const int* arr, const int l) : length(l*8)
+{
+	for (int i = 0; i < l; i++) data[i] = arr[i];
+}
 
-Bitset::Bitset(int l) : length(l) { }
+bool Bitset::badIndex(int i) const { return i < 0 || i >= MAX_BITSET_LENGTH; }
+
+Bitset::Bitset(int l) : length(l)
+{ 
+	for (int i = 0; i < MAX_ARR_LENGTH; i++) data[i] = 0;
+}
 
 const Bitset Bitset::operator+(const Bitset& rhs) const
 {
@@ -71,6 +79,8 @@ void Bitset::clear(int i)
 	data[i/8] &= ~(0x1<<(i%8));
 }
 
+void Bitset::setLength(int l) { length = l; }
+
 int Bitset::getLength() const { return length; }
 
 String Bitset::asString() const
@@ -78,7 +88,22 @@ String Bitset::asString() const
 	String str;
 	for (int i = 0; i < length; i++)
 	{
-		str = ((at(i)) ? '1' : '0') + str;
+		str += ((at(i)) ? '1' : '0');
 	}
 	return str;
+}
+
+String Bitset::asASCIIString() const
+{
+	String str;
+  for (int i = 0; i < length; i += 8)
+  {
+    char letter = 0;
+    for (int j = 0; j < 8; j++)
+    {
+      if (at(i+j)) letter |= 0x80 >> j;
+    }
+    str += letter;
+  }
+  return str;
 }
