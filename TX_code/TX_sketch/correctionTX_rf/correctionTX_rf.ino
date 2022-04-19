@@ -3,6 +3,7 @@
 #include "LiFiTXSerial.hpp"
 #include "LiFiTXConsts.hpp"
 #include "LiFiTXLink.hpp"
+#include "Bitset.hpp"
 
 //Initialize all GPIO pins
 void setup() 
@@ -22,14 +23,14 @@ String getNextMessage()
 	return LiFiTXSerial::getInputMessage();
 }
 
-void linkMessage(String& message)
+LiFiData::Bitset linkMessage(String& message)
 {
 	LiFiData::Bitset data;
 	if (message.length()) LiFiData::Bitset data = LiFiTXLink::makeTXBitsetFromString(message, USE_CORRECTION);
 	return data;
 }
 
-void transmitMessage(Bitset& data)
+void transmitMessage(LiFiData::Bitset& data)
 {
 	LiFiTXSerial::writeBitset(data);
 	LiFiTXController::TXOneChannel(data);

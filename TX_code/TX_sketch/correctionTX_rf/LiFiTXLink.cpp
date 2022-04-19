@@ -1,5 +1,6 @@
 #include "LiFiTXLink.hpp"
 #include "LiFiCorrection.hpp"
+#include "LiFiTXConsts.hpp"
 
 using LiFiData::Bitset;
 
