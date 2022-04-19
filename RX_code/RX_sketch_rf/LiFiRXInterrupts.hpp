@@ -3,10 +3,7 @@
 
 namespace LiFiRXInterrupts
 {
-	void enableFrameInterrupt();
-	void disableFrameInterrupt();
 	void waitForFrameInterrupt();
-  void resetFrameInterrupt();
 }
 
 #endif
