@@ -1,10 +1,9 @@
 // a 11111111 indicates the start and end of transmission
-#include <Vector.h>
-
 #include "LiFiCorrection.hpp"
 #include "LiFiRXSampling.hpp"
 #include "LiFiRXConsts.hpp"
 #include "LiFiRXLink.hpp"
+#include "LiFiRXInterrupts.hpp"
 
 volatile bool interrupting = false;
 
@@ -20,12 +19,7 @@ void setup()
 
 	digitalWrite(interruptControllerPin,HIGH);
 
-	attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
-}
-
-void edgeInterrupt(void)
-{
-	interrupting = true;
+	LiFiRXInterrupts::enableFrameInterrupt();
 }
 
 int lengthBitsetToInt(const LiFiData::Bitset& bits)
@@ -37,7 +31,6 @@ int lengthBitsetToInt(const LiFiData::Bitset& bits)
 
 void waitForHeaderFrame()
 {
-	while (!interrupting);
 	LiFiData::Bitset header = LiFiRXLink::getFrameOneChannel();
 	int headerVal = lengthBitsetToInt(header);
 	if (headerVal != 255)
@@ -48,7 +41,6 @@ void waitForHeaderFrame()
 
 int getMessageLengthFrame()
 {
-	while (!interrupting);
 	LiFiData::Bitset messageLength = LiFiRXLink::getFrameOneChannel();
 	return lengthBitsetToInt(messageLength);
 }
@@ -56,11 +48,8 @@ int getMessageLengthFrame()
 LiFiData::Bitset readMessage(int messageLength)
 {
 	LiFiData::Bitset message(0);
-	for (int i = 0; i < messageLength; i++)
-	{
-		while (!interrupting);
-		message = message + LiFiRXLink::getFrameOneChannel();
-	}
+	for (int i = 0; i < messageLength; i++) message = message + LiFiRXLink::getFrameOneChannel();
+  return message;
 }
 
 void reset()

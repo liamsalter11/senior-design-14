@@ -1,5 +1,8 @@
 #include "LiFiRXLink.hpp"
 #include "LiFiRXConsts.hpp"
+#include "Pinset.hpp"
+#include "LiFiRXSampling.hpp"
+#include "LiFiRXInterrupts.hpp"
 
 LiFiData::Bitset unLinkFrame(const LiFiData::Bitset& frame)
 {
@@ -13,11 +16,11 @@ LiFiData::Bitset unLinkFrame(const LiFiData::Bitset& frame)
 
 LiFiData::Bitset getFrame(const LiFiData::Pinset& pins)
 {
-	detachInterrupt(digitalPinToInterrupt(interruptPin));
+	LiFiRXInterrupts::waitForFrameInterrupt();
+	LiFiRXInterrupts::disableFrameInterrupt();
 	LiFiData::Bitset frame = LiFiRXSampling::readFrame(frameSize, pins);
 	frame = unLinkFrame(frame);
-	interrupting = false;
-	attachInterrupt(digitalPinToInterrupt(interruptPin), edgeInterrupt, RISING);
+	LiFiRXInterrupts::enableFrameInterrupt();
 	return frame;
 }
 

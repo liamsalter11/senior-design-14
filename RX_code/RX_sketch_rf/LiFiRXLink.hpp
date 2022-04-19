@@ -5,11 +5,11 @@
 
 namespace LiFiRXLink
 {
-	LiFiData::Bitset LiFiRXLink::getFrameOneChannel();
+	LiFiData::Bitset getFrameOneChannel();
 
-	LiFiData::Bitset LiFiRXLink::getFrameTwoChannel();
+	LiFiData::Bitset getFrameTwoChannel();
 
-	LiFiData::Bitset LiFiRXLink::getFrameThreeChannel();
+	LiFiData::Bitset getFrameThreeChannel();
 }
 
 #endif
