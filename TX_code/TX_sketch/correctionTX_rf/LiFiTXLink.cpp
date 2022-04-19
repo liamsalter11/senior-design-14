@@ -6,8 +6,8 @@ using LiFiData::Bitset;
 //Makes a single byte Bitset with all 1's
 Bitset getHeaderBitset()
 {
-	Bitset header(8);
-	for (int i = 0; i < 8; i++) header.set(i);
+	Bitset header(FRAME_SIZE-2);
+	for (int i = 0; i < FRAME_SIZE-2; i++) header.set(i);
 	return header;
 }
 
@@ -37,13 +37,13 @@ Bitset frameData(const Bitset& data)
 {
 	Bitset allFrames;
 
-	for (int i = 0; i < data.getLength()/8; i++)
+	for (int i = 0; i < data.getLength()/(FRAME_SIZE-2); i++)
 	{
-		Bitset frame(10);
+		Bitset frame(FRAME_SIZE);
 		frame.set(0);
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < FRAME_SIZE-2; j++)
 		{
-			if (data[j+8*i]) frame.set(j+1);
+			if (data[j+(FRAME_SIZE-2)*i]) frame.set(j+1);
 		}
 		allFrames = allFrames + frame; 
 	}
