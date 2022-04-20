@@ -1,15 +1,26 @@
 #include "LiFiTXLink.hpp"
 #include "LiFiCorrection.hpp"
-#include "LiFiTXConsts.hpp"
 
 using LiFiData::Bitset;
 
 //Makes a single byte Bitset with all 1's
-Bitset getHeaderBitset()
+Bitset getHeaderFooterBitset()
 {
-	Bitset header(FRAME_SIZE-2);
-	for (int i = 0; i < FRAME_SIZE-2; i++) header.set(i);
-	return header;
+	Bitset hf(10);
+	for (int i = 0; i < 9; i++) hf.set(i);
+	return hf;
+}
+
+//Make frame number 
+Bitset getNumFramesBitset(int Num)
+{
+  Bitset NumFrame(10);
+  NumFrame.set(0);
+  for (int i = 1; i < 9; i++)
+  {
+    if (bitRead(Num, 8-i)) NumFrame.set(i);
+  }
+  return NumFrame;
 }
 
 //Copies a char value into a Bitset from most significant bit down
@@ -23,28 +34,18 @@ Bitset makeBitsetFromChar(char c)
 	return letter;
 }
 
-Bitset makeBitsetFromString(const String& s)
-{
-	Bitset data;
-	for (char c : s)
-	{
-		data = data + makeBitsetFromChar(c);
-	}
-	return data;
-}
-
 //Cuts a raw data Bitset into 8-bit frames with appended frame header bits
 Bitset frameData(const Bitset& data)
 {
 	Bitset allFrames;
 
-	for (int i = 0; i < data.getLength()/(FRAME_SIZE-2); i++)
+	for (int i = 0; i < data.getLength()/8; i++)
 	{
-		Bitset frame(FRAME_SIZE);
+		Bitset frame(10);
 		frame.set(0);
-		for (int j = 0; j < FRAME_SIZE-2; j++)
+		for (int j = 0; j < 8; j++)
 		{
-			if (data[j+(FRAME_SIZE-2)*i]) frame.set(j+1);
+			if (data[j+8*i]) frame.set(j+1);
 		}
 		allFrames = allFrames + frame; 
 	}
@@ -53,13 +54,17 @@ Bitset frameData(const Bitset& data)
 }
 
 //Creates a full linked Bitset from a raw data string, will use error correction if correct = true
-//TODO handle strings longer than 255 (no EC) or 127 (with EC)
 Bitset LiFiTXLink::makeTXBitsetFromString(const String& inputMessage, bool correct)
 {
-	Bitset tx = makeBitsetFromString(inputMessage);
+	Bitset tx;
+	for (char c : inputMessage)
+	{
+		tx = tx + makeBitsetFromChar(c);
+	}
 	if (correct) tx = LiFiCorrection::convolve(tx);
-	int numFrames = (correct) ? inputMessage.length()*2 : inputMessage.length();
-	tx = getHeaderBitset() + makeBitsetFromChar(numFrames) + tx;
+  int NumF=tx.getLength()/8;
+  Serial.print(NumF);
 	tx = frameData(tx);
+	tx = getHeaderFooterBitset()+ getNumFramesBitset(NumF) + tx;
 	return tx;
 }
